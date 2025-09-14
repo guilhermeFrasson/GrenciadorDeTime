@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.info.InfoJogo"
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Info Jogo"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/barra"
+        android:layout_width="388dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="____________________________"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timeAdversario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time adversario:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/barra"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textTimeAdversario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time adversario"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/timeAdversario"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/resultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resultado:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textTimeAdversario"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textResultado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resultado"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/resultado"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/dataJogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data do jogo:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textResultado"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textDataJogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data do Jogo"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/dataJogo"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/golsFeitos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gols feitos:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textDataJogo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textGolsFeitos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gols feitos"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/golsFeitos"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/golsSofridos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gols sofridos:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/textGolsFeitos"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textGolsSofridos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gols sofridos"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/golsSofridos"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/textGolsMarcados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gols sofridos"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textGolsSofridos"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/painelInferior"
+        android:layout_width="368dp"
+        android:layout_height="397dp"
+        android:gravity="end"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMarcadores"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/botao_em_tela"
+            android:drawableLeft="@drawable/btndelete"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:tooltipText="Adicionar gols e assistencias"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751841189797",
+    "project_id": "gerenciador-de-time-6a80e",
+    "storage_bucket": "gerenciador-de-time-6a80e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751841189797:android:533d115e0a755c91b5524c",
+        "android_client_info": {
+          "package_name": "com.example.gerenciadordetime"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVChQUANKWG6Z-CJtwbKmGfEdSlOqeKMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="top">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:padding="16dp"
+        android:layout_marginBottom="-60dp"/>
+    <TextView
+        android:id="@+id/barra"
+        android:layout_width="500dp"
+        android:layout_height="wrap_content"
+        android:text="______________________________"
+        android:textSize="30sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:padding="16dp"/>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnListJogos"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Jogos"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/list_jogo"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCadJogo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Novo Jogo"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/novo_jogo"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnListJogador"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Jogadores"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/list_jogador"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnCadJogador"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Novo Jogador"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/novo_jogador"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEstatisticas"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Estatisticas"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/estatisticas"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnMensalidade"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Mensalidade"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/mensalidade"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="left|center_vertical"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnFinanceiro"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/botao_selector"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="Financeiro"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/financeiro"
+        android:padding="16dp"
+        android:drawablePadding="8dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="left|center_vertical"/>
+
+</LinearLayout>
