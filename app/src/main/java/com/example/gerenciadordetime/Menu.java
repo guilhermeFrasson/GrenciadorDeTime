@@ -102,13 +102,12 @@ public class Menu extends AppCompatActivity {
         ImagemHelper.aplicarImagemNoBotao(this, btnMensalidade, R.drawable.mensalidade, 125, 125);
         btnMensalidade.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListMensalidade.class);
+            intent.putExtra("TIPOUSUARIO", tipoUsuario);
+            intent.putExtra("TIMEUSUARIO", timeUser);
             startActivity(intent);
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnFinanceiro, R.drawable.financeiro, 125, 125);
-
-        db = FirebaseFirestore.getInstance();
-        mensalidade.verificarRegistroMensal("ZKqAuml5QGHVRt2L7Vyy");
     }
 
 }

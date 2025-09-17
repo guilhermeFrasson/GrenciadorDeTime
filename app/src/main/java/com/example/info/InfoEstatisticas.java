@@ -63,12 +63,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     }
 
     private void receberDadosJogo() {
-        qtdJogos = listInfoTime.size();
-        qtdVitorias = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("vitoria")).count();
-        qtdEmpates = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("empate")).count();
-        qtdDerrotas = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("derrota")).count();
         calcularAproveitamento();
-
 
         textqtdJogos.setText("" + listInfoTime.size());
         textqtdVitorias.setText("" + listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("vitoria")).count());
@@ -103,6 +98,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     }
 
     private void calcularAproveitamento() {
+        qtdVitorias = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("vitoria")).count();
         int pontosJogados = listInfoTime.size() * 3;
         int pontosConquistados = (int) qtdVitorias * 3;
         if (pontosConquistados > 0){

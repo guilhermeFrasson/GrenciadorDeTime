@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="12dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/txtNomeJogador"
@@ -14,17 +15,12 @@
         android:text="Nome do Jogador"
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="❌"
-        android:textSize="20sp"
+    <ImageView
+        android:id="@+id/item_imagem"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/naopago"
+        android:contentDescription="imagem do item"
         android:layout_marginEnd="8dp"/>
 
-    <Button
-        android:id="@+id/btnPagar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Marcar Pago"/>
 </LinearLayout>

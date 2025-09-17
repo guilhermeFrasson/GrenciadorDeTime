@@ -28,14 +28,14 @@ public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder
     }
     @NonNull
     @Override
-    public JogoAdapter.JogoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public JogoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_jogo, parent, false);
-        return new JogoAdapter.JogoViewHolder(itemView);
+        return new JogoViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull JogoAdapter.JogoViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull JogoViewHolder holder, int position) {
         Jogo jogo = lista.get(position);
         holder.textTimeAdiversario.setText(jogo.getTimeAdversario());
         holder.textResultado.setText(jogo.getResultado());

@@ -3,7 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="24dp">
+
+    <TextView
+        android:id="@+id/textTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lista de Jogadores"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <TextView
+        android:id="@+id/textBarra"
+        android:layout_width="388dp"
+        android:layout_height="40dp"
+        android:text="____________________________"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="28dp"/>
 
     <!-- Filtros -->
     <LinearLayout
@@ -12,9 +38,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textBarra">
 
         <Spinner
             android:id="@+id/spinnerMes"
@@ -26,13 +52,15 @@
             android:id="@+id/spinnerAno"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginEnd="4dp"/>
 
         <Button
             android:id="@+id/btnFiltrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filtrar"/>
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="8dp"
+            android:background="@drawable/botao_em_tela"
+            android:drawableLeft="@drawable/btnbuscar"/>
     </LinearLayout>
 
     <!-- Lista de jogadores -->
@@ -41,22 +69,24 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/layoutFiltros"
-        app:layout_constraintBottom_toTopOf="@id/layoutResumo"
+        app:layout_constraintBottom_toTopOf="@id/textlayoutResumo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:paddingTop="8dp"/>
 
     <!-- Resumo -->
     <TextView
-        android:id="@+id/layoutResumo"
+        android:id="@+id/textlayoutResumo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pago: 0 | Faltando: 0"
-        android:textSize="16sp"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
         android:padding="12dp"
+        android:text="Pago: 0 | Faltando: 0"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

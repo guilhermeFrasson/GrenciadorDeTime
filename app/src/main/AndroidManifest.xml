@@ -13,6 +13,9 @@
         android:theme="@style/Theme.GerenciadorDeTime"
         tools:targetApi="31">
         <activity
+            android:name="com.example.info.InfoMensalidade"
+            android:exported="false" />
+        <activity
             android:name="com.example.lista.ListMensalidade"
             android:exported="false" />
         <activity
