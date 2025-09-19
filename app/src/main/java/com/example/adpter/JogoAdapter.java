@@ -1,4 +1,4 @@
-package com.example.Service;
+package com.example.adpter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.Objetos.Jogador;
 import com.example.Objetos.Jogo;
 import com.example.gerenciadordetime.R;
 

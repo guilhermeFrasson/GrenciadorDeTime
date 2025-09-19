@@ -1,5 +1,6 @@
 package com.example.info;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Service.DeletarRegistroBanco;
 import com.example.Service.ImagemHelper;
+import com.example.Service.PopupUtils;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -54,7 +57,23 @@ public class InfoJogador extends AppCompatActivity {
 
         ImagemHelper.aplicarImagemNoBotao(this, btnDelete, R.drawable.btndelete, 100, 100);
         btnDelete.setOnClickListener(v -> {
-            deleteRegustro();
+            PopupUtils.mostrarConfirmacao(
+                    this,
+                    "Confirmação",
+                    "Você tem certeza que deseja excluir?",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            DeletarRegistroBanco delete = new DeletarRegistroBanco ();
+                            delete.deleteRegistro("GTJOGADOR", getIntent().getStringExtra("IDJOGADOR"));
+                            Intent intent = new Intent();
+                            intent.putExtra("deletado", true);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+            );
+
         });
     }
 
@@ -75,22 +94,4 @@ public class InfoJogador extends AppCompatActivity {
         return idade;
     }
 
-    private void deleteRegustro() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        db.collection("GTJOGADOR")
-                .document(getIntent().getStringExtra("IDJOGADOR")) // id único do doc
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("FIRESTORE", "Documento deletado com sucesso!");
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("FIRESTORE", "Erro ao deletar documento", e);
-                });
-
-        Intent intent = new Intent();
-        intent.putExtra("deletado", true);
-        setResult(RESULT_OK, intent);
-        finish();
-    }
 }

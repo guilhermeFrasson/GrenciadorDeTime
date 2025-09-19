@@ -9,11 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Objetos.Estatisticas;
-import com.example.Objetos.Jogador;
 import com.example.Objetos.Jogo;
-import com.example.Service.EstatisticaAdapter;
-import com.example.Service.JogadorAdapter;
-import com.example.Service.JogoAdapter;
+import com.example.adpter.EstatisticaAdapter;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,7 +28,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     private EstatisticaAdapter adpterAssistencias;
     private FirebaseFirestore db;
     private List<Jogo> listInfoTime = new ArrayList<>();
-    private String timeUsuario;
+    private String timeUsuario, idTimeUser;
 
 
     @Override
@@ -57,6 +54,7 @@ public class InfoEstatisticas extends AppCompatActivity {
         recyclerViewAssistentes.setLayoutManager(new LinearLayoutManager(this));
 
         timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
+        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
         buscaInfojogo();
         buscaTopJogadores();
@@ -81,6 +79,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     private void buscaInfojogo() {
         db.collection("GTJOGO")
                 .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUser)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -111,6 +110,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     private void buscaTopJogadores() {
         db.collection("GTJOGADOR")
                 .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUser)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

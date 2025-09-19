@@ -1,5 +1,6 @@
 package com.example.info;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Objetos.Estatisticas;
-import com.example.Service.EstatisticaAdapter;
+import com.example.Service.DeletarRegistroBanco;
+import com.example.adpter.EstatisticaAdapter;
 import com.example.Service.ImagemHelper;
+import com.example.Service.PopupUtils;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -88,7 +91,23 @@ public class InfoJogo extends AppCompatActivity {
 
         ImagemHelper.aplicarImagemNoBotao(this, btnDelete, R.drawable.btndelete, 100, 100);
         btnDelete.setOnClickListener(v -> {
-            deleteRegistroJogo();
+            PopupUtils.mostrarConfirmacao(
+                    this,
+                    "Confirmação",
+                    "Você tem certeza que deseja excluir?",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            deletarEstaticas();
+                            DeletarRegistroBanco delete = new DeletarRegistroBanco ();
+                            delete.deleteRegistro("GTJOGO", getIntent().getStringExtra("ID_JOGO"));
+                            Intent intent = new Intent();
+                            intent.putExtra("deletado", true);
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+            );
         });
 
     }
@@ -127,26 +146,6 @@ public class InfoJogo extends AppCompatActivity {
                         Log.e("Firestore", "Erro ao buscar jogadores", task.getException());
                     }
                 });
-    }
-
-    private void deleteRegistroJogo() {
-
-        deletarEstaticas();
-
-        db.collection("GTJOGO")
-                .document(getIntent().getStringExtra("ID_JOGO")) // id único do doc
-                .delete()
-                .addOnSuccessListener(aVoid -> {
-                    Log.d("FIRESTORE", "Documento deletado com sucesso!");
-                    Intent intent = new Intent();
-                    intent.putExtra("deletado", true);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("FIRESTORE", "Erro ao deletar documento", e);
-                });
-
     }
 
     private void deletarEstaticas() {

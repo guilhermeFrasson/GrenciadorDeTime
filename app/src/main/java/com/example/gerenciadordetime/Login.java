@@ -134,11 +134,17 @@ public class Login extends AppCompatActivity {
         db.collection("GTUSUARIOS").document(uid).get()
             .addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
-                    String tipo = documentSnapshot.getString("FUNCAO");
+                    String funcaoUsuario = documentSnapshot.getString("FUNCAO");
+                    String timeUsuario = documentSnapshot.getString("TIME");
+                    String idTimeUsuario = documentSnapshot.getString("IDTIME");
+
 
                     // Passa o tipo para a tela de menu
                     Intent intent = new Intent(Login.this, Menu.class);
-                    intent.putExtra("tipoUsuario", tipo);
+                    intent.putExtra("tipoUsuario", funcaoUsuario);
+                    intent.putExtra("timeUsuario", timeUsuario);
+                    intent.putExtra("idTimeUsuario", idTimeUsuario);
+
                     startActivity(intent);
                     finish();
                 } else {

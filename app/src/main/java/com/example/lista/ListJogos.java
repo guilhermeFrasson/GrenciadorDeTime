@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Objetos.Jogo;
-import com.example.Service.JogoAdapter;
+import com.example.adpter.JogoAdapter;
 import com.example.gerenciadordetime.R;
 import com.example.info.InfoJogo;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,7 +27,7 @@ public class ListJogos extends AppCompatActivity {
     List<Jogo> listaJogos = new ArrayList<Jogo>();
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
-    private String tipoUsuario, timeUsuario;
+    private String tipoUsuario, timeUsuario, idTimeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,7 @@ public class ListJogos extends AppCompatActivity {
 
         tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
         timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
+        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
         listaJogos = listarJogoDoBanco();
 
@@ -52,6 +53,7 @@ public class ListJogos extends AppCompatActivity {
 
         db.collection("GTJOGO")
                 .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUser)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

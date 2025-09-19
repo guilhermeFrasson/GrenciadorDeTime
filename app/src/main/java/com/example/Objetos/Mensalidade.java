@@ -1,19 +1,28 @@
 package com.example.Objetos;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.Date;
 
 public class Mensalidade {
     private String time, idJogador, nomeJogador;
     boolean mensalidadePaga;
     Date dataMensalidade;
+    long valorMensalidade;
+    String idDoc;
 
-    public Mensalidade(String time,String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade) {
+    public Mensalidade(String time,String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc) {
         this.time = time;
         this.idJogador = idJogador;
         this.nomeJogador = nomeJogador;
         this.mensalidadePaga = mensalidadePaga;
         this.dataMensalidade = dataMensalidade;
+        this.valorMensalidade = valorMensalidade;
+        this.idDoc = idDoc;
 
+    }
+
+    public Mensalidade() {
     }
 
 
@@ -35,6 +44,14 @@ public class Mensalidade {
 
     public Date getDataMensalidade() {
         return dataMensalidade;
+    }
+
+    public long getValorMensalidade() {
+        return valorMensalidade;
+    }
+
+    public String getIdDoc() {
+        return idDoc;
     }
 
 }

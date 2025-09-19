@@ -39,7 +39,7 @@ public class CadJogo extends AppCompatActivity {
     private FirebaseFirestore db;
     private TextInputEditText campoData;
     private BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-    private String timeUser, resultado;
+    private String timeUser, idTimeUser, resultado;
     int golsFeitos, golsSofridos,totalGols;
     private Button btnSalvar,btnListJogadorMarcador;
     private Date data;
@@ -62,6 +62,13 @@ public class CadJogo extends AppCompatActivity {
             }
         });
 
+        buscadadosUser.buscarIDTime(idTime -> {
+            if (idTime != null) {
+                idTimeUser = idTime;
+            }
+        });
+
+
         timeAdversarioEditText = findViewById(R.id.timeAdversarioEditText);
         golsFeitosEditText = findViewById(R.id.golsFeitosEditText);
         golsSofridosEditText = findViewById(R.id.golsSofridosEditText);
@@ -76,6 +83,8 @@ public class CadJogo extends AppCompatActivity {
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogadorMarcador, R.drawable.btnlistar, 100, 100);
         btnListJogadorMarcador.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListMarcadorGols.class);
+            intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
         campoData.setOnClickListener(v -> {
@@ -125,6 +134,7 @@ public class CadJogo extends AppCompatActivity {
         Map<String, Object> jogo = new HashMap<>();
         jogo.put("TIMEADVERSARIO", formatarNomeTime(timeAdversarioEditText.getText().toString().trim()));
         jogo.put("TIME", timeUser);
+        jogo.put("IDTIME", idTimeUser);
         jogo.put("DATADOJOGO", data);
         jogo.put("RESULTADO", resultado);
         jogo.put("GOLSFEITOS", golsFeitos);
@@ -247,6 +257,7 @@ public class CadJogo extends AppCompatActivity {
         db.collection("GTJOGADOR")
                 .whereEqualTo("NOME", nome)
                 .whereEqualTo("TIME", timeUser)
+                .whereEqualTo("IDTIME", idTimeUser)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {

@@ -2,37 +2,31 @@ package com.example.gerenciadordetime;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.Service.BuscaDadosTime;
 import com.example.Service.BuscaDadosUser;
 import com.example.Service.ImagemHelper;
-import com.example.Service.CriarMensalidades;
+import com.example.Service.UsaMensalidadeCallback;
 import com.example.cadastro.CadJogador;
 import com.example.cadastro.CadJogo;
 import com.example.info.InfoEstatisticas;
 import com.example.lista.ListJogos;
 import com.example.lista.ListJogador;
 import com.example.lista.ListMensalidade;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 
 public class Menu extends AppCompatActivity {
     Button btnListJogos,btnCadJogo,btnListJogador,btnCadJogador,btnEstatisticas,btnMensalidade,btnFinanceiro;
-    private BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-    private CriarMensalidades mensalidade = new CriarMensalidades();
-    FirebaseFirestore db;
-    private String timeUser;
+    private BuscaDadosUser buscaDadosUser = new BuscaDadosUser();
+
+    private BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
+
+    private String timeUser, idTimeUser;
 
 
     @Override
@@ -51,16 +45,20 @@ public class Menu extends AppCompatActivity {
         btnFinanceiro = findViewById(R.id.btnFinanceiro);
 
         String tipoUsuario = getIntent().getStringExtra("tipoUsuario");
-
-        buscadadosUser.buscarTime(time -> {
-            if (time != null) {
-                timeUser = time;
-            }
-        });
+        timeUser = getIntent().getStringExtra("timeUsuario");
+        idTimeUser = getIntent().getStringExtra("idTimeUsuario");
 
         if ("Administrador".equals(tipoUsuario)) {
             btnCadJogo.setVisibility(View.VISIBLE);
             btnCadJogador.setVisibility(View.VISIBLE);
+            buscaDadosTime.verificaUsaMensalidade(idTimeUser, new UsaMensalidadeCallback() {
+                @Override
+                public void onCallback(boolean usaMensalidade) {
+                    if (usaMensalidade) {
+                        btnMensalidade.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
         }
 
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogos, R.drawable.list_jogo, 125, 125);
@@ -68,6 +66,7 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(this, ListJogos.class);
             intent.putExtra("TIPOUSUARIO", tipoUsuario);
             intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
 
@@ -82,6 +81,7 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(this, ListJogador.class);
             intent.putExtra("TIPOUSUARIO", tipoUsuario);
             intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
 
@@ -96,6 +96,7 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(this, InfoEstatisticas.class);
             intent.putExtra("TIPOUSUARIO", tipoUsuario);
             intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
 
@@ -104,6 +105,7 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(this, ListMensalidade.class);
             intent.putExtra("TIPOUSUARIO", tipoUsuario);
             intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
 

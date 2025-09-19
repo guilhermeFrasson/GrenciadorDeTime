@@ -1,23 +1,16 @@
 package com.example.Service;
 
-import android.content.Intent;
-import android.widget.Toast;
-
-import com.example.gerenciadordetime.Login;
-import com.example.gerenciadordetime.Menu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class BuscaDadosUser {
 
-    private FirebaseAuth auth;
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
-    private FirebaseFirestore db;
-    String time;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
 
     public String loginUser() {
-        auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
 
         String uid = user.getUid();
@@ -27,9 +20,7 @@ public class BuscaDadosUser {
         return uid;
     }
 
-    public void buscarTime(TimeCallback callback) {
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+    public void buscarTime(InfoTimeCallback callback) {
 
         db.collection("GTUSUARIOS").document(loginUser()).get()
                 .addOnSuccessListener(documentSnapshot -> {
@@ -44,4 +35,22 @@ public class BuscaDadosUser {
                     callback.onCallback(null); // erro na busca
                 });
     }
+
+    public void buscarIDTime(InfoTimeCallback idTimeCallback) {
+
+        db.collection("GTUSUARIOS").document(loginUser()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String idTime = documentSnapshot.getString("IDTIME");
+                        idTimeCallback.onCallback(idTime); // devolve pelo callback
+                    } else {
+                        idTimeCallback.onCallback(null); // documento não existe
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    idTimeCallback.onCallback(null); // erro na busca
+                });
+    }
+
+
 }

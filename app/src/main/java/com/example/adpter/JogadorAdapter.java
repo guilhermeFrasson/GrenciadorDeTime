@@ -1,8 +1,7 @@
-package com.example.Service;
+package com.example.adpter;
 
 
 
-import com.example.Objetos.Estatisticas;
 import com.example.Objetos.Jogador;
 import com.example.gerenciadordetime.R;
 

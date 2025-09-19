@@ -38,7 +38,7 @@ public class CadJogador extends AppCompatActivity {
     private Spinner posicaoSpinner;
     private Spinner pernaDominanteSpinner;
     private BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-    private String escolhaPernaDominante, escolhaPosicao, timeUser;
+    private String escolhaPernaDominante, escolhaPosicao, idTimeUser, timeUser;
     private Button btnSalvar;
     private Date data;
 
@@ -51,6 +51,12 @@ public class CadJogador extends AppCompatActivity {
         buscadadosUser.buscarTime(time -> {
             if (time != null) {
                 timeUser = time;
+            }
+        });
+
+        buscadadosUser.buscarIDTime(idTime -> {
+            if (idTime != null) {
+                idTimeUser = idTime;
             }
         });
 
@@ -131,6 +137,7 @@ public class CadJogador extends AppCompatActivity {
         Map<String, Object> jogador = new HashMap<>();
         jogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
         jogador.put("TIME", timeUser);
+        jogador.put("IDTIME", idTimeUser);
         jogador.put("POSICAO", escolhaPosicao);
         jogador.put("PERNADOMINANTE", escolhaPernaDominante);
         jogador.put("DATANASCIMENTO", data);

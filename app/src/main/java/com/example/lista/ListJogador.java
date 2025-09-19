@@ -3,7 +3,6 @@ package com.example.lista;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,23 +10,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.Objetos.Estatisticas;
 import com.example.Objetos.Jogador;
-import com.example.Service.BuscaDadosUser;
-import com.example.Service.JogadorAdapter;
-import com.example.cadastro.CadMarcadorGols;
+import com.example.adpter.JogadorAdapter;
 import com.example.gerenciadordetime.R;
 import com.example.info.InfoJogador;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Comparator;
-import java.util.stream.Collectors; // se for usar collect()
 import java.util.List;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class ListJogador extends AppCompatActivity {
     List<Jogador> listaJogadores = new ArrayList<>();
@@ -35,7 +29,7 @@ public class ListJogador extends AppCompatActivity {
     private String timeUser;
     private RecyclerView recyclerView;
     private JogadorAdapter adapter;
-    private String tipoUsuario, timeUsuario;
+    private String tipoUsuario, timeUsuario, idTimeUser;
 
 
     @Override
@@ -49,6 +43,8 @@ public class ListJogador extends AppCompatActivity {
 
         tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
         timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
+        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
+
 
         listaJogadores = listarJogadoresDoBanco();
     }
@@ -60,6 +56,7 @@ public class ListJogador extends AppCompatActivity {
 
         db.collection("GTJOGADOR")
                 .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUser)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
