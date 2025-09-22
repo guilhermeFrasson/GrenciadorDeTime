@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InfoEstatisticas extends AppCompatActivity {
-    private int qtdJogos, aproveitamento, qtd;
+    private int qtdJogos, qtd;
     long qtdVitorias, qtdEmpates, qtdDerrotas;
     private TextView textqtdJogos, textqtdVitorias, textqtdEmpate, textqtdDerrotas, textAproveitamento, textGolsFeitos, textGolsSofridos;
     private RecyclerView recyclerViewArtilheiros, recyclerViewAssistentes;
@@ -61,13 +61,14 @@ public class InfoEstatisticas extends AppCompatActivity {
     }
 
     private void receberDadosJogo() {
-        calcularAproveitamento();
+
+        String aproveitamentoFormatado = String.format("%.2f", calcularAproveitamento());
 
         textqtdJogos.setText("" + listInfoTime.size());
         textqtdVitorias.setText("" + listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("vitoria")).count());
         textqtdEmpate.setText("" + listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("empate")).count());
         textqtdDerrotas.setText("" + listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("derrota")).count());
-        textAproveitamento.setText(aproveitamento + "%");
+        textAproveitamento.setText(aproveitamentoFormatado + "%");
         textGolsFeitos.setText("" + listInfoTime.stream()
                 .mapToLong(Jogo::getGolsFeitos) // pega só os gols
                 .sum());
@@ -96,15 +97,18 @@ public class InfoEstatisticas extends AppCompatActivity {
                 });
     }
 
-    private void calcularAproveitamento() {
+    private double calcularAproveitamento() {
         qtdVitorias = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("vitoria")).count();
+        qtdEmpates = listInfoTime.stream().filter(jogo -> jogo.getResultado().toLowerCase().contains("empate")).count();
+        double aproveitamento;
         int pontosJogados = listInfoTime.size() * 3;
-        int pontosConquistados = (int) qtdVitorias * 3;
+        int pontosConquistados = ((int) qtdVitorias * 3) + (int) qtdEmpates;
         if (pontosConquistados > 0){
-            aproveitamento = (pontosConquistados / pontosJogados) * 100;
+            aproveitamento = ((double)pontosConquistados / pontosJogados) * 100;
         }else {
             aproveitamento = 0;
         }
+        return aproveitamento;
     }
 
     private void buscaTopJogadores() {

@@ -1,12 +1,12 @@
 package com.example.lista;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -20,8 +20,6 @@ import com.example.Service.ImagemHelper;
 import com.example.Service.PopupUtils;
 import com.example.adpter.MensalidadeAdapter;
 import com.example.gerenciadordetime.R;
-import com.example.info.InfoJogo;
-import com.example.info.InfoMensalidade;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -32,7 +30,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ListMensalidade extends AppCompatActivity {
     List<Mensalidade> listaMensalidade = new ArrayList<>();
@@ -46,6 +46,7 @@ public class ListMensalidade extends AppCompatActivity {
     private Spinner mesSpinner;
     private Spinner anoSpinner;
     private Calendar calendar;
+    View overlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class ListMensalidade extends AppCompatActivity {
         Button btnFiltrar = findViewById(R.id.btnFiltrar);
         mesSpinner = findViewById(R.id.spinnerMes);
         anoSpinner = findViewById(R.id.spinnerAno);
+        overlay = findViewById(R.id.progressOverlay);
+
 
         recyclerMensalidades = findViewById(R.id.recyclerMensalidades);
         recyclerMensalidades.setLayoutManager(new LinearLayoutManager(this));
@@ -194,8 +197,9 @@ public class ListMensalidade extends AppCompatActivity {
                             String idJogador = document.getString("IDJOGADOR");
                             long valorMensalidade = document.getLong("VALORMENSALIDADE");
                             String idDoc = document.getId();
+                            Date dataPagamento = new Date();
 
-                            Mensalidade mensalidade = new Mensalidade(time, idJogador, nomeJogador,mensalidadePaga, dataMensalidade, valorMensalidade, idDoc);
+                            Mensalidade mensalidade = new Mensalidade(time, idJogador, nomeJogador,mensalidadePaga, dataMensalidade, valorMensalidade, idDoc, dataPagamento);
                             listaMensalidade.add(mensalidade);
                         }
 
@@ -209,14 +213,17 @@ public class ListMensalidade extends AppCompatActivity {
                                         "Confirmar pagamento",
                                         "Deseja marcar esta mensalidade como paga?",
                                         (dialog, which) -> {
-                                            atualizarStatusMensalidade(mensalidade.getIdDoc());
-
+                                            overlay.setVisibility(View.VISIBLE);
+                                            atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador());
+                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade());
+                                            salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento());
                                         }
                                 );
                             }
                         });
                         recyclerMensalidades.setAdapter(adapter);
                         infoMensalidadesPagas();
+                        overlay.setVisibility(View.GONE);
 
                     } else {
                         Log.e("Firestore", "Erro ao buscar jogadores", task.getException());
@@ -269,7 +276,7 @@ public class ListMensalidade extends AppCompatActivity {
         textlayoutResumo.setText("Pago: " + pago + " | Faltando: " + naoPago);
     }
 
-    private void atualizarStatusMensalidade(String idDoc){
+    private void atualizarStatusMensalidade(String idDoc, String idJogador){
 
         DocumentReference docRef = db.collection("GTMENSALIDADE").document(idDoc);
 
@@ -280,5 +287,44 @@ public class ListMensalidade extends AppCompatActivity {
                         Log.w("Firestore", "Erro ao atualizar", e));
 
 
+    }
+
+    private void atualizaSaldoFinanceiro(long valorMensalidade){
+        db.collection("GTSALDOFINANCEIRO")
+                .whereEqualTo("IDTIME", idTimeUsuario)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (DocumentSnapshot document : queryDocumentSnapshots) {
+                        // Aqui você tem o id do documento
+                        DocumentReference docRef = document.getReference();
+
+                        docRef.update("SALDOFINANCEIRO", FieldValue.increment(valorMensalidade))
+                                .addOnSuccessListener(aVoid ->
+                                        Log.d("Firestore", "mensalidade atualizada"))
+                                .addOnFailureListener(e ->
+                                        Log.w("Firestore", "Erro ao atualizar", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.w("Firestore", "Erro na busca", e));
+
+
+    }
+
+    private void salvaOpreracao(long valorMensalidade, Date dataPagamento) {
+        Map<String, Object> operacao = new HashMap<>();
+        operacao.put("IDTIME", idTimeUsuario);
+        operacao.put("TIPOOPERACAO", "Entrada");
+        operacao.put("VALOROPERACAO", valorMensalidade);
+        operacao.put("DATAPAGAMENTO", dataPagamento);
+
+        db.collection("GTEXTRATOFINANCEIRO")
+                .add(operacao)
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("Firestore", "Jogador salvo com ID: " + documentReference.getId());
+
+                })
+                .addOnFailureListener(e -> {
+                    Log.w("Firestore", "Erro ao salvar jogador", e);
+                });
     }
 }

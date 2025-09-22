@@ -10,8 +10,9 @@ public class Mensalidade {
     Date dataMensalidade;
     long valorMensalidade;
     String idDoc;
+    Date dataPagamento;
 
-    public Mensalidade(String time,String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc) {
+    public Mensalidade(String time,String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc, Date dataPagamento) {
         this.time = time;
         this.idJogador = idJogador;
         this.nomeJogador = nomeJogador;
@@ -19,7 +20,7 @@ public class Mensalidade {
         this.dataMensalidade = dataMensalidade;
         this.valorMensalidade = valorMensalidade;
         this.idDoc = idDoc;
-
+        this.dataPagamento = dataPagamento;
     }
 
     public Mensalidade() {
@@ -52,6 +53,10 @@ public class Mensalidade {
 
     public String getIdDoc() {
         return idDoc;
+    }
+
+    public Date getDataPagamento() {
+        return dataPagamento;
     }
 
 }
