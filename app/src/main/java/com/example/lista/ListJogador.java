@@ -26,7 +26,6 @@ import java.util.Date;
 public class ListJogador extends AppCompatActivity {
     List<Jogador> listaJogadores = new ArrayList<>();
     private FirebaseFirestore db;
-    private String timeUser;
     private RecyclerView recyclerView;
     private JogadorAdapter adapter;
     private String tipoUsuario, timeUsuario, idTimeUser;

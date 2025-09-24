@@ -6,7 +6,6 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.Service.BuscaDadosTime;
 import com.example.Service.BuscaDadosUser;
@@ -18,6 +17,7 @@ import com.example.info.InfoEstatisticas;
 import com.example.lista.ListJogos;
 import com.example.lista.ListJogador;
 import com.example.lista.ListMensalidade;
+import com.example.lista.ListExtraFinanceiro;
 
 
 public class Menu extends AppCompatActivity {
@@ -110,6 +110,13 @@ public class Menu extends AppCompatActivity {
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnFinanceiro, R.drawable.financeiro, 125, 125);
+        btnFinanceiro.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListExtraFinanceiro.class);
+            intent.putExtra("TIPOUSUARIO", tipoUsuario);
+            intent.putExtra("TIMEUSUARIO", timeUser);
+            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
+            startActivity(intent);
+        });
     }
 
 }

@@ -12,7 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DeletarRegistroBanco extends AppCompatActivity {
 
-    public void deleteRegistro(String tabela, String IDDOC) {
+    public static void deleteRegistro(String tabela, String IDDOC) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection(tabela)

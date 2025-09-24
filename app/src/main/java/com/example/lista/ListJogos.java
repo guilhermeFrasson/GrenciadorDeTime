@@ -25,7 +25,6 @@ import java.util.List;
 
 public class ListJogos extends AppCompatActivity {
     List<Jogo> listaJogos = new ArrayList<Jogo>();
-    private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private String tipoUsuario, timeUsuario, idTimeUser;
 
@@ -42,14 +41,11 @@ public class ListJogos extends AppCompatActivity {
         timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
         idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
-        listaJogos = listarJogoDoBanco();
-
+        listarJogoDoBanco();
     }
 
-    private List<Jogo> listarJogoDoBanco() {
-        List<Jogo> lista = new ArrayList<>();
-
-        db = FirebaseFirestore.getInstance();
+    private void listarJogoDoBanco() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("GTJOGO")
                 .whereEqualTo("TIME", timeUsuario)
@@ -91,7 +87,6 @@ public class ListJogos extends AppCompatActivity {
                         Log.e("Firestore", "Erro ao buscar jogadores", task.getException());
                     }
                 });
-        return lista;
     }
 
     @Override

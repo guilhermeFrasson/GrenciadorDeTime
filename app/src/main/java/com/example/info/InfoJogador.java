@@ -64,8 +64,7 @@ public class InfoJogador extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            DeletarRegistroBanco delete = new DeletarRegistroBanco ();
-                            delete.deleteRegistro("GTJOGADOR", getIntent().getStringExtra("IDJOGADOR"));
+                            DeletarRegistroBanco.deleteRegistro("GTJOGADOR", getIntent().getStringExtra("IDJOGADOR"));
                             Intent intent = new Intent();
                             intent.putExtra("deletado", true);
                             setResult(RESULT_OK, intent);

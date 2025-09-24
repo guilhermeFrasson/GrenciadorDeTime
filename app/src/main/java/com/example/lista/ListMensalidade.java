@@ -60,7 +60,6 @@ public class ListMensalidade extends AppCompatActivity {
         anoSpinner = findViewById(R.id.spinnerAno);
         overlay = findViewById(R.id.progressOverlay);
 
-
         recyclerMensalidades = findViewById(R.id.recyclerMensalidades);
         recyclerMensalidades.setLayoutManager(new LinearLayoutManager(this));
 
@@ -214,9 +213,21 @@ public class ListMensalidade extends AppCompatActivity {
                                         "Deseja marcar esta mensalidade como paga?",
                                         (dialog, which) -> {
                                             overlay.setVisibility(View.VISIBLE);
-                                            atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador());
-                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade());
-                                            salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento());
+                                            atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador(), true);
+                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(),true);
+                                            salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento(), "Entrada", "Pag. Mensalidade");
+                                        }
+                                );
+                            } else {
+                                PopupUtils.mostrarConfirmacao(
+                                        this,
+                                        "Cencelar pagamento",
+                                        "Deseja Cencelar o pagamento da mensalidade?",
+                                        (dialog, which) -> {
+                                            overlay.setVisibility(View.VISIBLE);
+                                            atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador(), false);
+                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(),false);
+                                            salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento(), "Saida", "Estorno Mensalidade");
                                         }
                                 );
                             }
@@ -276,11 +287,11 @@ public class ListMensalidade extends AppCompatActivity {
         textlayoutResumo.setText("Pago: " + pago + " | Faltando: " + naoPago);
     }
 
-    private void atualizarStatusMensalidade(String idDoc, String idJogador){
+    private void atualizarStatusMensalidade(String idDoc, String idJogador, boolean statusPagamento){
 
         DocumentReference docRef = db.collection("GTMENSALIDADE").document(idDoc);
 
-        docRef.update("PAGO", true)
+        docRef.update("PAGO", statusPagamento)
                 .addOnSuccessListener(aVoid ->
                                 listarMensalidadeDoBanco(escolhaAno,buscaNumeroMes(escolhaMes)))
                 .addOnFailureListener(e ->
@@ -289,7 +300,7 @@ public class ListMensalidade extends AppCompatActivity {
 
     }
 
-    private void atualizaSaldoFinanceiro(long valorMensalidade){
+    private void atualizaSaldoFinanceiro(long valorMensalidade, boolean pagamento){
         db.collection("GTSALDOFINANCEIRO")
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
@@ -297,12 +308,20 @@ public class ListMensalidade extends AppCompatActivity {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
                         // Aqui você tem o id do documento
                         DocumentReference docRef = document.getReference();
+                        if (pagamento) {
+                            docRef.update("SALDOFINANCEIRO", FieldValue.increment(valorMensalidade))
+                                    .addOnSuccessListener(aVoid ->
+                                            Log.d("Firestore", "mensalidade atualizada"))
+                                    .addOnFailureListener(e ->
+                                            Log.w("Firestore", "Erro ao atualizar", e));
+                        } else  {
+                            docRef.update("SALDOFINANCEIRO", FieldValue.increment(-valorMensalidade))
+                                    .addOnSuccessListener(aVoid ->
+                                            Log.d("Firestore", "mensalidade atualizada"))
+                                    .addOnFailureListener(e ->
+                                            Log.w("Firestore", "Erro ao atualizar", e));
+                        }
 
-                        docRef.update("SALDOFINANCEIRO", FieldValue.increment(valorMensalidade))
-                                .addOnSuccessListener(aVoid ->
-                                        Log.d("Firestore", "mensalidade atualizada"))
-                                .addOnFailureListener(e ->
-                                        Log.w("Firestore", "Erro ao atualizar", e));
                     }
                 })
                 .addOnFailureListener(e -> Log.w("Firestore", "Erro na busca", e));
@@ -310,12 +329,13 @@ public class ListMensalidade extends AppCompatActivity {
 
     }
 
-    private void salvaOpreracao(long valorMensalidade, Date dataPagamento) {
+    private void salvaOpreracao(long valorMensalidade, Date dataOperacao, String tipoOperacao, String dsOperacao) {
         Map<String, Object> operacao = new HashMap<>();
         operacao.put("IDTIME", idTimeUsuario);
-        operacao.put("TIPOOPERACAO", "Entrada");
+        operacao.put("TIPOOPERACAO", tipoOperacao);
         operacao.put("VALOROPERACAO", valorMensalidade);
-        operacao.put("DATAPAGAMENTO", dataPagamento);
+        operacao.put("DATAOPERACAO", dataOperacao);
+        operacao.put("DSOPERACAO", dsOperacao);
 
         db.collection("GTEXTRATOFINANCEIRO")
                 .add(operacao)

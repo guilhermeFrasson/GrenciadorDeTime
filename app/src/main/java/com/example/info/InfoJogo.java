@@ -99,8 +99,7 @@ public class InfoJogo extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             deletarEstaticas();
-                            DeletarRegistroBanco delete = new DeletarRegistroBanco ();
-                            delete.deleteRegistro("GTJOGO", getIntent().getStringExtra("ID_JOGO"));
+                            DeletarRegistroBanco.deleteRegistro("GTJOGO", getIntent().getStringExtra("ID_JOGO"));
                             Intent intent = new Intent();
                             intent.putExtra("deletado", true);
                             setResult(RESULT_OK, intent);
