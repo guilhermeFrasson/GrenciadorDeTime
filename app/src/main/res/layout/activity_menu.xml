@@ -137,6 +137,7 @@
         android:padding="16dp"
         android:drawablePadding="8dp"
         android:layout_marginBottom="10dp"
+        android:visibility="gone"
         android:gravity="left|center_vertical"/>
 
 </LinearLayout>

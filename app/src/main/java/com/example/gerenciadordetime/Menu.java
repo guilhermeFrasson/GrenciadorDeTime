@@ -33,7 +33,7 @@ public class Menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_menu_black);
+        setContentView(R.layout.activity_menu);
 
         btnListJogos = findViewById(R.id.btnListJogos);
         btnCadJogo = findViewById(R.id.btnCadJogo);
@@ -56,6 +56,14 @@ public class Menu extends AppCompatActivity {
                 public void onCallback(boolean usaMensalidade) {
                     if (usaMensalidade) {
                         btnMensalidade.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+            buscaDadosTime.verificaUsaFinanceiro(idTimeUser, new UsaMensalidadeCallback() {
+                @Override
+                public void onCallback(boolean usaFinanceiro) {
+                    if (usaFinanceiro) {
+                        btnFinanceiro.setVisibility(View.VISIBLE);
                     }
                 }
             });
