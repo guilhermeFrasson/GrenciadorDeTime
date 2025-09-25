@@ -1,11 +1,15 @@
 package com.example.lista;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.cadastro.CadOperacao.atualizaSaldoFinanceiro;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +21,7 @@ import com.example.Service.DeletarRegistroBanco;
 import com.example.Service.ImagemHelper;
 import com.example.Service.PopupUtils;
 import com.example.adpter.ExtratoAdapter;
+import com.example.cadastro.CadOperacao;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -32,7 +37,8 @@ public class ListExtraFinanceiro extends AppCompatActivity {
     private FirebaseFirestore db;
     private RecyclerView recyclerViewExtrato;
     private ExtratoAdapter adapter;
-    private String tipoUsuario, timeUsuario, idTimeUsuario;
+    public static double saldoFinanceiro;
+    TextView textSaldoFinanceiro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +51,16 @@ public class ListExtraFinanceiro extends AppCompatActivity {
         recyclerViewExtrato = findViewById(R.id.recyclerViewExtrato);
         recyclerViewExtrato.setLayoutManager(new LinearLayoutManager(this));
 
-        tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUsuario = getIntent().getStringExtra("IDTIMEUSUARIO");
-
         listarExtratoDoBanco();
 
         ImagemHelper.aplicarImagemNoBotao(this, btnadicionar, R.drawable.btnadicionar, 125, 125);
         btnadicionar.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ListJogos.class);
-            intent.putExtra("TIPOUSUARIO", tipoUsuario);
-            intent.putExtra("TIMEUSUARIO", timeUsuario);
-            intent.putExtra("IDTIMEUSUARIO", idTimeUsuario);
+            Intent intent = new Intent(this, CadOperacao.class);
             startActivity(intent);
         });
+
+        textSaldoFinanceiro = findViewById(R.id.textqtdJogos);
+        buscaSaldoFinanceiro();
     }
 
     private void listarExtratoDoBanco() {
@@ -95,10 +97,17 @@ public class ListExtraFinanceiro extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 DeletarRegistroBanco.deleteRegistro("GTEXTRATOFINANCEIRO", extrato.getIdDoc());
+                                                if (extrato.getTipoOperacao().equals("Entrada")){
+                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(),false);
+                                                }else {
+                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(),true);
+                                                }
                                                 listarExtratoDoBanco();
                                             }
                                         }
                                 );
+                            }else {
+                                Toast.makeText(this, "Esta operação não pode ser excluida", Toast.LENGTH_SHORT).show();
                             }
                         });
                         recyclerViewExtrato.setAdapter(adapter);
@@ -108,5 +117,28 @@ public class ListExtraFinanceiro extends AppCompatActivity {
                 }).addOnFailureListener(e -> Log.e("Firestore", "Falha na query", e));
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        listarExtratoDoBanco();
+    }
+
+    private void buscaSaldoFinanceiro() {
+        db.collection("GTSALDOFINANCEIRO")
+                .whereEqualTo("IDTIME", idTimeUsuario)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w("Firestore", "Erro no listener", e);
+                        return;
+                    }
+
+                    if (snapshots != null && !snapshots.isEmpty()) {
+                        for (QueryDocumentSnapshot document : snapshots) {
+                            saldoFinanceiro = document.getDouble("SALDOFINANCEIRO");
+                            textSaldoFinanceiro.setText(String.valueOf(saldoFinanceiro));
+                        }
+                    }
+                });
+    }
 
 }

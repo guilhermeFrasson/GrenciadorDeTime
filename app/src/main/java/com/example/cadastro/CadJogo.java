@@ -1,5 +1,8 @@
 package com.example.cadastro;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,10 +41,8 @@ public class CadJogo extends AppCompatActivity {
     private EditText timeAdversarioEditText, golsFeitosEditText, golsSofridosEditText;
     private FirebaseFirestore db;
     private TextInputEditText campoData;
-    private BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-    private String timeUser, idTimeUser, resultado;
+    private String resultado;
     int golsFeitos, golsSofridos,totalGols;
-    private Button btnSalvar,btnListJogadorMarcador;
     private Date data;
 
     private List<Estatisticas> lista;
@@ -55,36 +56,20 @@ public class CadJogo extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-
-        buscadadosUser.buscarTime(time -> {
-            if (time != null) {
-                timeUser = time;
-            }
-        });
-
-        buscadadosUser.buscarIDTime(idTime -> {
-            if (idTime != null) {
-                idTimeUser = idTime;
-            }
-        });
-
-
         timeAdversarioEditText = findViewById(R.id.timeAdversarioEditText);
         golsFeitosEditText = findViewById(R.id.golsFeitosEditText);
         golsSofridosEditText = findViewById(R.id.golsSofridosEditText);
 
         campoData = findViewById(R.id.campoData);
 
-        btnSalvar = findViewById(R.id.btnSalvar);
-        btnListJogadorMarcador = findViewById(R.id.btnlistJogadormarcador);
+        Button btnSalvar = findViewById(R.id.btnSalvar);
+        Button btnListJogadorMarcador = findViewById(R.id.btnlistJogadormarcador);
 
         ImagemHelper.aplicarImagemNoBotao(this, btnSalvar, R.drawable.btnsalvar, 70, 70);
 
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogadorMarcador, R.drawable.btnlistar, 100, 100);
         btnListJogadorMarcador.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListMarcadorGols.class);
-            intent.putExtra("TIMEUSUARIO", timeUser);
-            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
         campoData.setOnClickListener(v -> {
@@ -133,8 +118,8 @@ public class CadJogo extends AppCompatActivity {
     private void salvaJogo( int idJogo){
         Map<String, Object> jogo = new HashMap<>();
         jogo.put("TIMEADVERSARIO", formatarNomeTime(timeAdversarioEditText.getText().toString().trim()));
-        jogo.put("TIME", timeUser);
-        jogo.put("IDTIME", idTimeUser);
+        jogo.put("TIME", timeUsuario);
+        jogo.put("IDTIME", idTimeUsuario);
         jogo.put("DATADOJOGO", data);
         jogo.put("RESULTADO", resultado);
         jogo.put("GOLSFEITOS", golsFeitos);
@@ -256,8 +241,8 @@ public class CadJogo extends AppCompatActivity {
     private void atualizarEstatisticasJogador(String nome, int gols, int assistencias){
         db.collection("GTJOGADOR")
                 .whereEqualTo("NOME", nome)
-                .whereEqualTo("TIME", timeUser)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     for (DocumentSnapshot document : queryDocumentSnapshots) {

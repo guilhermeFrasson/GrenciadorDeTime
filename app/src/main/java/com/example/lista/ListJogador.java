@@ -1,5 +1,8 @@
 package com.example.lista;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,8 +31,6 @@ public class ListJogador extends AppCompatActivity {
     private FirebaseFirestore db;
     private RecyclerView recyclerView;
     private JogadorAdapter adapter;
-    private String tipoUsuario, timeUsuario, idTimeUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +41,15 @@ public class ListJogador extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerJogadores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
-
-
-        listaJogadores = listarJogadoresDoBanco();
+        listarJogadoresDoBanco();
     }
 
-    private List<Jogador> listarJogadoresDoBanco() {
-        List<Jogador> lista = new ArrayList<>();
-
+    private void listarJogadoresDoBanco() {
         db = FirebaseFirestore.getInstance();
 
         db.collection("GTJOGADOR")
                 .whereEqualTo("TIME", timeUsuario)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -85,7 +79,6 @@ public class ListJogador extends AppCompatActivity {
                             intent.putExtra("GOLS", jogador.getGols());
                             intent.putExtra("ASSISTENCIAS", jogador.getAssistencias());
                             intent.putExtra("IDJOGADOR", jogador.getIdJogador());
-                            intent.putExtra("TIPOUSUARIO", tipoUsuario);
 
                             startActivityForResult(intent, 123);
 
@@ -97,7 +90,6 @@ public class ListJogador extends AppCompatActivity {
                     }
                 });
 
-        return lista;
     }
 
     @Override

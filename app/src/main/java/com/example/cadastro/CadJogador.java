@@ -1,6 +1,9 @@
 package com.example.cadastro;
 
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,8 +17,6 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-
-import com.example.Service.BuscaDadosUser;
 import com.example.Service.ImagemHelper;
 
 import com.example.gerenciadordetime.R;
@@ -28,7 +29,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CadJogador extends AppCompatActivity {
 
@@ -37,9 +37,7 @@ public class CadJogador extends AppCompatActivity {
     private TextInputEditText campoData;
     private Spinner posicaoSpinner;
     private Spinner pernaDominanteSpinner;
-    private BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-    private String escolhaPernaDominante, escolhaPosicao, idTimeUser, timeUser;
-    private Button btnSalvar;
+    private String escolhaPernaDominante, escolhaPosicao;
     private Date data;
 
     @Override
@@ -48,24 +46,12 @@ public class CadJogador extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cad_jogador);
 
-        buscadadosUser.buscarTime(time -> {
-            if (time != null) {
-                timeUser = time;
-            }
-        });
-
-        buscadadosUser.buscarIDTime(idTime -> {
-            if (idTime != null) {
-                idTimeUser = idTime;
-            }
-        });
-
         nomeEditText = findViewById(R.id.nomeEditText);
         campoData = findViewById(R.id.campoData);
         posicaoSpinner = findViewById(R.id.posicaoSpinner);
         pernaDominanteSpinner = findViewById(R.id.pernaDominanteSpinner);
 
-        btnSalvar = findViewById(R.id.btnSalvar);
+        Button btnSalvar = findViewById(R.id.btnSalvar);
 
         ImagemHelper.aplicarImagemNoBotao(this, btnSalvar, R.drawable.btnsalvar, 70, 70);
 
@@ -136,8 +122,8 @@ public class CadJogador extends AppCompatActivity {
     private void salvardados(){
         Map<String, Object> jogador = new HashMap<>();
         jogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
-        jogador.put("TIME", timeUser);
-        jogador.put("IDTIME", idTimeUser);
+        jogador.put("TIME", timeUsuario);
+        jogador.put("IDTIME", idTimeUsuario);
         jogador.put("POSICAO", escolhaPosicao);
         jogador.put("PERNADOMINANTE", escolhaPernaDominante);
         jogador.put("DATANASCIMENTO", data);
@@ -235,7 +221,7 @@ public class CadJogador extends AppCompatActivity {
 
     private void verificaJogadorDuplicado() {
         db.collection("GTJOGADOR")
-                .whereEqualTo("TIME", timeUser)
+                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("NOME", formatarNome(nomeEditText.getText().toString().trim()))
                 .get()
                 .addOnCompleteListener(task -> {

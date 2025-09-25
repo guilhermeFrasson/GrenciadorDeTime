@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.Objetos.Estatisticas;
 import com.example.Objetos.Extrato;
 import com.example.gerenciadordetime.R;
 
@@ -49,15 +50,17 @@ public class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoV
     @Override
     public void onBindViewHolder(@NonNull ExtratoViewHolder holder, int position) {
         Extrato extrato = lista.get(position);
+        String ValorArredondado = String.format("%.2f", extrato.getValorOperacao());
+
         if (extrato.getTipoOperacao().equals("Entrada")) {
-            holder.textValorOperacao.setText("+R$ " + String.valueOf(extrato.getValorOperacao()));
+            holder.textValorOperacao.setText("+R$ " + ValorArredondado);
             holder.textValorOperacao.setTextColor(Color.parseColor("#4CAF50")); // verde
         } else {
-            holder.textValorOperacao.setText("-R$ " + String.valueOf(extrato.getValorOperacao()));
+            holder.textValorOperacao.setText("-R$ " + ValorArredondado);
             holder.textValorOperacao.setTextColor(Color.parseColor("#F44336")); // vermelho
         }
         holder.textDescricao.setText(extrato.getDsOperacao());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String dataFormatada = sdf.format(extrato.getDataOperacao());
         holder.textDataOperacao.setText(dataFormatada);
         holder.itemView.setOnClickListener(v -> listener.onItemClick(extrato));
@@ -81,5 +84,10 @@ public class ExtratoAdapter extends RecyclerView.Adapter<ExtratoAdapter.ExtratoV
             textDataOperacao = itemView.findViewById(R.id.textDataOperacao);
         }
 
+    }
+
+    public void setLista(List<Extrato> novaLista) {
+        this.lista = novaLista;
+        notifyDataSetChanged(); // avisa o RecyclerView que os dados mudaram
     }
 }

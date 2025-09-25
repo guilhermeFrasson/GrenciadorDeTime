@@ -1,6 +1,10 @@
 package com.example.lista;
 
 
+import static com.example.Service.BuscaDadosUser.funcaoUsuario;
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +30,6 @@ import java.util.List;
 public class ListJogos extends AppCompatActivity {
     List<Jogo> listaJogos = new ArrayList<Jogo>();
     private RecyclerView recyclerView;
-    private String tipoUsuario, timeUsuario, idTimeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,6 @@ public class ListJogos extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerJogos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
-
         listarJogoDoBanco();
     }
 
@@ -49,7 +48,7 @@ public class ListJogos extends AppCompatActivity {
 
         db.collection("GTJOGO")
                 .whereEqualTo("TIME", timeUsuario)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -78,7 +77,6 @@ public class ListJogos extends AppCompatActivity {
                             intent.putExtra("GOLS_SOFRIDOS", jogo.getGolsSofridos());
                             intent.putExtra("ID_JOGO", jogo.getIdJogo());
                             intent.putExtra("TIME", jogo.getTime());
-                            intent.putExtra("TIPOUSUARIO", tipoUsuario);
                             startActivityForResult(intent, 1);
                         });
                         recyclerView.setAdapter(adapter);

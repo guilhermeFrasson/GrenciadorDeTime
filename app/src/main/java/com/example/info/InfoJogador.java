@@ -1,9 +1,10 @@
 package com.example.info;
 
+import static com.example.Service.BuscaDadosUser.funcaoUsuario;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,15 +16,11 @@ import com.example.Service.DeletarRegistroBanco;
 import com.example.Service.ImagemHelper;
 import com.example.Service.PopupUtils;
 import com.example.gerenciadordetime.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
 import java.util.Date;
 
 public class InfoJogador extends AppCompatActivity {
-
-    private TextView textNomeJogador, textNomeTime,textPosicao,textPernaDominante,textGols,textAssistencias,textIdade;
-    private Button btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,14 +28,14 @@ public class InfoJogador extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_info_jogador);
 
-        textNomeJogador = findViewById(R.id.textNomeJogador);
-        textNomeTime = findViewById(R.id.textNomeTime);
-        textPosicao = findViewById(R.id.textPosicao);
-        textPernaDominante = findViewById(R.id.textPernaDominante);
-        textGols = findViewById(R.id.textGols);
-        textAssistencias = findViewById(R.id.textAssistencias);
-        textIdade = findViewById(R.id.textIdade);
-        btnDelete = findViewById(R.id.btnDelete);
+        TextView textNomeJogador = findViewById(R.id.textNomeJogador);
+        TextView textNomeTime = findViewById(R.id.textNomeTime);
+        TextView textPosicao = findViewById(R.id.textPosicao);
+        TextView textPernaDominante = findViewById(R.id.textPernaDominante);
+        TextView textGols = findViewById(R.id.textGols);
+        TextView textAssistencias = findViewById(R.id.textAssistencias);
+        TextView textIdade = findViewById(R.id.textIdade);
+        Button btnDelete = findViewById(R.id.btnDelete);
 
         // Mostrar o nome no TextView
         textNomeJogador.setText(getIntent().getStringExtra("NOME_JOGADOR"));
@@ -49,9 +46,7 @@ public class InfoJogador extends AppCompatActivity {
         textAssistencias.setText("" + getIntent().getLongExtra("ASSISTENCIAS", 0));
         textIdade.setText(calcularIdade((Date) getIntent().getSerializableExtra("DATA_NASCIMENTO_JOGADOR")) + " anos");
 
-        String tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
-
-        if ("Administrador".equals(tipoUsuario)) {
+        if ("Administrador".equals(funcaoUsuario)) {
             btnDelete.setVisibility(View.VISIBLE);
         }
 

@@ -1,12 +1,14 @@
 package com.example.lista;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.cadastro.CadOperacao.atualizaSaldoFinanceiro;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -19,6 +21,7 @@ import com.example.Objetos.Mensalidade;
 import com.example.Service.ImagemHelper;
 import com.example.Service.PopupUtils;
 import com.example.adpter.MensalidadeAdapter;
+import com.example.cadastro.CadOperacao;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -37,7 +40,6 @@ import java.util.Map;
 public class ListMensalidade extends AppCompatActivity {
     List<Mensalidade> listaMensalidade = new ArrayList<>();
     private FirebaseFirestore db;
-    private String idTimeUsuario;
     private String escolhaMes;
     private Integer escolhaAno;
     private RecyclerView recyclerMensalidades;
@@ -62,8 +64,6 @@ public class ListMensalidade extends AppCompatActivity {
 
         recyclerMensalidades = findViewById(R.id.recyclerMensalidades);
         recyclerMensalidades.setLayoutManager(new LinearLayoutManager(this));
-
-        idTimeUsuario = getIntent().getStringExtra("IDTIMEUSUARIO");
 
         ImagemHelper.aplicarImagemNoBotao(this, btnFiltrar, R.drawable.btnbuscar, 70, 70);
         btnFiltrar.setOnClickListener(v -> {
@@ -296,37 +296,6 @@ public class ListMensalidade extends AppCompatActivity {
                                 listarMensalidadeDoBanco(escolhaAno,buscaNumeroMes(escolhaMes)))
                 .addOnFailureListener(e ->
                         Log.w("Firestore", "Erro ao atualizar", e));
-
-
-    }
-
-    private void atualizaSaldoFinanceiro(long valorMensalidade, boolean pagamento){
-        db.collection("GTSALDOFINANCEIRO")
-                .whereEqualTo("IDTIME", idTimeUsuario)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    for (DocumentSnapshot document : queryDocumentSnapshots) {
-                        // Aqui você tem o id do documento
-                        DocumentReference docRef = document.getReference();
-                        if (pagamento) {
-                            docRef.update("SALDOFINANCEIRO", FieldValue.increment(valorMensalidade))
-                                    .addOnSuccessListener(aVoid ->
-                                            Log.d("Firestore", "mensalidade atualizada"))
-                                    .addOnFailureListener(e ->
-                                            Log.w("Firestore", "Erro ao atualizar", e));
-                        } else  {
-                            docRef.update("SALDOFINANCEIRO", FieldValue.increment(-valorMensalidade))
-                                    .addOnSuccessListener(aVoid ->
-                                            Log.d("Firestore", "mensalidade atualizada"))
-                                    .addOnFailureListener(e ->
-                                            Log.w("Firestore", "Erro ao atualizar", e));
-                        }
-
-                    }
-                })
-                .addOnFailureListener(e -> Log.w("Firestore", "Erro na busca", e));
-
-
     }
 
     private void salvaOpreracao(long valorMensalidade, Date dataOperacao, String tipoOperacao, String dsOperacao) {

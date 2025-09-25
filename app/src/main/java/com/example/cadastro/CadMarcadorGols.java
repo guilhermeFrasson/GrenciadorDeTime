@@ -1,5 +1,8 @@
 package com.example.cadastro;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,16 +30,12 @@ import java.util.List;
 
 public class CadMarcadorGols extends AppCompatActivity {
 
-    private Button btnSalvar;
     private Spinner jogadorSpinner;
     private Jogador escolhaJogador;
     private static List<Estatisticas> listaEstatisticas = new ArrayList<>();
     TextView txtGols, txtAssistencias;
     FirebaseFirestore db;
     int gols, assistencias;
-    private String timeUsuario, idTimeUser;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +51,8 @@ public class CadMarcadorGols extends AppCompatActivity {
         Button btnMaisAssistencias = findViewById(R.id.btnMaisAssistencias);
         Button btnMenosAssistencias = findViewById(R.id.btnMenosAssistencias);
         txtAssistencias = findViewById(R.id.txtAssistencias);
-        btnSalvar = findViewById(R.id.btnSalvar);
+        Button btnSalvar = findViewById(R.id.btnSalvar);
         CheckBox checkGolContra = findViewById(R.id.checkGolContra);
-
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
         comboJogador();
 
@@ -131,9 +127,10 @@ public class CadMarcadorGols extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        Object idTimeUsusuario;
         db.collection("GTJOGADOR")
                 .whereEqualTo("TIME", timeUsuario)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

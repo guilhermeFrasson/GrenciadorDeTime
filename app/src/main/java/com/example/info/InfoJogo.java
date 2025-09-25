@@ -1,5 +1,7 @@
 package com.example.info;
 
+import static com.example.Service.BuscaDadosUser.funcaoUsuario;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,16 +35,11 @@ import java.util.List;
 import java.util.Locale;
 
 public class InfoJogo extends AppCompatActivity {
-
-    private String timeAdversario, resultado;
     private Date dataJogo;
-    private long golsFeitos, golsSofridos;
-    private TextView textTimeAdversario, textResultado, textDataJogo, textGolsFeitos, textGolsSofridos,textGolsMarcados;
     private RecyclerView recyclerView;
     private EstatisticaAdapter adapter;
     private FirebaseFirestore db;
     List<Estatisticas> listaInfoJogo = new ArrayList<>();
-    private Button btnDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,27 +49,25 @@ public class InfoJogo extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        textTimeAdversario = findViewById(R.id.textTimeAdversario);
-        textResultado = findViewById(R.id.textResultado);
-        textDataJogo = findViewById(R.id.textDataJogo);
-        textGolsFeitos = findViewById(R.id.textGolsFeitos);
-        textGolsSofridos = findViewById(R.id.textGolsSofridos);
-        textGolsMarcados = findViewById(R.id.textGolsMarcados);
-        btnDelete = findViewById(R.id.btnDelete);
+        TextView textTimeAdversario = findViewById(R.id.textTimeAdversario);
+        TextView textResultado = findViewById(R.id.textResultado);
+        TextView textDataJogo = findViewById(R.id.textDataJogo);
+        TextView textGolsFeitos = findViewById(R.id.textGolsFeitos);
+        TextView textGolsSofridos = findViewById(R.id.textGolsSofridos);
+        TextView textGolsMarcados = findViewById(R.id.textGolsMarcados);
+        Button btnDelete = findViewById(R.id.btnDelete);
 
         recyclerView = findViewById(R.id.recyclerViewMarcadores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        receberValor();
+        textTimeAdversario.setText("" + getIntent().getStringExtra("TIME_ADIVERSARIO"));
+        textResultado.setText("" + getIntent().getStringExtra("RESULTADO"));
 
-        // Mostrar o nome no TextView
-        textTimeAdversario.setText(timeAdversario);
-        textResultado.setText(resultado);
-
+        dataJogo = (Date) getIntent().getSerializableExtra("DATA_JOGO");
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         textDataJogo.setText(sdf.format(dataJogo));
-        textGolsFeitos.setText("" + golsFeitos);
-        textGolsSofridos.setText("" + golsSofridos);
+        textGolsFeitos.setText("" + getIntent().getLongExtra("GOLS_FEITOS", 0));
+        textGolsSofridos.setText("" + getIntent().getLongExtra("GOLS_SOFRIDOS", 0));
         textGolsMarcados.setText("Marcadores dos gols: ");
 
         listarEstatisticasJogo();
@@ -83,9 +78,7 @@ public class InfoJogo extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        String tipoUsuario = getIntent().getStringExtra("TIPOUSUARIO");
-
-        if ("Administrador".equals(tipoUsuario)) {
+        if ("Administrador".equals(funcaoUsuario)) {
             btnDelete.setVisibility(View.VISIBLE);
         }
 
@@ -109,14 +102,6 @@ public class InfoJogo extends AppCompatActivity {
             );
         });
 
-    }
-
-    private void receberValor() {
-        timeAdversario = "" + getIntent().getStringExtra("TIME_ADIVERSARIO");
-        resultado = "" + getIntent().getStringExtra("RESULTADO");
-        dataJogo = (Date) getIntent().getSerializableExtra("DATA_JOGO");
-        golsFeitos = getIntent().getLongExtra("GOLS_FEITOS", 0);
-        golsSofridos = getIntent().getLongExtra("GOLS_SOFRIDOS", 0);
     }
 
     private void listarEstatisticasJogo() {

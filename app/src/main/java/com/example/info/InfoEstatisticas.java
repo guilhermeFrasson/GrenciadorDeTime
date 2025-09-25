@@ -1,5 +1,8 @@
 package com.example.info;
 
+import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.Service.BuscaDadosUser.timeUsuario;
+
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -20,15 +23,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class InfoEstatisticas extends AppCompatActivity {
-    private int qtdJogos, qtd;
-    long qtdVitorias, qtdEmpates, qtdDerrotas;
+    long qtdVitorias, qtdEmpates;
     private TextView textqtdJogos, textqtdVitorias, textqtdEmpate, textqtdDerrotas, textAproveitamento, textGolsFeitos, textGolsSofridos;
     private RecyclerView recyclerViewArtilheiros, recyclerViewAssistentes;
     private EstatisticaAdapter adpterGols;
     private EstatisticaAdapter adpterAssistencias;
     private FirebaseFirestore db;
     private List<Jogo> listInfoTime = new ArrayList<>();
-    private String timeUsuario, idTimeUser;
 
 
     @Override
@@ -52,9 +53,6 @@ public class InfoEstatisticas extends AppCompatActivity {
 
         recyclerViewArtilheiros.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewAssistentes.setLayoutManager(new LinearLayoutManager(this));
-
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
         buscaInfojogo();
         buscaTopJogadores();
@@ -80,7 +78,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     private void buscaInfojogo() {
         db.collection("GTJOGO")
                 .whereEqualTo("TIME", timeUsuario)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -114,7 +112,7 @@ public class InfoEstatisticas extends AppCompatActivity {
     private void buscaTopJogadores() {
         db.collection("GTJOGADOR")
                 .whereEqualTo("TIME", timeUsuario)
-                .whereEqualTo("IDTIME", idTimeUser)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

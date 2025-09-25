@@ -18,12 +18,7 @@ import com.example.gerenciadordetime.R;
 import java.util.List;
 
 public class ListMarcadorGols extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
     private EstatisticaAdapter adapter;
-    private Button btnNovo;
-    private String timeUsuario, idTimeUser;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +26,9 @@ public class ListMarcadorGols extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_marcador_gols);
 
-        btnNovo = findViewById(R.id.btnnovo);
+        Button btnNovo = findViewById(R.id.btnnovo);
 
-        recyclerView = findViewById(R.id.recyclerViewMarcadores);
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewMarcadores);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         List<Estatisticas> lista = CadMarcadorGols.getListaEstatisticas();
@@ -48,13 +43,8 @@ public class ListMarcadorGols extends AppCompatActivity {
 
         btnNovo.setOnClickListener(v -> {
             Intent intent = new Intent(this, CadMarcadorGols.class);
-            intent.putExtra("TIMEUSUARIO", timeUsuario);
-            intent.putExtra("IDTIMEUSUARIO", idTimeUser);
             startActivity(intent);
         });
-
-        timeUsuario = getIntent().getStringExtra("TIMEUSUARIO");
-        idTimeUser = getIntent().getStringExtra("IDTIMEUSUARIO");
 
     }
 

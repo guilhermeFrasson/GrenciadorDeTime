@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Service.BuscaDadosUser;
 import com.example.Service.LoginHelper;
 import com.example.Service.TemaHelper;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,7 +27,6 @@ import java.util.List;
 
 public class Login extends AppCompatActivity {
     private EditText emailEditText, senhaEditText;
-    private Button btnLogin;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
 
@@ -35,13 +35,17 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        BuscaDadosUser buscadados = new BuscaDadosUser();
+        buscadados.buscarIDTime();
+        buscadados.buscarTime();
+        buscadados.buscarFuncaoUsuario();
+
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-
         emailEditText = findViewById(R.id.emailEditText);
         senhaEditText = findViewById(R.id.senhaEditText);
-        btnLogin = findViewById(R.id.btnLogin);
+        Button btnLogin = findViewById(R.id.btnLogin);
 
         LoginHelper.configurarPularCampos(new EditText[]{emailEditText, senhaEditText}, btnLogin);
 
@@ -88,10 +92,10 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                     if (user != null) {
-                        buscarFuncaoUsuarioUid(user.getUid());
+                        Intent intent = new Intent(Login.this, Menu.class);
+                        startActivity(intent);
+                        finish();
                     }
-                } else {
-                    buscarFuncaoUsuarioEmail(email,senha);
                 }
             });
     }
@@ -106,12 +110,12 @@ public class Login extends AppCompatActivity {
                             // Se tem resultado, pega o primeiro documento
                             DocumentSnapshot usuario = task.getResult().getDocuments().get(0);
 
-                            String tipo = usuario.getString("FUNCAO");
+                            String tipoUsuario = usuario.getString("FUNCAO");
                             String senhaBanco = usuario.getString("SENHA");
 
                             if (senha.equals(senhaBanco)) {
                                 Intent intent = new Intent(Login.this, Menu.class);
-                                intent.putExtra("tipoUsuario", tipo);
+                                intent.putExtra("TIPOUSUARIO", tipoUsuario);
                                 startActivity(intent);
                                 finish();
                             } else {
@@ -134,16 +138,16 @@ public class Login extends AppCompatActivity {
         db.collection("GTUSUARIOS").document(uid).get()
             .addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
-                    String funcaoUsuario = documentSnapshot.getString("FUNCAO");
+                    String tipoUsuario = documentSnapshot.getString("FUNCAO");
                     String timeUsuario = documentSnapshot.getString("TIME");
                     String idTimeUsuario = documentSnapshot.getString("IDTIME");
 
 
                     // Passa o tipo para a tela de menu
                     Intent intent = new Intent(Login.this, Menu.class);
-                    intent.putExtra("tipoUsuario", funcaoUsuario);
-                    intent.putExtra("timeUsuario", timeUsuario);
-                    intent.putExtra("idTimeUsuario", idTimeUsuario);
+                    intent.putExtra("TIPOUSUARIO", tipoUsuario);
+                    intent.putExtra("TIMEUSUARIO", timeUsuario);
+                    intent.putExtra("IDTIMEUSUARIO", idTimeUsuario);
 
                     startActivity(intent);
                     finish();
