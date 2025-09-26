@@ -14,15 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.Service.BuscaDadosUser;
 import com.example.Service.LoginHelper;
 import com.example.Service.TemaHelper;
+import com.example.cadastro.CadUsuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Login extends AppCompatActivity {
@@ -46,6 +44,8 @@ public class Login extends AppCompatActivity {
         emailEditText = findViewById(R.id.emailEditText);
         senhaEditText = findViewById(R.id.senhaEditText);
         Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnNovoCadastro = findViewById(R.id.btnNovoCadastro);
+
 
         LoginHelper.configurarPularCampos(new EditText[]{emailEditText, senhaEditText}, btnLogin);
 
@@ -83,6 +83,11 @@ public class Login extends AppCompatActivity {
                 loginUser();
             }
         });
+
+        btnNovoCadastro.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CadUsuario.class);
+            startActivity(intent);
+        });
     }
     private void loginUser() {
         String email = emailEditText.getText().toString().trim();
@@ -99,65 +104,4 @@ public class Login extends AppCompatActivity {
                 }
             });
     }
-
-    private void buscarFuncaoUsuarioEmail(String email, String senha) {
-        db.collection("GTUSUARIOS")
-                .whereEqualTo("EMAIL", email)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (task.getResult() != null && !task.getResult().isEmpty()) {
-                            // Se tem resultado, pega o primeiro documento
-                            DocumentSnapshot usuario = task.getResult().getDocuments().get(0);
-
-                            String tipoUsuario = usuario.getString("FUNCAO");
-                            String senhaBanco = usuario.getString("SENHA");
-
-                            if (senha.equals(senhaBanco)) {
-                                Intent intent = new Intent(Login.this, Menu.class);
-                                intent.putExtra("TIPOUSUARIO", tipoUsuario);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                Toast.makeText(this, "Senha incorreta", Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            // Nenhum usuário com esse email
-                            Toast.makeText(this, "Email não encontrado, necessário logar online", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(this, "Erro ao buscar usuario", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Erro de conexão: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    private void buscarFuncaoUsuarioUid(String uid) {
-        db.collection("GTUSUARIOS").document(uid).get()
-            .addOnSuccessListener(documentSnapshot -> {
-                if (documentSnapshot.exists()) {
-                    String tipoUsuario = documentSnapshot.getString("FUNCAO");
-                    String timeUsuario = documentSnapshot.getString("TIME");
-                    String idTimeUsuario = documentSnapshot.getString("IDTIME");
-
-
-                    // Passa o tipo para a tela de menu
-                    Intent intent = new Intent(Login.this, Menu.class);
-                    intent.putExtra("TIPOUSUARIO", tipoUsuario);
-                    intent.putExtra("TIMEUSUARIO", timeUsuario);
-                    intent.putExtra("IDTIMEUSUARIO", idTimeUsuario);
-
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(this, "Usuário sem perfil definido", Toast.LENGTH_SHORT).show();
-                }
-            })
-            .addOnFailureListener(e -> {
-                Toast.makeText(this, "Erro ao buscar perfil", Toast.LENGTH_SHORT).show();
-            });
-    }
-
 }

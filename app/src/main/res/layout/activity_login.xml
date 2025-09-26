@@ -1,7 +1,7 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="24dp"
     android:gravity="center">
@@ -14,7 +14,6 @@
         android:contentDescription="Logo da empresa"
         android:layout_marginTop="0dp"
         android:layout_gravity="center"/>
-
 
     <EditText
         android:id="@+id/emailEditText"
@@ -43,8 +42,28 @@
         android:layout_height="wrap_content"
         android:background="@drawable/botao_selector_login"
         android:backgroundTint="@null"
-        android:text="Login"
+        android:text="Entrar"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNovoCadastro"
+            android:layout_width="100dp"
+            android:layout_height="25dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/botao_em_tela"
+            android:text="Criar conta"
+            android:textColor="#808080"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+
+
 </LinearLayout>
