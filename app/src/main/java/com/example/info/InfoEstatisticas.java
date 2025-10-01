@@ -40,7 +40,7 @@ public class InfoEstatisticas extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        textqtdJogos = findViewById(R.id.textqtdJogos);
+        textqtdJogos = findViewById(R.id.textsaldo);
         textqtdVitorias = findViewById(R.id.textqtdVitorias);
         textqtdEmpate = findViewById(R.id.textqtdEmpate);
         textqtdDerrotas = findViewById(R.id.textqtdDerrotas);

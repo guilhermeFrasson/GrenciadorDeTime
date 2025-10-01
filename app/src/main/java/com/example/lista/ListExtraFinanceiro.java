@@ -59,7 +59,7 @@ public class ListExtraFinanceiro extends AppCompatActivity {
             startActivity(intent);
         });
 
-        textSaldoFinanceiro = findViewById(R.id.textqtdJogos);
+        textSaldoFinanceiro = findViewById(R.id.textsaldo);
         buscaSaldoFinanceiro();
     }
 

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.Objetos.Jogo;
 import com.example.gerenciadordetime.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder>{
@@ -38,6 +39,10 @@ public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder
         Jogo jogo = lista.get(position);
         holder.textTimeAdiversario.setText(jogo.getTimeAdversario());
         holder.textResultado.setText(jogo.getResultado());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String dataFormatada = sdf.format(jogo.getDataJogo());
+        holder.textDataJogo.setText(dataFormatada);
+        holder.textPlacar.setText(jogo.getGolsFeitos() + " X " + jogo.getGolsSofridos());
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(jogo));
     }
@@ -49,12 +54,14 @@ public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder
 
     static class JogoViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textTimeAdiversario, textResultado;
+        TextView textTimeAdiversario, textResultado, textDataJogo, textPlacar;
 
         public JogoViewHolder(@NonNull View itemView) {
             super(itemView);
             textTimeAdiversario = itemView.findViewById(R.id.textTimeAdiversario);
             textResultado = itemView.findViewById(R.id.textResultado);
+            textDataJogo = itemView.findViewById(R.id.textDataJogo);
+            textPlacar = itemView.findViewById(R.id.textPlacar);
         }
     }
 }

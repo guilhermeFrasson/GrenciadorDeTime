@@ -1,24 +1,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:orientation="vertical"
-    android:background="?attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/textTimeAdiversario"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time Adiversario"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textResultado"
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textTimeAdiversario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time Adiversario"
+            android:textColor="@color/corTexto"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textDataJogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="dtJogo"
+            android:textColor="@color/corTexto"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Resultado"
-        android:textColor="@color/black"
-        android:textSize="14sp"/>
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/textResultado"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resultado"
+            android:textColor="@color/corTexto"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textPlacar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="placar"
+            android:textColor="@color/corTexto"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
 </LinearLayout>

@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Usuário"
-        android:textColor="@color/black"
+        android:textColor="@color/corTexto"
         android:textColorHint="@android:color/darker_gray"
         android:backgroundTint="@android:color/darker_gray"
         android:padding="8dp"/>
@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Senha"
-        android:textColor="@color/black"
+        android:textColor="@color/corTexto"
         android:textColorHint="@android:color/darker_gray"
         android:backgroundTint="@android:color/darker_gray"
         android:padding="8dp"

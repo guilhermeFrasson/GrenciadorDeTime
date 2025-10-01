@@ -1,24 +1,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
-    android:background="?attr/selectableItemBackground">
+    android:padding="16dp">
 
     <TextView
         android:id="@+id/textNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nome do jogador"
-        android:textColor="@color/black"
+        android:textColor="@color/corTexto"
         android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textPosicao"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:text="Posição"
-        android:textSize="14sp"/>
+        android:textColor="@color/corTexto"
+        android:textSize="14sp" />
+
 </LinearLayout>

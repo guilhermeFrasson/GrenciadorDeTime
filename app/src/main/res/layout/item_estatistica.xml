@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="18sp"
-        android:textColor="@color/black"
+        android:textColor="@color/corTexto"
         tools:ignore="Suspicious0dp" />
 
     <Button
