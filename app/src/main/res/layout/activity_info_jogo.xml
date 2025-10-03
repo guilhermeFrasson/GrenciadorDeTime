@@ -185,7 +185,8 @@
                 android:background="@drawable/botao_em_tela"
                 android:drawableLeft="@drawable/btndelete"
                 android:padding="8dp"
-                android:tooltipText="Excluir Jogo" />
+                android:tooltipText="Excluir Jogo"
+                android:visibility="gone" />
 
         </LinearLayout>
 

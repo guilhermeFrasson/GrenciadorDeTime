@@ -1,8 +1,6 @@
 package com.example.cadastro;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
-import static com.example.lista.ListExtraFinanceiro.saldoFinanceiro;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -54,7 +52,7 @@ public class CadOperacao extends AppCompatActivity {
         comboPernadominate();
     }
 
-    private void validaCampos (){
+    private void validaCampos() {
         if (escolhaTipoOperacao.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Tipo de operação precisa ser escolhido", Toast.LENGTH_SHORT).show();
         } else if (descricaoEditText.getText().toString().trim().equals("")) {
@@ -66,7 +64,7 @@ public class CadOperacao extends AppCompatActivity {
         }
     }
 
-    private void salvardados(){
+    private void salvardados() {
         Date hoje = new Date();
 
         db = FirebaseFirestore.getInstance();
@@ -92,15 +90,15 @@ public class CadOperacao extends AppCompatActivity {
                     Log.w("Firestore", "Erro ao salvar operação", e);
                 });
         if (escolhaTipoOperacao.equals("Entrada")) {
-            atualizaSaldoFinanceiro(valor,true);
+            atualizaSaldoFinanceiro(valor, true);
         } else {
-            atualizaSaldoFinanceiro(valor,false);
+            atualizaSaldoFinanceiro(valor, false);
         }
         finish();
     }
 
-    private void comboPernadominate(){
-        String[] tipoOperacao = {"-- Escolha um opção --","Entrada","Saida"};
+    private void comboPernadominate() {
+        String[] tipoOperacao = {"-- Escolha um opção --", "Entrada", "Saida"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
@@ -123,7 +121,7 @@ public class CadOperacao extends AppCompatActivity {
         });
     }
 
-    public static void atualizaSaldoFinanceiro(double valorOperacao, boolean pagamento){
+    public static void atualizaSaldoFinanceiro(double valorOperacao, boolean pagamento) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("GTSALDOFINANCEIRO")
@@ -138,7 +136,7 @@ public class CadOperacao extends AppCompatActivity {
                                             Log.d("Firestore", "mensalidade atualizada"))
                                     .addOnFailureListener(e ->
                                             Log.w("Firestore", "Erro ao atualizar", e));
-                        } else  {
+                        } else {
                             docRef.update("SALDOFINANCEIRO", FieldValue.increment(-valorOperacao))
                                     .addOnSuccessListener(aVoid ->
                                             Log.d("Firestore", "mensalidade atualizada"))

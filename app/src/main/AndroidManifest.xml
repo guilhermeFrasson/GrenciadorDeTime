@@ -25,19 +25,10 @@
             android:name="com.example.lista.ListExtraFinanceiro"
             android:exported="false" />
         <activity
-            android:name="com.example.info.InfoMensalidade"
-            android:exported="false" />
-        <activity
             android:name="com.example.lista.ListMensalidade"
             android:exported="false" />
         <activity
             android:name="com.example.lista.ListJogador"
-            android:exported="false" />
-        <activity
-            android:name="com.example.lista.ListJogador"
-            android:exported="false" />
-        <activity
-            android:name="com.example.lista.teste"
             android:exported="false" />
         <activity
             android:name="com.example.cadastro.CadJogador"
@@ -57,10 +48,6 @@
         <activity
             android:name="com.example.cadastro.CadMarcadorGols"
             android:exported="false" />
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login" />
         <activity
             android:name="com.example.cadastro.CadJogo"
             android:exported="false" />

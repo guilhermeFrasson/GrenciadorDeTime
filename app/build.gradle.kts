@@ -11,8 +11,8 @@ android {
         applicationId = "com.example.gerenciadordetime"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,6 +33,17 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    applicationVariants.all {
+        val variant = this
+        outputs.all {
+            val output = this
+            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
+                // Monta o novo nome com versão e tipo (debug/release)
+                val newName = "MeuTime-${variant.buildType.name}-v${variant.versionName}.apk"
+                output.outputFileName = newName
+            }
+        }
+    }
 }
 
 dependencies {
@@ -44,6 +55,7 @@ dependencies {
     implementation(libs.annotation)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.impress)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -51,5 +63,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.google.android.material:material:1.12.0")
+    implementation("com.google.firebase:firebase-config:21.6.3")
 
 }

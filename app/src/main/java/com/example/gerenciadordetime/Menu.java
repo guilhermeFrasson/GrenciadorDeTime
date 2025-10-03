@@ -1,18 +1,17 @@
 package com.example.gerenciadordetime;
 
-import static com.example.Service.BuscaDadosUser.funcaoUsuario;
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 
 import com.example.Service.BuscaDadosTime;
+import com.example.Service.BuscaDadosUser;
 import com.example.Service.ImagemHelper;
-import com.example.Service.UsaMensalidadeCallback;
+import com.example.Service.infoTimeCallback;
 import com.example.cadastro.CadJogador;
 import com.example.cadastro.CadJogo;
 import com.example.info.InfoEstatisticas;
@@ -24,6 +23,10 @@ import com.example.lista.ListExtraFinanceiro;
 
 public class Menu extends AppCompatActivity {
     private BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
+    Button btnCadJogo, btnCadJogador, btnFinanceiro, btnMensalidade;
+    public static String timeUsuario, idTimeUsuario, funcaoUsuario;
+    View overlay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,33 +35,21 @@ public class Menu extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Button btnListJogos = findViewById(R.id.btnListJogos);
-        Button btnCadJogo = findViewById(R.id.btnCadJogo);
+        btnCadJogo = findViewById(R.id.btnCadJogo);
         Button btnListJogador = findViewById(R.id.btnListJogador);
-        Button btnCadJogador = findViewById(R.id.btnCadJogador);
+        btnCadJogador = findViewById(R.id.btnCadJogador);
         Button btnEstatisticas = findViewById(R.id.btnEstatisticas);
-        Button btnMensalidade = findViewById(R.id.btnMensalidade);
-        Button btnFinanceiro = findViewById(R.id.btnFinanceiro);
+        btnMensalidade = findViewById(R.id.btnMensalidade);
+        btnFinanceiro = findViewById(R.id.btnFinanceiro);
+        overlay = findViewById(R.id.progressOverlay);
 
-        if ("Administrador".equals(funcaoUsuario)) {
-            btnCadJogo.setVisibility(View.VISIBLE);
-            btnCadJogador.setVisibility(View.VISIBLE);
-            buscaDadosTime.verificaUsaMensalidade(idTimeUsuario, new UsaMensalidadeCallback() {
-                @Override
-                public void onCallback(boolean usaMensalidade) {
-                    if (usaMensalidade) {
-                        btnMensalidade.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-            buscaDadosTime.verificaUsaFinanceiro(idTimeUsuario, new UsaMensalidadeCallback() {
-                @Override
-                public void onCallback(boolean usaFinanceiro) {
-                    if (usaFinanceiro) {
-                        btnFinanceiro.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-        }
+        overlay.setVisibility(View.VISIBLE);
+
+
+        verificaInfoTimeUsuario("TIME");
+        verificaInfoTimeUsuario("IDTIME");
+        verificaFuncaoUsuario("FUNCAO");
+
 
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogos, R.drawable.list_jogo, 125, 125);
         btnListJogos.setOnClickListener(v -> {
@@ -100,6 +91,47 @@ public class Menu extends AppCompatActivity {
         btnFinanceiro.setOnClickListener(v -> {
             Intent intent = new Intent(this, ListExtraFinanceiro.class);
             startActivity(intent);
+        });
+    }
+
+    private void verificaConfigTime(String tabela, String coluna, Button botao) {
+        buscaDadosTime.verificaConfTime(idTimeUsuario, tabela, coluna, new infoTimeCallback() {
+            @Override
+            public void onCallback(boolean usaMensalidade) {
+                if (usaMensalidade) {
+                    botao.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void verificaInfoTimeUsuario(String coluna) {
+        BuscaDadosUser buscadadosUser = new BuscaDadosUser();
+        buscadadosUser.buscarInfosUsuario(coluna, retorno -> {
+            if (retorno != null) {
+                if (coluna.equals("TIME")) {
+                    timeUsuario = retorno;
+                } else {
+                    idTimeUsuario = retorno;
+                }
+            }
+        });
+    }
+
+    private void verificaFuncaoUsuario(String coluna) {
+        BuscaDadosUser buscadadosUser = new BuscaDadosUser();
+        buscadadosUser.buscarInfosUsuario(coluna, retorno -> {
+            if (retorno != null) {
+                funcaoUsuario = retorno;
+                if ("Administrador" .equals(retorno)) {
+                    btnCadJogo.setVisibility(View.VISIBLE);
+                    btnCadJogador.setVisibility(View.VISIBLE);
+                    verificaConfigTime("GTTIME", "USAMENSALIDADE", btnMensalidade);
+                    verificaConfigTime("GTTIME", "USAFINANCEIRO", btnFinanceiro);
+
+                }
+            }
+            overlay.setVisibility(View.GONE);
         });
     }
 

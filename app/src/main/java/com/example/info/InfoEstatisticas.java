@@ -1,7 +1,7 @@
 package com.example.info;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -87,7 +87,7 @@ public class InfoEstatisticas extends AppCompatActivity {
                             long golsFeitos = document.getLong("GOLSFEITOS");
                             long golsSofridos = document.getLong("GOLSSOFRIDOS");
 
-                            Jogo jogo = new Jogo(resultado,golsFeitos,golsSofridos);
+                            Jogo jogo = new Jogo(resultado, golsFeitos, golsSofridos);
                             listInfoTime.add(jogo);
                         }
                         receberDadosJogo();
@@ -101,9 +101,9 @@ public class InfoEstatisticas extends AppCompatActivity {
         double aproveitamento;
         int pontosJogados = listInfoTime.size() * 3;
         int pontosConquistados = ((int) qtdVitorias * 3) + (int) qtdEmpates;
-        if (pontosConquistados > 0){
-            aproveitamento = ((double)pontosConquistados / pontosJogados) * 100;
-        }else {
+        if (pontosConquistados > 0) {
+            aproveitamento = ((double) pontosConquistados / pontosJogados) * 100;
+        } else {
             aproveitamento = 0;
         }
         return aproveitamento;

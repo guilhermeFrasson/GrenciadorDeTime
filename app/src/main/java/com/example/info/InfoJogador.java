@@ -1,6 +1,6 @@
 package com.example.info;
 
-import static com.example.Service.BuscaDadosUser.funcaoUsuario;
+import static com.example.gerenciadordetime.Menu.funcaoUsuario;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -46,7 +46,7 @@ public class InfoJogador extends AppCompatActivity {
         textAssistencias.setText("" + getIntent().getLongExtra("ASSISTENCIAS", 0));
         textIdade.setText(calcularIdade((Date) getIntent().getSerializableExtra("DATA_NASCIMENTO_JOGADOR")) + " anos");
 
-        if ("Administrador".equals(funcaoUsuario)) {
+        if ("Administrador" .equals(funcaoUsuario)) {
             btnDelete.setVisibility(View.VISIBLE);
         }
 

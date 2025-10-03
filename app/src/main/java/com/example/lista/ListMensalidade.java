@@ -1,6 +1,6 @@
 package com.example.lista;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 import static com.example.cadastro.CadOperacao.atualizaSaldoFinanceiro;
 
 import android.os.Bundle;
@@ -21,11 +21,8 @@ import com.example.Objetos.Mensalidade;
 import com.example.Service.ImagemHelper;
 import com.example.Service.PopupUtils;
 import com.example.adpter.MensalidadeAdapter;
-import com.example.cadastro.CadOperacao;
 import com.example.gerenciadordetime.R;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -67,20 +64,20 @@ public class ListMensalidade extends AppCompatActivity {
 
         ImagemHelper.aplicarImagemNoBotao(this, btnFiltrar, R.drawable.btnbuscar, 70, 70);
         btnFiltrar.setOnClickListener(v -> {
-            listarMensalidadeDoBanco(escolhaAno,buscaNumeroMes(escolhaMes));
+            listarMensalidadeDoBanco(escolhaAno, buscaNumeroMes(escolhaMes));
         });
 
         calendar = Calendar.getInstance();
         int anoAtual = calendar.get(Calendar.YEAR);
         int mesAtual = Calendar.getInstance().get(Calendar.MONTH);
 
-        listarMensalidadeDoBanco(anoAtual,mesAtual);
+        listarMensalidadeDoBanco(anoAtual, mesAtual);
         comboMes();
         comboAno();
     }
 
-    private void comboMes(){
-        String[] mes = {"Janeiro","Fevereiro","Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
+    private void comboMes() {
+        String[] mes = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
 
         int mesAtual = Calendar.getInstance().get(Calendar.MONTH);
 
@@ -138,7 +135,7 @@ public class ListMensalidade extends AppCompatActivity {
         return numeroMes;
     }
 
-    private void comboAno(){
+    private void comboAno() {
 
         calendar = Calendar.getInstance();
         int anoAtual = calendar.get(Calendar.YEAR);
@@ -157,7 +154,7 @@ public class ListMensalidade extends AppCompatActivity {
         anoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         anoSpinner.setAdapter(anoAdapter);
 
-        if(posicaoAnoAtual >= 0){
+        if (posicaoAnoAtual >= 0) {
             anoSpinner.setSelection(posicaoAnoAtual);
         }
 
@@ -178,7 +175,7 @@ public class ListMensalidade extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         Date inicioMes = getPrimeiroDiaDoMes(ano, mes);
-        Date fimMes = getUltimoDiaDoMes(ano,mes);
+        Date fimMes = getUltimoDiaDoMes(ano, mes);
 
         db.collection("GTMENSALIDADE")
                 .whereEqualTo("IDTIME", idTimeUsuario)
@@ -198,7 +195,7 @@ public class ListMensalidade extends AppCompatActivity {
                             String idDoc = document.getId();
                             Date dataPagamento = new Date();
 
-                            Mensalidade mensalidade = new Mensalidade(time, idJogador, nomeJogador,mensalidadePaga, dataMensalidade, valorMensalidade, idDoc, dataPagamento);
+                            Mensalidade mensalidade = new Mensalidade(time, idJogador, nomeJogador, mensalidadePaga, dataMensalidade, valorMensalidade, idDoc, dataPagamento);
                             listaMensalidade.add(mensalidade);
                         }
 
@@ -214,7 +211,7 @@ public class ListMensalidade extends AppCompatActivity {
                                         (dialog, which) -> {
                                             overlay.setVisibility(View.VISIBLE);
                                             atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador(), true);
-                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(),true);
+                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(), true);
                                             salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento(), "Entrada", "Pag. Mensalidade");
                                         }
                                 );
@@ -226,7 +223,7 @@ public class ListMensalidade extends AppCompatActivity {
                                         (dialog, which) -> {
                                             overlay.setVisibility(View.VISIBLE);
                                             atualizarStatusMensalidade(mensalidade.getIdDoc(), mensalidade.getIdJogador(), false);
-                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(),false);
+                                            atualizaSaldoFinanceiro(mensalidade.getValorMensalidade(), false);
                                             salvaOpreracao(mensalidade.getValorMensalidade(), mensalidade.getDataPagamento(), "Saida", "Estorno Mensalidade");
                                         }
                                 );
@@ -287,13 +284,13 @@ public class ListMensalidade extends AppCompatActivity {
         textlayoutResumo.setText("Pago: " + pago + " | Faltando: " + naoPago);
     }
 
-    private void atualizarStatusMensalidade(String idDoc, String idJogador, boolean statusPagamento){
+    private void atualizarStatusMensalidade(String idDoc, String idJogador, boolean statusPagamento) {
 
         DocumentReference docRef = db.collection("GTMENSALIDADE").document(idDoc);
 
         docRef.update("PAGO", statusPagamento)
                 .addOnSuccessListener(aVoid ->
-                                listarMensalidadeDoBanco(escolhaAno,buscaNumeroMes(escolhaMes)))
+                        listarMensalidadeDoBanco(escolhaAno, buscaNumeroMes(escolhaMes)))
                 .addOnFailureListener(e ->
                         Log.w("Firestore", "Erro ao atualizar", e));
     }

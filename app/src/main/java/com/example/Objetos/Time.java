@@ -1,7 +1,5 @@
 package com.example.Objetos;
 
-import java.util.Date;
-
 public class Time {
     private String idTime;
     private String nomeTime;

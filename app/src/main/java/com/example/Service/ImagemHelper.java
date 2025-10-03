@@ -5,19 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ImagemHelper {
 
     /**
      * Redimensiona uma imagem do drawable e aplica em um botão como drawable à esquerda.
      *
-     * @param context Contexto da Activity ou Fragment
-     * @param botao O botão que receberá a imagem
+     * @param context    Contexto da Activity ou Fragment
+     * @param botao      O botão que receberá a imagem
      * @param drawableId ID do drawable (ex: R.drawable.minha_imagem)
      * @param larguraMax Largura máxima em pixels
-     * @param alturaMax Altura máxima em pixels
+     * @param alturaMax  Altura máxima em pixels
      */
     public static void aplicarImagemNoBotao(Context context, Button botao, int drawableId, int larguraMax, int alturaMax) {
         // Lê o bitmap

@@ -1,69 +1,113 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:gravity="center">
-
-    <ImageView
-        android:id="@+id/minhaImagem"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/bonde_da_stela"
-        android:contentDescription="Logo da empresa"
-        android:layout_marginTop="0dp"
-        android:layout_gravity="center"/>
-
-    <EditText
-        android:id="@+id/emailEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Usuário"
-        android:textColor="@color/corTexto"
-        android:textColorHint="@android:color/darker_gray"
-        android:backgroundTint="@android:color/darker_gray"
-        android:padding="8dp"/>
-
-    <EditText
-        android:id="@+id/senhaEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Senha"
-        android:textColor="@color/corTexto"
-        android:textColorHint="@android:color/darker_gray"
-        android:backgroundTint="@android:color/darker_gray"
-        android:padding="8dp"
-        android:inputType="textPassword"/>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/botao_selector_login"
-        android:backgroundTint="@null"
-        android:text="Entrar"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:layout_marginBottom="12dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="end">
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@drawable/bg_cabecalho">
+
+        <ImageView
+            android:id="@+id/minhaImagem"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:contentDescription="Logo da empresa"
+            android:src="@drawable/imagem_principal" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Usuário"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/corTexto"
+            android:layout_marginBottom="10dp"
+            app:boxStrokeWidth="2dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/corTexto"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/senhaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Senha"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="@color/corTexto"
+            app:boxStrokeWidth="2dp"
+            android:layout_marginBottom="10dp"
+            app:boxCornerRadiusTopStart="8dp"
+            app:boxCornerRadiusTopEnd="8dp"
+            app:boxCornerRadiusBottomStart="8dp"
+            app:boxCornerRadiusBottomEnd="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/senhaEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="@color/corTexto"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnNovoCadastro"
-            android:layout_width="100dp"
-            android:layout_height="25dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/botao_em_tela"
-            android:text="Criar conta"
-            android:textColor="#808080"
-            android:textSize="12sp" />
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/botao_selector_login"
+            android:backgroundTint="@null"
+            android:text="Entrar"
+            android:textColor="#FF000000"
+            android:textSize="18sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnNovoCadastro"
+                android:layout_width="100dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/botao_em_tela"
+                android:text="Criar conta"
+                android:textColor="@color/corTexto"
+                android:textSize="12sp" />
+
+        </LinearLayout>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/progressOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+    </FrameLayout>
+
+</RelativeLayout>

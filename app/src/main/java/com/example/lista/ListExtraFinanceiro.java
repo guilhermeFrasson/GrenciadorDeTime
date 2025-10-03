@@ -1,6 +1,6 @@
 package com.example.lista;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 import static com.example.cadastro.CadOperacao.atualizaSaldoFinanceiro;
 
 import android.content.DialogInterface;
@@ -46,7 +46,7 @@ public class ListExtraFinanceiro extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_extra_financeiro);
 
-        Button btnadicionar =  findViewById(R.id.btnNovaOperacao);
+        Button btnadicionar = findViewById(R.id.btnNovaOperacao);
 
         recyclerViewExtrato = findViewById(R.id.recyclerViewExtrato);
         recyclerViewExtrato.setLayoutManager(new LinearLayoutManager(this));
@@ -80,7 +80,7 @@ public class ListExtraFinanceiro extends AppCompatActivity {
                             String decricao = document.getString("DSOPERACAO");
                             String idDoc = document.getId();
 
-                            Extrato extrato = new Extrato(decricao, idTime, tipooperacao,dataOperacao, valorOperacao, idDoc);
+                            Extrato extrato = new Extrato(decricao, idTime, tipooperacao, dataOperacao, valorOperacao, idDoc);
                             listaExtrato.add(extrato);
                         }
 
@@ -97,16 +97,16 @@ public class ListExtraFinanceiro extends AppCompatActivity {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
                                                 DeletarRegistroBanco.deleteRegistro("GTEXTRATOFINANCEIRO", extrato.getIdDoc());
-                                                if (extrato.getTipoOperacao().equals("Entrada")){
-                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(),false);
-                                                }else {
-                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(),true);
+                                                if (extrato.getTipoOperacao().equals("Entrada")) {
+                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(), false);
+                                                } else {
+                                                    atualizaSaldoFinanceiro(extrato.getValorOperacao(), true);
                                                 }
                                                 listarExtratoDoBanco();
                                             }
                                         }
                                 );
-                            }else {
+                            } else {
                                 Toast.makeText(this, "Esta operação não pode ser excluida", Toast.LENGTH_SHORT).show();
                             }
                         });

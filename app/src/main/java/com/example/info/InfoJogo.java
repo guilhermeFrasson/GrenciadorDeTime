@@ -1,6 +1,6 @@
 package com.example.info;
 
-import static com.example.Service.BuscaDadosUser.funcaoUsuario;
+import static com.example.gerenciadordetime.Menu.funcaoUsuario;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -78,7 +78,7 @@ public class InfoJogo extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        if ("Administrador".equals(funcaoUsuario)) {
+        if ("Administrador" .equals(funcaoUsuario)) {
             btnDelete.setVisibility(View.VISIBLE);
         }
 
@@ -146,7 +146,7 @@ public class InfoJogo extends AppCompatActivity {
                         long golsLong = doc.getLong("GOLS");
                         long assistenciasLong = doc.getLong("ASSISTENCIAS");
 
-                        atualizarDadosJogador(doc.getString("NOME"),getIntent().getStringExtra("TIME"), (int) golsLong, (int) assistenciasLong);
+                        atualizarDadosJogador(doc.getString("NOME"), getIntent().getStringExtra("TIME"), (int) golsLong, (int) assistenciasLong);
                         db.collection("GTESTATISTICAS").document(doc.getId()).delete();
                     }
                 })

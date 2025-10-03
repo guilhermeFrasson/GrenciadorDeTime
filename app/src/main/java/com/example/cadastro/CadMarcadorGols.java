@@ -1,7 +1,7 @@
 package com.example.cadastro;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -58,22 +58,22 @@ public class CadMarcadorGols extends AppCompatActivity {
 
         ImagemHelper.aplicarImagemNoBotao(this, btnMaisGols, R.drawable.btnadicionar, 70, 70);
         btnMaisGols.setOnClickListener(v -> {
-            inseriGolsAssitencias(txtGols,"soma");
+            inseriGolsAssitencias(txtGols, "soma");
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnMenosGols, R.drawable.menos, 70, 70);
         btnMenosGols.setOnClickListener(v -> {
-            inseriGolsAssitencias(txtGols,"Subtracao");
+            inseriGolsAssitencias(txtGols, "Subtracao");
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnMaisAssistencias, R.drawable.btnadicionar, 70, 70);
         btnMaisAssistencias.setOnClickListener(v -> {
-            inseriGolsAssitencias(txtAssistencias,"soma");
+            inseriGolsAssitencias(txtAssistencias, "soma");
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnMenosAssistencias, R.drawable.menos, 70, 70);
         btnMenosAssistencias.setOnClickListener(v -> {
-            inseriGolsAssitencias(txtAssistencias,"Subtracao");
+            inseriGolsAssitencias(txtAssistencias, "Subtracao");
         });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnSalvar, R.drawable.btnsalvar, 70, 70);
@@ -111,7 +111,7 @@ public class CadMarcadorGols extends AppCompatActivity {
     }
 
     private void inseriGolsAssitencias(TextView txtValor, String operador) {
-        if (operador.equals("soma")){
+        if (operador.equals("soma")) {
             int valor = Integer.parseInt(txtValor.getText().toString());
             txtValor.setText(String.valueOf(valor + 1));
         } else {
@@ -169,7 +169,7 @@ public class CadMarcadorGols extends AppCompatActivity {
                 });
     }
 
-    private void validaCampos (){
+    private void validaCampos() {
 
         String golsStr = txtGols.getText().toString().trim();
         String assistenciasStr = txtAssistencias.getText().toString().trim();
@@ -177,11 +177,11 @@ public class CadMarcadorGols extends AppCompatActivity {
         gols = golsStr.isEmpty() ? 0 : Integer.parseInt(golsStr);
         assistencias = assistenciasStr.isEmpty() ? 0 : Integer.parseInt(assistenciasStr);
 
-        if(gols == 0 && assistencias == 0){
+        if (gols == 0 && assistencias == 0) {
             Toast.makeText(this, "O numero de gols e assistencias não pode ser 0", Toast.LENGTH_SHORT).show();
-        }else if ("-- Selecione um jogador --".equals(escolhaJogador.toString()))  {
+        } else if ("-- Selecione um jogador --" .equals(escolhaJogador.toString())) {
             Toast.makeText(this, "Um jogador precisa ser selecionado", Toast.LENGTH_SHORT).show();
-        }else {
+        } else {
             salvarJogadorList();
         }
     }

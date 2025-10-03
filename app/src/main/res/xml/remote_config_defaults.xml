@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- O elemento raiz deve ser defaultsMap -->
+<defaultsMap>
+    <entry>
+        <key>min_version</key>
+        <value>2</value> <!-- Valor padrão para a versão mínima -->
+    </entry>
+    <entry>
+        <key>update_url</key>
+        <!-- IMPORTANTE: O valor da URL não deve ter quebras de linha -->
+        <value>https://play.google.com/store/apps/details?id=com.example.gerenciadordetime</value>
+    </entry>
+</defaultsMap>

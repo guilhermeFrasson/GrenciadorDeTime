@@ -1,7 +1,7 @@
 package com.example.cadastro;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,7 +42,7 @@ public class CadJogo extends AppCompatActivity {
     private FirebaseFirestore db;
     private TextInputEditText campoData;
     private String resultado;
-    int golsFeitos, golsSofridos,totalGols;
+    int golsFeitos, golsSofridos, totalGols;
     private Date data;
 
     private List<Estatisticas> lista;
@@ -83,7 +83,7 @@ public class CadJogo extends AppCompatActivity {
         });
     }
 
-    private void validaCampos (){
+    private void validaCampos() {
         Date hoje = new Date();
 
         String golsFeitosStr = golsFeitosEditText.getText().toString().trim();
@@ -94,12 +94,12 @@ public class CadJogo extends AppCompatActivity {
 
         if (timeAdversarioEditText.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Nome do time adiversario não pode estar em branco", Toast.LENGTH_SHORT).show();
-        }else if (golsFeitos != totalGols) {
+        } else if (golsFeitos != totalGols) {
             totalGols = 0;
             Toast.makeText(this, "Numero de gols marcados esta diferente da quantidade que os jogadores marcaram", Toast.LENGTH_SHORT).show();
-        } else if (data == null || !data.before(hoje)){
+        } else if (data == null || !data.before(hoje)) {
             Toast.makeText(this, "Data do jogo invalida", Toast.LENGTH_SHORT).show();
-        } else{
+        } else {
             defineResultado();
             salvarJogoComIdUnico();
         }
@@ -108,14 +108,14 @@ public class CadJogo extends AppCompatActivity {
     private void defineResultado() {
         if (golsFeitos > golsSofridos) {
             resultado = "Vitoria";
-        }else if (golsFeitos < golsSofridos) {
+        } else if (golsFeitos < golsSofridos) {
             resultado = "Derrota";
-        }else {
+        } else {
             resultado = "Empate";
         }
     }
 
-    private void salvaJogo( int idJogo){
+    private void salvaJogo(int idJogo) {
         Map<String, Object> jogo = new HashMap<>();
         jogo.put("TIMEADVERSARIO", formatarNomeTime(timeAdversarioEditText.getText().toString().trim()));
         jogo.put("TIME", timeUsuario);
@@ -148,7 +148,7 @@ public class CadJogo extends AppCompatActivity {
         return texto.substring(0, 1).toUpperCase() + texto.substring(1);
     }
 
-    private void selecionaData(){
+    private void selecionaData() {
         // Criar o date picker
         MaterialDatePicker<Long> datePicker =
                 MaterialDatePicker.Builder.datePicker()
@@ -197,7 +197,7 @@ public class CadJogo extends AppCompatActivity {
                     .addOnSuccessListener(ref -> Log.d("FIREBASE", "Salvo com ID: " + ref.getId()))
                     .addOnFailureListener(e -> Log.w("FIREBASE", "Erro", e));
 
-            atualizarEstatisticasJogador(estat.getNome(),estat.getGols(), estat.getAssistencias());
+            atualizarEstatisticasJogador(estat.getNome(), estat.getGols(), estat.getAssistencias());
 
         }
         lista.clear();
@@ -238,7 +238,7 @@ public class CadJogo extends AppCompatActivity {
         }
     }
 
-    private void atualizarEstatisticasJogador(String nome, int gols, int assistencias){
+    private void atualizarEstatisticasJogador(String nome, int gols, int assistencias) {
         db.collection("GTJOGADOR")
                 .whereEqualTo("NOME", nome)
                 .whereEqualTo("TIME", timeUsuario)

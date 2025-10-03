@@ -1,10 +1,5 @@
 package com.example.Service;
 
-import android.content.Intent;
-import android.widget.Toast;
-
-import com.example.gerenciadordetime.Login;
-import com.example.gerenciadordetime.Menu;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,15 +8,7 @@ public class BuscaDadosUser {
 
     private FirebaseAuth auth = FirebaseAuth.getInstance();
     private FirebaseUser user;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();;
-
-    public static String timeUsuario;
-
-    public static String idTimeUsuario;
-
-    public static String funcaoUsuario;
-
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public String loginUser() {
         user = auth.getCurrentUser();
@@ -33,32 +20,18 @@ public class BuscaDadosUser {
         return uid;
     }
 
-    public void buscarTime() {
+    public void buscarInfosUsuario(String coluna, infoUsuarioCallback callback) {
         db.collection("GTUSUARIOS").document(loginUser()).get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        timeUsuario = documentSnapshot.getString("TIME");
+                        String time = documentSnapshot.getString(coluna);
+                        callback.onCallback(time); // devolve pelo callback
+                    } else {
+                        callback.onCallback(null); // documento não existe
                     }
+                })
+                .addOnFailureListener(e -> {
+                    callback.onCallback(null); // erro na busca
                 });
     }
-
-    public void buscarIDTime( ) {
-        db.collection("GTUSUARIOS").document(loginUser()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        idTimeUsuario = documentSnapshot.getString("IDTIME");
-                    }
-                });
-    }
-
-    public void buscarFuncaoUsuario() {
-        db.collection("GTUSUARIOS").document(loginUser()).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        funcaoUsuario = documentSnapshot.getString("FUNCAO");
-                    }
-                });
-    }
-
-
 }

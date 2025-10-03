@@ -16,7 +16,7 @@ public class LoginHelper {
      * e o último campo acione o botão de login.
      *
      * @param campos Array de EditTexts na ordem em que devem receber foco
-     * @param botao Botão de login que será acionado no último campo
+     * @param botao  Botão de login que será acionado no último campo
      */
     public static void configurarPularCampos(EditText[] campos, Button botao) {
         for (int i = 0; i < campos.length; i++) {

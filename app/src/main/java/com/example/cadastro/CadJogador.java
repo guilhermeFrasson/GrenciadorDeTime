@@ -1,8 +1,7 @@
 package com.example.cadastro;
 
-
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -68,7 +67,7 @@ public class CadJogador extends AppCompatActivity {
 
     }
 
-    private void validaCampos (){
+    private void validaCampos() {
         Date hoje = new Date();
         if (nomeEditText.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
@@ -76,14 +75,14 @@ public class CadJogador extends AppCompatActivity {
             Toast.makeText(this, "Posição do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
         } else if (escolhaPernaDominante.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "A perna dominante do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
-        } else if (data == null || !data.before(hoje)){
+        } else if (data == null || !data.before(hoje)) {
             Toast.makeText(this, "Data de nascimento invalida", Toast.LENGTH_SHORT).show();
         } else {
             verificaJogadorDuplicado();
         }
     }
 
-    private void selecionaData(){
+    private void selecionaData() {
         // Criar o date picker
         MaterialDatePicker<Long> datePicker =
                 MaterialDatePicker.Builder.datePicker()
@@ -119,7 +118,7 @@ public class CadJogador extends AppCompatActivity {
         });
     }
 
-    private void salvardados(){
+    private void salvardados() {
         Map<String, Object> jogador = new HashMap<>();
         jogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
         jogador.put("TIME", timeUsuario);
@@ -150,7 +149,7 @@ public class CadJogador extends AppCompatActivity {
         return texto.substring(0, 1).toUpperCase() + texto.substring(1);
     }
 
-    private void comboPosicao(){
+    private void comboPosicao() {
 
         db = FirebaseFirestore.getInstance();
 
@@ -159,16 +158,16 @@ public class CadJogador extends AppCompatActivity {
         listaPosicoes[0] = "-- Escolha um opção --";
 
         db.collection("GTPOSICAO").get()
-            .addOnSuccessListener(documentSnapshot -> {
-                int i = 1;
-                for (QueryDocumentSnapshot document : documentSnapshot) {
-                    String posicao = document.getString("DSPOSICAO"); // pega o campo DSPOSICAO
-                    if (posicao != null) {
-                        listaPosicoes[i] = posicao;
-                        i++;
+                .addOnSuccessListener(documentSnapshot -> {
+                    int i = 1;
+                    for (QueryDocumentSnapshot document : documentSnapshot) {
+                        String posicao = document.getString("DSPOSICAO"); // pega o campo DSPOSICAO
+                        if (posicao != null) {
+                            listaPosicoes[i] = posicao;
+                            i++;
+                        }
                     }
-                }
-            })
+                })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Erro ao buscar posicao", Toast.LENGTH_SHORT).show();
                 });
@@ -195,8 +194,8 @@ public class CadJogador extends AppCompatActivity {
 
     }
 
-    private void comboPernadominate(){
-        String[] pernaDominante = {"-- Escolha um opção --","Ambidestro","Canhoto","Destro"};
+    private void comboPernadominate() {
+        String[] pernaDominante = {"-- Escolha um opção --", "Ambidestro", "Canhoto", "Destro"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,

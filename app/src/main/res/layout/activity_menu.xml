@@ -8,12 +8,12 @@
     android:paddingBottom="50dp"
     tools:context="com.example.gerenciadordetime.Menu">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_tela"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:paddingBottom="50dp">
 
         <LinearLayout
             android:id="@+id/cabeçalho"
@@ -22,8 +22,7 @@
             android:background="@drawable/bg_cabecalho"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="16dp"
-            tools:ignore="MissingConstraints">
+            android:padding="16dp">
 
 
             <TextView
@@ -44,7 +43,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:ignore="MissingConstraints">
+            android:layout_marginTop="100dp">
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnListJogos"
@@ -156,7 +155,23 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+    </RelativeLayout>
 
-    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/progressOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

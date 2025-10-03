@@ -12,7 +12,7 @@ public class Mensalidade {
     String idDoc;
     Date dataPagamento;
 
-    public Mensalidade(String time,String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc, Date dataPagamento) {
+    public Mensalidade(String time, String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc, Date dataPagamento) {
         this.time = time;
         this.idJogador = idJogador;
         this.nomeJogador = nomeJogador;

@@ -43,21 +43,21 @@ public class Estatisticas {
 
     @Override
     public String toString() {
-        if (gols == 0 && assistencias == 0){
+        if (gols == 0 && assistencias == 0) {
             return nome;
-        }else if (gols == 0) {
+        } else if (gols == 0) {
             if (assistencias > 1) {
                 return nome + " - " + assistencias + " Assistências";
-            }else {
+            } else {
                 return nome + " - " + assistencias + " Assistência";
             }
-        }else if(assistencias == 0) {
+        } else if (assistencias == 0) {
             if (gols > 1) {
                 return nome + " - " + gols + " Gols";
-            }else {
+            } else {
                 return nome + " - " + gols + " Gol";
             }
-        }else if (gols == 1 && assistencias == 1) {
+        } else if (gols == 1 && assistencias == 1) {
             return nome + " - " + gols + " Gol e " + assistencias + " Assistência";
         } else if (gols == 1 && assistencias > 1) {
             return nome + " - " + gols + " Gol e " + assistencias + " Assistências";

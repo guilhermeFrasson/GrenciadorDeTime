@@ -41,7 +41,7 @@ public class Jogador {
         return idJogador;
     }
 
-    public Jogador(String idJogador,String nome, String time) {
+    public Jogador(String idJogador, String nome, String time) {
         this.idJogador = idJogador;
         this.nome = nome;
         this.time = time;
@@ -112,7 +112,8 @@ public class Jogador {
     }
 
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return nome;
     }
 

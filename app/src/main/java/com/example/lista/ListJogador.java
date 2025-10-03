@@ -1,7 +1,7 @@
 package com.example.lista;
 
-import static com.example.Service.BuscaDadosUser.idTimeUsuario;
-import static com.example.Service.BuscaDadosUser.timeUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,7 +62,7 @@ public class ListJogador extends AppCompatActivity {
                             long assistencias = document.getLong("ASSISTENCIAS");
                             String idJogador = document.getId();
 
-                            Jogador jogador = new Jogador(idJogador,nome, dataNascimento, posicao, pernaDominante, gols, assistencias,timeUsuario);
+                            Jogador jogador = new Jogador(idJogador, nome, dataNascimento, posicao, pernaDominante, gols, assistencias, timeUsuario);
                             listaJogadores.add(jogador);
                         }
 
@@ -96,9 +96,9 @@ public class ListJogador extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         listaJogadores.clear();
-        if(requestCode == 123 && resultCode == RESULT_OK){
+        if (requestCode == 123 && resultCode == RESULT_OK) {
             boolean deletado = data.getBooleanExtra("deletado", false);
-            if(deletado){
+            if (deletado) {
                 listarJogadoresDoBanco(); // recarrega a lista do banco
             }
         }
