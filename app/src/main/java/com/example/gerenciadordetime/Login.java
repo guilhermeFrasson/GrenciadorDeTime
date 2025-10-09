@@ -36,37 +36,28 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Configuração inicial do Remote Config
         FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
         FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setMinimumFetchIntervalInSeconds(3600) // busca a cada 1h (ajuste se quiser)
+                .setMinimumFetchIntervalInSeconds(3600)
                 .build();
         mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings);
 
-        // Valores padrão (se der erro no fetch)
         mFirebaseRemoteConfig.setDefaultsAsync(R.xml.remote_config_defaults);
 
-        // Busca valores do servidor
         mFirebaseRemoteConfig.fetchAndActivate()
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         checkForUpdate(mFirebaseRemoteConfig);
                     }
-                    // Se falhar, o fluxo continua normalmente. Não é preciso fazer nada no 'else'.
                 });
 
-        // Inicialize o Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Bind dos componentes da UI
         bindViews();
 
-        // Configuração dos listeners
         setupListeners();
 
-        // Utilitário para pular campos (mantido como está)
         LoginHelper.configurarPularCampos(new EditText[]{emailEditText, senhaEditText}, btnLogin);
-
     }
 
     private void bindViews() {
@@ -148,26 +139,21 @@ public class Login extends AppCompatActivity {
         } else {
             senhaLayout.setError(null);
         }
-
         return isValid;
     }
 
     private void loginUser(String email, String senha) {
-        // Mostra o progresso e desabilita os botões para evitar múltiplos cliques
         setUiLoading(true);
 
         mAuth.signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(task -> {
-                    // Ao final, reabilita a UI
                     setUiLoading(false);
 
                     if (task.isSuccessful()) {
-                        // Login bem-sucedido, navega para o Menu
                         Intent intent = new Intent(Login.this, Menu.class);
                         startActivity(intent);
-                        finish(); // Fecha a tela de login
+                        finish();
                     } else {
-                        // Erro no login. Mostra um feedback mais claro.
                         emailLayout.setError(" "); // Não recomendado
                         senhaLayout.setError("Email ou senha inválidos");
                     }
@@ -187,7 +173,6 @@ public class Login extends AppCompatActivity {
     }
 
     private void esconderTeclado() {
-        // Método para esconder o teclado
         View view = this.getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -199,14 +184,11 @@ public class Login extends AppCompatActivity {
         long minVersion = remoteConfig.getLong("min_version");
         String updateUrl = remoteConfig.getString("update_url");
 
-        // CORRIGIDO: Chamando o método que busca a versão corretamente.
         int currentVersion = getAppVersionCode();
 
-        // -1 indica que houve um erro ao obter a versão, então pulamos a verificação.
         if (currentVersion != -1 && currentVersion < minVersion) {
             new AlertDialog.Builder(this)
                     .setTitle("Atualização obrigatória")
-                    // MENSAGEM AJUSTADA PARA O DOWNLOAD DIRETO
                     .setMessage("Uma nova versão está disponível. O download começará agora. Após terminar, abra o arquivo baixado para instalar a atualização.")
                     .setCancelable(false)
                     .setPositiveButton("Baixar Atualização", (dialog, which) -> { // Texto do botão mais claro
@@ -216,22 +198,15 @@ public class Login extends AppCompatActivity {
                     })
                     .show();
         }
-        // CORRIGIDO: O 'else' foi removido, pois se não há atualização,
-        // nenhuma ação é necessária. O usuário já está na tela de login.
     }
 
     private int getAppVersionCode() {
         try {
             return getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
         } catch (PackageManager.NameNotFoundException e) {
-            // Isso raramente acontece, mas é bom tratar
             e.printStackTrace();
-            return -1; // Retorna um valor inválido em caso de erro
+            return -1;
         }
     }
 
-    private void goToLogin() {
-        startActivity(new Intent(this, Login.class));
-        finish();
-    }
 }

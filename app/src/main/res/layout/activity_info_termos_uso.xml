@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.info.InfoTermosUso">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_tela"
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        tools:ignore="MissingConstraints">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabecalho"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_cabecalho"
+            android:padding="16dp">
+
+            <Button
+                android:id="@+id/btnVoltar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/botao_em_tela"
+                android:drawableLeft="@drawable/btnvoltar"
+                android:padding="8dp"
+                android:layout_marginBottom="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Termos e condições de uso do aplicativo"
+                android:gravity="center"
+                android:textColor="#FFFFFFFF"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginRight="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1. Aceitação dos Termos"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ao utilizar o aplicativo Meu Time, você concorda ter lido, compreendido e concordado com estes Termos e Condições de Uso. Caso não concorde com qualquer item, por favor, não use o aplicativo."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2. Descrição do Serviço"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="O Meu Time oferece funcionalidades de gerenciamento de equipes, controle de jogadores, partidas e finanças internas de cada time. O uso do aplicativo pode estar sujeito ao pagamento de uma mensalidade, conforme o plano contratado."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3. Cadastro e Responsabilidades do Usuário"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Para utilizar o aplicativo, o usuário deverá realizar seu cadastro, informando dados verdadeiros e atualizados. O usuário é responsável pela veracidade das informações e pela segurança do seu login e senha. É proibido compartilhar a conta com terceiros ou utilizar o aplicativo para fins ilegais."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4. Pagamentos e Acesso"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="O uso do aplicativo é gratuito pelos primeiros 3 (três) meses a partir da data de cadastro do usuário. Após esse período, será cobrada uma mensalidade de R$ 15,00 (quinze reais), com pagamento realizado exclusivamente via Pix, conforme as instruções disponíveis no próprio aplicativo. O não pagamento da mensalidade dentro do prazo estabelecido poderá resultar no bloqueio automático do acesso ao aplicativo até a regularização do valor devido. Não serão concedidos reembolsos ou créditos por períodos já pagos, independentemente do uso do aplicativo."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5. Propriedade Intelectual"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Todo o conteúdo do aplicativo — incluindo logotipos, textos, códigos, banco de dados e design — é de propriedade exclusiva do desenvolvedor e protegido por leis de direitos autorais e de propriedade intelectual. É proibida qualquer reprodução, cópia, modificação ou redistribuição sem autorização prévia."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6. Limitação de Responsabilidade"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="O Meu Time não se responsabiliza por: Danos causados por uso indevido do aplicativo; Falhas temporárias de acesso ou manutenção; Perda de dados decorrente de erro do usuário ou falhas externas (ex.: internet, dispositivos móveis)."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="7. Privacidade e Dados"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Os dados coletados são utilizados exclusivamente para o funcionamento do aplicativo, incluindo o agendamento e registro de partidas entre times. Durante essas interações, informações básicas (como nome do time, jogadores cadastrados e resultados de jogos) poderão ser visíveis para outros times dentro do aplicativo, somente quando houver vínculo em partidas ou competições. Nenhum dado pessoal sensível será compartilhado publicamente ou com terceiros externos sem o consentimento do usuário. O usuário poderá solicitar a exclusão definitiva de seus dados a qualquer momento, mediante contato com o suporte."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="8. Modificações dos Termos"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="O desenvolvedor poderá alterar estes Termos a qualquer momento, sendo a nova versão disponibilizada dentro do aplicativo. O uso contínuo do aplicativo após a atualização implica concordância com os novos termos."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="16dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="9. Contato"
+                    android:textColor="@color/corTexto"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Em caso de dúvidas ou solicitações, você poderá entrar em contato atravez do whatsapp (48) 988392776 ou e-mail: guilhermefrassondeaguiar@gmail.com."
+                    android:textColor="@color/corTexto"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="4dp"
+                    android:layout_marginBottom="30dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

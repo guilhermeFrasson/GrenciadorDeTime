@@ -1,6 +1,5 @@
 package com.example.Objetos;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class Jogador {

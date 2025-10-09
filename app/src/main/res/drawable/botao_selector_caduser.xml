@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Define que a cor de preenchimento virá do nosso seletor -->
+    <solid android:color="@color/mudar_cor_botao" />
+
+    <!-- Mantém os cantos arredondados que você já tinha -->
+    <corners android:radius="8dp" />
+</shape>

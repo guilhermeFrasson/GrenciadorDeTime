@@ -1,5 +1,6 @@
 package com.example.Service;
 
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class BuscaDadosTime {
