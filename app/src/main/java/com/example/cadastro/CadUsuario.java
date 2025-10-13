@@ -9,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.Objetos.Usuario;
 import com.example.Service.ImagemHelper;
 import com.example.Service.MaskTextWatcher;
 import com.example.gerenciadordetime.R;
@@ -19,8 +22,11 @@ import com.google.android.material.textfield.TextInputEditText;
 public class CadUsuario extends AppCompatActivity {
 
     private TextInputEditText telefoneEditText;
-    private CheckBox checkTermos; // Renomeei para maior clareza
+    private CheckBox checkTermos;
     private Button btnProximo, btnTermos, btnVoltar;
+
+    private EditText emailEditText, nomeEditText, senhaEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +53,9 @@ public class CadUsuario extends AppCompatActivity {
         checkTermos = findViewById(R.id.checkGolContra);
         btnProximo = findViewById(R.id.btnProximo);
         btnVoltar = findViewById(R.id.btnVoltar);
-
+        emailEditText = findViewById(R.id.emailEditText);
+        nomeEditText = findViewById(R.id.nomeTimeEditText);
+        senhaEditText = findViewById(R.id.senhaEditText);
     }
 
     private void setupListeners() {
@@ -58,8 +66,13 @@ public class CadUsuario extends AppCompatActivity {
         });
 
         btnProximo.setOnClickListener(v -> {
-            Intent intent = new Intent(this, CadTime.class);
-            startActivity(intent);
+//            if (verificaCampos()) {
+                salvaDadosUsuario();
+                Intent intent = new Intent(this, CadTime.class);
+                startActivity(intent);
+//            }else{
+//                Toast.makeText(this, "Preencha os campos obrigatorios", Toast.LENGTH_SHORT).show();
+//            }
         });
 
         checkTermos.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -69,4 +82,24 @@ public class CadUsuario extends AppCompatActivity {
         btnVoltar.setOnClickListener(v -> finish());
 
     }
+
+    private void salvaDadosUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(emailEditText.getText().toString());
+        usuario.setNome(nomeEditText.getText().toString());
+        usuario.setSenha(senhaEditText.getText().toString());
+        usuario.setTelefone(telefoneEditText.getText().toString());
+    }
+
+//    public boolean verificaCampos() {
+//        if (emailEditText.getText().toString().isEmpty() ||
+//                telefoneEditText.getText().toString().isEmpty() ||
+//                nomeEditText.getText().toString().isEmpty() ||
+//                senhaEditText.getText().toString().isEmpty()) {
+//            return false;
+//            }else {
+//            return true;
+//        }
+//
+//    }
 }

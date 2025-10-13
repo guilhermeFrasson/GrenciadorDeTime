@@ -40,11 +40,11 @@
                 android:gravity="center"
                 android:text="Crie sua conta e facilite o gestão do seu time"
                 android:textColor="#FFFFFFFF"
-                android:textSize="26sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="50dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginTop="5dp"
-                android:text="E-mail"
+                android:text="E-mail*"
                 android:textColor="@color/corTexto"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -104,7 +104,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginTop="5dp"
-                android:text="Telefone"
+                android:text="Telefone*"
                 android:textColor="@color/corTexto"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -137,13 +137,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginTop="5dp"
-                android:text="Nome"
+                android:text="Nome*"
                 android:textColor="@color/corTexto"
                 android:textSize="12sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/nomeLayout"
+                android:id="@+id/nomeTimeLayout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -156,7 +156,7 @@
                 app:boxStrokeColor="@color/layout_strokr_color">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/nomeEditText"
+                    android:id="@+id/nomeTimeEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Nome"
@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:layout_marginTop="5dp"
-                android:text="Senha"
+                android:text="Senha*"
                 android:textColor="@color/corTexto"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -237,9 +237,8 @@
                 android:id="@+id/btnProximo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:background="@drawable/botao_selector_caduser"
-                android:text="Entrar"
+                android:text="Proximo"
                 android:textColor="#FFFFFFFF"
                 android:textSize="18sp"
                 android:enabled="false"/>
