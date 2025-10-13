@@ -36,6 +36,9 @@ public class Jogador {
         this.nome = nome;
     }
 
+    public Jogador() {
+    }
+
     public String getIdJogador() {
         return idJogador;
     }

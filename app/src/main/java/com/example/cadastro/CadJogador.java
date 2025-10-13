@@ -16,6 +16,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.Objetos.Jogador;
+import com.example.Objetos.Time;
+import com.example.Objetos.Usuario;
+import com.example.Service.BuscaDadosTime;
+import com.example.Service.CodigoUnicoCallback;
 import com.example.Service.ImagemHelper;
 
 import com.example.gerenciadordetime.R;
@@ -38,6 +43,7 @@ public class CadJogador extends AppCompatActivity {
     private Spinner pernaDominanteSpinner;
     private String escolhaPernaDominante, escolhaPosicao;
     private Date data;
+    private String primeiroAcesso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +67,16 @@ public class CadJogador extends AppCompatActivity {
         comboPosicao();
         comboPernadominate();
 
-        btnSalvar.setOnClickListener(v -> {
-            validaCampos();
-        });
+        primeiroAcesso = getIntent().getStringExtra("PRIMEIROACESSO");
+        if ("NÃO".equals(primeiroAcesso)) {
+            nomeEditText.setVisibility(View.VISIBLE);
+            btnSalvar.setOnClickListener(v -> {
+            });
+        }
 
+//        btnSalvar.setOnClickListener(v -> {
+//            validaCampos();
+//        });
     }
 
     private void validaCampos() {
@@ -72,9 +84,9 @@ public class CadJogador extends AppCompatActivity {
         if (nomeEditText.getText().toString().trim().equals("")) {
             Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
         } else if (escolhaPosicao.equals("-- Escolha um opção --")) {
-            Toast.makeText(this, "Posição do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Ecolha uma posicao", Toast.LENGTH_SHORT).show();
         } else if (escolhaPernaDominante.equals("-- Escolha um opção --")) {
-            Toast.makeText(this, "A perna dominante do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Escolha a perna dominante", Toast.LENGTH_SHORT).show();
         } else if (data == null || !data.before(hoje)) {
             Toast.makeText(this, "Data de nascimento invalida", Toast.LENGTH_SHORT).show();
         } else {
@@ -119,25 +131,87 @@ public class CadJogador extends AppCompatActivity {
     }
 
     private void salvardados() {
-        Map<String, Object> jogador = new HashMap<>();
-        jogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
-        jogador.put("TIME", timeUsuario);
-        jogador.put("IDTIME", idTimeUsuario);
-        jogador.put("POSICAO", escolhaPosicao);
-        jogador.put("PERNADOMINANTE", escolhaPernaDominante);
-        jogador.put("DATANASCIMENTO", data);
-        jogador.put("GOLS", 0);
-        jogador.put("ASSISTENCIAS", 0);
+        Map<String, Object> infoJogador = new HashMap<>();
+//        Map<String, Object> infoTime = new HashMap<>();
+//        Map<String, Object> infoUsuario = new HashMap<>();
+//
+//        BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
+//
+//        Usuario usuario = new Usuario();
+//        Time time = new Time();
+//        Jogador jogador = new Jogador();
+//
+//        if ("SIM".equals(primeiroAcesso)) {
+//            // Se for o primeiro acesso, precisamos gerar um código para o time antes de salvar
+//            Log.d("SALVAR_DADOS", "Iniciando geração de código para novo time...");
+//            buscaDadosTime.gerarEVerificarCodigoUnico(new CodigoUnicoCallback() {
+//                @Override
+//                public void onCodigoEncontrado(String codigoUnicoDoTime) {
+//
+//                    // Agora preparamos os dados do Time e do Usuário
+//                    Map<String, Object> infoTime = new HashMap<>();
+//                    Time time = (Time) getIntent().getSerializableExtra("TIME_OBJ"); // Supondo que você passou o objeto
+//                    Usuario usuario = (Usuario) getIntent().getSerializableExtra("USUARIO_OBJ");
+//
+//                    infoTime.put("DSTIME", time.getNomeTime());
+//                    infoTime.put("USAFINANCEIRO", time.isFinanceiro());
+//                    infoTime.put("USAMENSALIDADE", time.isMensalidade());
+//                    infoTime.put("VALORMENSALIDADE", time.getValorMensalidadeMembro());
+//                    infoTime.put("VALORMENSALIDADETIME", 20);
+//
+//                    Map<String, Object> infoUsuario = new HashMap<>();
+//                    infoUsuario.put("NOME", usuario.getNome());
+//                    infoUsuario.put("EMAIL", usuario.getEmail());
+//                    infoUsuario.put("SENHA", usuario.getSenha());
+//                    infoUsuario.put("TIME", time.getNomeTime());
+//                    infoUsuario.put("IDTIME", codigoUnicoDoTime);
+//                    infoUsuario.put("FUNCAO", usuario.getFuncaoUsuario());
+//
+//                    // Adiciona o ID do novo time ao jogador
+//                    infoJogador.put("IDTIME", codigoUnicoDoTime);
+//                    infoJogador.put("TIME", time.getNomeTime());
+//                    infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
+//                    infoJogador.put("POSICAO", escolhaPosicao);
+//                    infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
+//                    infoJogador.put("DATANASCIMENTO", data);
+//                    infoJogador.put("GOLS", 0);
+//                    infoJogador.put("ASSISTENCIAS", 0);
+//
+//                    // Agora, salve tudo (Time, Usuário, Jogador)
+//                    db.collection("GTTIME").document(codigoUnicoDoTime).set(infoTime);
+//                    db.collection("GTUSUARIO").add(infoUsuario); // Ou use o UID do Auth como ID
+//                    db.collection("GTJOGADOR").add(infoJogador);
+//
+//                    Log.d("SALVAR_DADOS", "Todos os dados salvos com sucesso!");
+//                    finish();
+//                }
+//
+//                @Override
+//                public void onFalha(Exception e) {
+//                    Toast.makeText(CadJogador.this, "Falha ao criar time. Tente novamente.", Toast.LENGTH_LONG).show();
+//                }
+//            });
+//
+//        } else {
+            infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
+            infoJogador.put("TIME", timeUsuario);
+            infoJogador.put("IDTIME", idTimeUsuario);
+            infoJogador.put("POSICAO", escolhaPosicao);
+            infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
+            infoJogador.put("DATANASCIMENTO", data);
+            infoJogador.put("GOLS", 0);
+            infoJogador.put("ASSISTENCIAS", 0);
 
-        db.collection("GTJOGADOR")
-                .add(jogador)
-                .addOnSuccessListener(documentReference -> {
-                    Log.d("Firestore", "Jogador salvo com ID: " + documentReference.getId());
+            db.collection("GTJOGADOR")
+                    .add(infoJogador)
+                    .addOnSuccessListener(documentReference -> {
+                        Log.d("Firestore", "Jogador salvo com ID: " + documentReference.getId());
 
-                })
-                .addOnFailureListener(e -> {
-                    Log.w("Firestore", "Erro ao salvar jogador", e);
-                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.w("Firestore", "Erro ao salvar jogador", e);
+                    });
+//        }
         finish();
     }
 
