@@ -44,9 +44,7 @@ public class CadJogo extends AppCompatActivity {
     private String resultado;
     int golsFeitos, golsSofridos, totalGols;
     private Date data;
-
     private List<Estatisticas> lista;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

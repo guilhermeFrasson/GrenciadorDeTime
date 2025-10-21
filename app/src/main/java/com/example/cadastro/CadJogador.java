@@ -1,8 +1,10 @@
 package com.example.cadastro;
 
+import static com.example.Service.BuscaDadosTime.proximoCodigo;
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 import static com.example.gerenciadordetime.Menu.timeUsuario;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.example.Service.BuscaDadosTime;
 import com.example.Service.CodigoUnicoCallback;
 import com.example.Service.ImagemHelper;
 
+import com.example.gerenciadordetime.Menu;
 import com.example.gerenciadordetime.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -68,29 +71,37 @@ public class CadJogador extends AppCompatActivity {
         comboPernadominate();
 
         primeiroAcesso = getIntent().getStringExtra("PRIMEIROACESSO");
-        if ("NÃO".equals(primeiroAcesso)) {
+        if ("NAO".equals(primeiroAcesso)) {
             nomeEditText.setVisibility(View.VISIBLE);
             btnSalvar.setOnClickListener(v -> {
             });
         }
 
-//        btnSalvar.setOnClickListener(v -> {
-//            validaCampos();
-//        });
+        btnSalvar.setOnClickListener(v -> {
+            validaCampos();
+        });
     }
 
     private void validaCampos() {
         Date hoje = new Date();
-        if (nomeEditText.getText().toString().trim().equals("")) {
-            Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
-        } else if (escolhaPosicao.equals("-- Escolha um opção --")) {
+        if ("NAO".equals(primeiroAcesso)) {
+            if (nomeEditText.getText().toString().trim().equals("")) {
+                Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (escolhaPosicao.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Ecolha uma posicao", Toast.LENGTH_SHORT).show();
         } else if (escolhaPernaDominante.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Escolha a perna dominante", Toast.LENGTH_SHORT).show();
         } else if (data == null || !data.before(hoje)) {
             Toast.makeText(this, "Data de nascimento invalida", Toast.LENGTH_SHORT).show();
         } else {
-            verificaJogadorDuplicado();
+            if ("NAO".equals(primeiroAcesso)){
+                verificaJogadorDuplicado();
+            } else {
+                salvardados();
+            }
+
         }
     }
 
@@ -132,67 +143,30 @@ public class CadJogador extends AppCompatActivity {
 
     private void salvardados() {
         Map<String, Object> infoJogador = new HashMap<>();
-//        Map<String, Object> infoTime = new HashMap<>();
-//        Map<String, Object> infoUsuario = new HashMap<>();
-//
-//        BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
-//
-//        Usuario usuario = new Usuario();
-//        Time time = new Time();
-//        Jogador jogador = new Jogador();
-//
-//        if ("SIM".equals(primeiroAcesso)) {
-//            // Se for o primeiro acesso, precisamos gerar um código para o time antes de salvar
-//            Log.d("SALVAR_DADOS", "Iniciando geração de código para novo time...");
-//            buscaDadosTime.gerarEVerificarCodigoUnico(new CodigoUnicoCallback() {
-//                @Override
-//                public void onCodigoEncontrado(String codigoUnicoDoTime) {
-//
-//                    // Agora preparamos os dados do Time e do Usuário
-//                    Map<String, Object> infoTime = new HashMap<>();
-//                    Time time = (Time) getIntent().getSerializableExtra("TIME_OBJ"); // Supondo que você passou o objeto
-//                    Usuario usuario = (Usuario) getIntent().getSerializableExtra("USUARIO_OBJ");
-//
-//                    infoTime.put("DSTIME", time.getNomeTime());
-//                    infoTime.put("USAFINANCEIRO", time.isFinanceiro());
-//                    infoTime.put("USAMENSALIDADE", time.isMensalidade());
-//                    infoTime.put("VALORMENSALIDADE", time.getValorMensalidadeMembro());
-//                    infoTime.put("VALORMENSALIDADETIME", 20);
-//
-//                    Map<String, Object> infoUsuario = new HashMap<>();
-//                    infoUsuario.put("NOME", usuario.getNome());
-//                    infoUsuario.put("EMAIL", usuario.getEmail());
-//                    infoUsuario.put("SENHA", usuario.getSenha());
-//                    infoUsuario.put("TIME", time.getNomeTime());
-//                    infoUsuario.put("IDTIME", codigoUnicoDoTime);
-//                    infoUsuario.put("FUNCAO", usuario.getFuncaoUsuario());
-//
-//                    // Adiciona o ID do novo time ao jogador
-//                    infoJogador.put("IDTIME", codigoUnicoDoTime);
-//                    infoJogador.put("TIME", time.getNomeTime());
-//                    infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
-//                    infoJogador.put("POSICAO", escolhaPosicao);
-//                    infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
-//                    infoJogador.put("DATANASCIMENTO", data);
-//                    infoJogador.put("GOLS", 0);
-//                    infoJogador.put("ASSISTENCIAS", 0);
-//
-//                    // Agora, salve tudo (Time, Usuário, Jogador)
-//                    db.collection("GTTIME").document(codigoUnicoDoTime).set(infoTime);
-//                    db.collection("GTUSUARIO").add(infoUsuario); // Ou use o UID do Auth como ID
-//                    db.collection("GTJOGADOR").add(infoJogador);
-//
-//                    Log.d("SALVAR_DADOS", "Todos os dados salvos com sucesso!");
-//                    finish();
-//                }
-//
-//                @Override
-//                public void onFalha(Exception e) {
-//                    Toast.makeText(CadJogador.this, "Falha ao criar time. Tente novamente.", Toast.LENGTH_LONG).show();
-//                }
-//            });
-//
-//        } else {
+
+        if ("SIM".equals(primeiroAcesso)) {
+            salvaDadosTime();
+            salvaDadosUsuario();
+
+            Time time = new Time();
+            Usuario usuario = new Usuario();
+
+            infoJogador.put("IDTIME", proximoCodigo);
+            infoJogador.put("TIME", time.getNomeTime());
+            infoJogador.put("NOME", usuario.getNome());
+            infoJogador.put("POSICAO", escolhaPosicao);
+            infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
+            infoJogador.put("DATANASCIMENTO", data);
+            infoJogador.put("GOLS", 0);
+            infoJogador.put("ASSISTENCIAS", 0);
+
+            db.collection("GTJOGADOR").add(infoJogador);
+
+            Log.d("SALVAR_DADOS", "Todos os dados salvos com sucesso!");
+
+            Intent intent = new Intent(this, Menu.class);
+            startActivity(intent);
+        } else {
             infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
             infoJogador.put("TIME", timeUsuario);
             infoJogador.put("IDTIME", idTimeUsuario);
@@ -202,17 +176,45 @@ public class CadJogador extends AppCompatActivity {
             infoJogador.put("GOLS", 0);
             infoJogador.put("ASSISTENCIAS", 0);
 
-            db.collection("GTJOGADOR")
-                    .add(infoJogador)
-                    .addOnSuccessListener(documentReference -> {
-                        Log.d("Firestore", "Jogador salvo com ID: " + documentReference.getId());
+            db.collection("GTJOGADOR").add(infoJogador);
 
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.w("Firestore", "Erro ao salvar jogador", e);
-                    });
-//        }
+        }
         finish();
+    }
+
+    private void salvaDadosTime() {
+        Map<String, Object> infoTime = new HashMap<>();
+
+        Time time = new Time();
+
+        String teste = time.getNomeTime();
+
+        infoTime.put("IDTIME", proximoCodigo);
+        infoTime.put("DSTIME", time.getNomeTime());
+        infoTime.put("USAFINANCEIRO", time.isFinanceiro());
+        infoTime.put("USAMENSALIDADE", time.isMensalidade());
+        infoTime.put("VALORMENSALIDADE", time.getValorMensalidadeMembro());
+        infoTime.put("VALORMENSALIDADETIME", 20);
+        infoTime.put("DATACRIACAO", new Date());
+
+
+        db.collection("GTTIME").document(String.valueOf(proximoCodigo)).set(infoTime);
+    }
+
+    private void salvaDadosUsuario() {
+        Time time = new Time();
+        Usuario usuario = new Usuario();
+
+        Map<String, Object> infoUsuario = new HashMap<>();
+
+        infoUsuario.put("NOME", usuario.getNome());
+        infoUsuario.put("EMAIL", usuario.getEmail());
+        infoUsuario.put("SENHA", usuario.getSenha());
+        infoUsuario.put("TIME", time.getNomeTime());
+        infoUsuario.put("IDTIME", proximoCodigo);
+        infoUsuario.put("FUNCAO", "Administrador");
+
+        db.collection("GTUSUARIOS").add(infoUsuario);
     }
 
     private String formatarNome(String texto) {
@@ -227,7 +229,7 @@ public class CadJogador extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        String[] listaPosicoes = new String[7];
+        String[] listaPosicoes = new String[8];
 
         listaPosicoes[0] = "-- Escolha um opção --";
 

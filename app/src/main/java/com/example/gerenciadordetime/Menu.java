@@ -72,7 +72,7 @@ public class Menu extends AppCompatActivity {
         ImagemHelper.aplicarImagemNoBotao(this, btnCadJogador, R.drawable.novo_jogador, 125, 125);
         btnCadJogador.setOnClickListener(v -> {
             Intent intent = new Intent(this, CadJogador.class);
-            intent.putExtra("PRIMEIROACESSO", "NÃO");
+            intent.putExtra("PRIMEIROACESSO", "NAO");
             startActivity(intent);
         });
 

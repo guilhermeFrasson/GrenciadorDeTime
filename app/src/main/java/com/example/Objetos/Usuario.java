@@ -1,16 +1,14 @@
 package com.example.Objetos;
 
-import java.util.Date;
-
 public class Usuario {
 
-    private String idTimeUsuario;
+    public static String idTimeUsuario;
     public static String nome;
-    private String timeUsuario;
-    private String funcaoUsuario;
-    private String email;
-    private String senha;
-    private String telefone;
+    public static String timeUsuario;
+    public static String funcaoUsuario;
+    public static String email;
+    public static String senha;
+    public static String telefone;
 
     public Usuario(String idTimeUsuario, String nome, String timeUsuario, String funcaoUsuario, String email, String senha, String telefone) {
         this.idTimeUsuario = idTimeUsuario;

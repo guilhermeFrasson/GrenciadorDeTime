@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Objetos.Time;
 import com.example.Objetos.Usuario;
+import com.example.Service.BuscaDadosTime;
 import com.example.Service.ImagemHelper;
 import com.example.gerenciadordetime.R;
 
@@ -31,6 +32,9 @@ public class CadTime extends AppCompatActivity {
     private Spinner modalidadeSpinner, sexoSpinner;
     String escolhaModalidade, escolhaSexo;
     private EditText mensalidadeEditText;
+    private BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
+    Time time = new Time();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,7 @@ public class CadTime extends AppCompatActivity {
             if (verificaCampos()) {
                 salvaDadosTime();
                 String testes = "SIM";
+                buscaDadosTime.buscaProximoCodigo();
                 Intent intent = new Intent(this, CadJogador.class);
                 intent.putExtra("PRIMEIROACESSO", testes);
                 startActivity(intent);
@@ -76,16 +81,19 @@ public class CadTime extends AppCompatActivity {
 
         financeiroSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
+                time.setFinanceiro(true);
             } else {
+                time.setFinanceiro(false);
             }
         });
 
         mensalidadeSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-
+                time.setMensalidade(true);
                 campoMensalidadeTextView.setVisibility(View.VISIBLE);
                 painelMensalidade.setVisibility(View.VISIBLE);
             } else {
+                time.setMensalidade(false);
                 campoMensalidadeTextView.setVisibility(View.GONE);
                 painelMensalidade.setVisibility(View.GONE);
             }
@@ -96,17 +104,21 @@ public class CadTime extends AppCompatActivity {
     }
 
     private void salvaDadosTime() {
-        Time time = new Time();
         time.setNomeTime(nomeTimeEditText.getText().toString());
-        time.setFinanceiro(Boolean.parseBoolean(financeiroSwitch.getText().toString()));
-        time.setMensalidade(Boolean.parseBoolean(mensalidadeSwitch.getText().toString()));
+        time.setFinanceiro(financeiroSwitch.isChecked());
+        time.setMensalidade(mensalidadeSwitch.isChecked());
         try {
-            time.setValorMensalidadeMembro(Double.parseDouble(mensalidadeEditText.getText().toString()));
+            if (mensalidadeSwitch.isChecked()) {
+                time.setValorMensalidadeMembro(Double.parseDouble(mensalidadeEditText.getText().toString()));
+            } else {
+                time.setValorMensalidadeMembro(0.0);
+            }
         } catch (NumberFormatException e) {
             time.setValorMensalidadeMembro(0.0);
         }
         time.setValorMensalidadeTime(20);
     }
+
 
 
     public boolean verificaCampos() {

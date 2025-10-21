@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -66,13 +67,19 @@ public class CadUsuario extends AppCompatActivity {
         });
 
         btnProximo.setOnClickListener(v -> {
-//            if (verificaCampos()) {
+            if (!verificaCampos()) {
+                Toast.makeText(this, "Preencha os campos obrigatorios", Toast.LENGTH_SHORT).show();
+            }else if (!verificaEmail()) {
+                Toast.makeText(this, "E-mail inválido!", Toast.LENGTH_SHORT).show();
+            }else if (!verificaTelefone()) {
+                Toast.makeText(this, "Telefone inválido!", Toast.LENGTH_SHORT).show();
+            }else if (!verificaSenha()){
+                Toast.makeText(this, "Senha inválida!", Toast.LENGTH_SHORT).show();
+            } else {
                 salvaDadosUsuario();
                 Intent intent = new Intent(this, CadTime.class);
                 startActivity(intent);
-//            }else{
-//                Toast.makeText(this, "Preencha os campos obrigatorios", Toast.LENGTH_SHORT).show();
-//            }
+            }
         });
 
         checkTermos.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -91,15 +98,45 @@ public class CadUsuario extends AppCompatActivity {
         usuario.setTelefone(telefoneEditText.getText().toString());
     }
 
-//    public boolean verificaCampos() {
-//        if (emailEditText.getText().toString().isEmpty() ||
-//                telefoneEditText.getText().toString().isEmpty() ||
-//                nomeEditText.getText().toString().isEmpty() ||
-//                senhaEditText.getText().toString().isEmpty()) {
-//            return false;
-//            }else {
-//            return true;
-//        }
-//
-//    }
+    public boolean verificaCampos() {
+        if (emailEditText.getText().toString().isEmpty() ||
+                telefoneEditText.getText().toString().isEmpty() ||
+                nomeEditText.getText().toString().isEmpty() ||
+                senhaEditText.getText().toString().isEmpty()) {
+            return false;
+            }else {
+            return true;
+        }
+    }
+
+    public boolean verificaEmail (){
+        String email = emailEditText.getText().toString().trim();
+
+        if (email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean verificaTelefone(){
+        String telefone = telefoneEditText.getText().toString().trim();
+
+        if (telefone.matches("^\\(?\\d{2}\\)? ?9?\\d{4}-?\\d{4}$")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean verificaSenha(){
+        String senha = senhaEditText.getText().toString().trim();
+        int qtdCaracteresSenha = senha.length();
+
+        if (qtdCaracteresSenha >= 6) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

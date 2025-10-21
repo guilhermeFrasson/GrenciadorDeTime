@@ -1,12 +1,12 @@
 package com.example.Objetos;
 
 public class Time {
-    private String idTime;
-    private String nomeTime;
-    private boolean mensalidade;
-    private boolean financeiro;
-    private double valorMensalidadeMembro;
-    private double valorMensalidadeTime;
+    public static String idTime;
+    public static String nomeTime;
+    public static boolean mensalidade;
+    public static boolean financeiro;
+    public static double valorMensalidadeMembro;
+    public static double valorMensalidadeTime;
 
     public Time(String idTime, String nomeTime) {
         this.idTime = idTime;
@@ -16,8 +16,7 @@ public class Time {
     public Time() {
     }
 
-
-    public double getValorMensalidadeTime() {
+    public static double getValorMensalidadeTime() {
         return valorMensalidadeTime;
     }
 
@@ -25,7 +24,7 @@ public class Time {
         this.valorMensalidadeTime = valorMensalidadeTime;
     }
 
-    public double getValorMensalidadeMembro() {
+    public static double getValorMensalidadeMembro() {
         return valorMensalidadeMembro;
     }
 
@@ -33,7 +32,7 @@ public class Time {
         this.valorMensalidadeMembro = valorMensalidadeMembro;
     }
 
-    public boolean isFinanceiro() {
+    public static boolean isFinanceiro() {
         return financeiro;
     }
 
@@ -41,7 +40,7 @@ public class Time {
         this.financeiro = financeiro;
     }
 
-    public boolean isMensalidade() {
+    public static boolean isMensalidade() {
         return mensalidade;
     }
 
@@ -49,7 +48,7 @@ public class Time {
         this.mensalidade = mensalidade;
     }
 
-    public String getNomeTime() {
+    public static String getNomeTime() {
         return nomeTime;
     }
 
@@ -57,7 +56,7 @@ public class Time {
         this.nomeTime = nomeTime;
     }
 
-    public String getIdTime() {
+    public static String getIdTime() {
         return idTime;
     }
 
