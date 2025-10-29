@@ -3,14 +3,14 @@ package com.example.Objetos;
 import java.util.Date;
 
 public class Extrato {
-    String idTime;
+    int idTime;
     String tipoOperacao;
     Date dataOperacao;
     double valorOperacao;
     String dsOperacao;
     String idDoc;
 
-    public Extrato(String dsOperacao, String idTime, String tipoOperacao, Date dataPagamento, double valorPagamento, String idDoc) {
+    public Extrato(String dsOperacao, int idTime, String tipoOperacao, Date dataPagamento, double valorPagamento, String idDoc) {
         this.dsOperacao = dsOperacao;
         this.idTime = idTime;
         this.tipoOperacao = tipoOperacao;
@@ -23,7 +23,7 @@ public class Extrato {
         return dsOperacao;
     }
 
-    public String getIdTime() {
+    public int getIdTime() {
         return idTime;
     }
 

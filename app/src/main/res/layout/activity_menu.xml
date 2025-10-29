@@ -15,15 +15,12 @@
         android:orientation="vertical"
         android:paddingBottom="50dp">
 
-        <LinearLayout
-            android:id="@+id/cabeçalho"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabecalho"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_cabecalho"
-            android:gravity="center"
-            android:orientation="vertical"
             android:padding="16dp">
-
 
             <TextView
                 android:id="@+id/titulo"
@@ -33,9 +30,25 @@
                 android:text="Menu"
                 android:textColor="#FFFFFFFF"
                 android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+            <Button
+                android:id="@+id/btnSair"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/botao_em_tela"
+                android:drawableLeft="@drawable/btnsair"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:id="@+id/conteudo"

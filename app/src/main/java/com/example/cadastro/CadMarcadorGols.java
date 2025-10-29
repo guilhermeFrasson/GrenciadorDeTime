@@ -1,7 +1,6 @@
 package com.example.cadastro;
 
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
-import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -129,7 +128,6 @@ public class CadMarcadorGols extends AppCompatActivity {
 
         Object idTimeUsusuario;
         db.collection("GTJOGADOR")
-                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {

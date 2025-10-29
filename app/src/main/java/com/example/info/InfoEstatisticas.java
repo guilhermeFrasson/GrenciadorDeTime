@@ -1,7 +1,6 @@
 package com.example.info;
 
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
-import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -77,7 +76,6 @@ public class InfoEstatisticas extends AppCompatActivity {
 
     private void buscaInfojogo() {
         db.collection("GTJOGO")
-                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -111,7 +109,6 @@ public class InfoEstatisticas extends AppCompatActivity {
 
     private void buscaTopJogadores() {
         db.collection("GTJOGADOR")
-                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {

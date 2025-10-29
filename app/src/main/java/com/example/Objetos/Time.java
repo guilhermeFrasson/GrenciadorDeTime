@@ -3,6 +3,8 @@ package com.example.Objetos;
 public class Time {
     public static String idTime;
     public static String nomeTime;
+    public static String modalidade;
+    public static String sexo;
     public static boolean mensalidade;
     public static boolean financeiro;
     public static double valorMensalidadeMembro;
@@ -64,5 +66,19 @@ public class Time {
         this.idTime = idTime;
     }
 
+    public static String getModalidade() {
+        return modalidade;
+    }
 
+    public static void setModalidade(String modalidade) {
+        Time.modalidade = modalidade;
+    }
+
+    public static String getSexo() {
+        return sexo;
+    }
+
+    public static void setSexo(String sexo) {
+        Time.sexo = sexo;
+    }
 }

@@ -1,7 +1,6 @@
 package com.example.cadastro;
 
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
-import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -116,7 +115,6 @@ public class CadJogo extends AppCompatActivity {
     private void salvaJogo(int idJogo) {
         Map<String, Object> jogo = new HashMap<>();
         jogo.put("TIMEADVERSARIO", formatarNomeTime(timeAdversarioEditText.getText().toString().trim()));
-        jogo.put("TIME", timeUsuario);
         jogo.put("IDTIME", idTimeUsuario);
         jogo.put("DATADOJOGO", data);
         jogo.put("RESULTADO", resultado);
@@ -239,7 +237,6 @@ public class CadJogo extends AppCompatActivity {
     private void atualizarEstatisticasJogador(String nome, int gols, int assistencias) {
         db.collection("GTJOGADOR")
                 .whereEqualTo("NOME", nome)
-                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {

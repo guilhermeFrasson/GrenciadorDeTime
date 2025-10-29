@@ -73,7 +73,8 @@ public class ListExtraFinanceiro extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         listaExtrato.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String idTime = document.getString("IDTIME");
+                            Long idTimeLong = document.getLong("IDTIME");
+                            int idTime = (int) idTimeLong.intValue();
                             String tipooperacao = document.getString("TIPOOPERACAO");
                             Date dataOperacao = document.getDate("DATAOPERACAO");
                             double valorOperacao = document.getDouble("VALOROPERACAO");

@@ -24,7 +24,8 @@ import com.example.lista.ListExtraFinanceiro;
 public class Menu extends AppCompatActivity {
     private BuscaDadosTime buscaDadosTime = new BuscaDadosTime();
     Button btnCadJogo, btnCadJogador, btnFinanceiro, btnMensalidade;
-    public static String timeUsuario, idTimeUsuario, funcaoUsuario;
+    public static String funcaoUsuario;
+    public static int idTimeUsuario;
     View overlay;
 
 
@@ -41,12 +42,11 @@ public class Menu extends AppCompatActivity {
         Button btnEstatisticas = findViewById(R.id.btnEstatisticas);
         btnMensalidade = findViewById(R.id.btnMensalidade);
         btnFinanceiro = findViewById(R.id.btnFinanceiro);
+        Button btnSair = findViewById(R.id.btnSair);
         overlay = findViewById(R.id.progressOverlay);
 
         overlay.setVisibility(View.VISIBLE);
 
-
-        verificaInfoTimeUsuario("TIME");
         verificaInfoTimeUsuario("IDTIME");
         verificaFuncaoUsuario("FUNCAO");
 
@@ -93,6 +93,12 @@ public class Menu extends AppCompatActivity {
             Intent intent = new Intent(this, ListExtraFinanceiro.class);
             startActivity(intent);
         });
+
+        ImagemHelper.aplicarImagemNoBotao(this, btnSair, R.drawable.btnsair, 70, 70);
+        btnSair.setOnClickListener(v -> {
+            finishAffinity();
+            System.exit(0);
+        });
     }
 
     private void verificaConfigTime(String tabela, String coluna, Button botao) {
@@ -108,13 +114,9 @@ public class Menu extends AppCompatActivity {
 
     private void verificaInfoTimeUsuario(String coluna) {
         BuscaDadosUser buscadadosUser = new BuscaDadosUser();
-        buscadadosUser.buscarInfosUsuario(coluna, retorno -> {
-            if (retorno != null) {
-                if (coluna.equals("TIME")) {
-                    timeUsuario = retorno;
-                } else {
+        buscadadosUser.buscarIdTimeUsuario(coluna, retorno -> {
+            if (retorno != 0) {
                     idTimeUsuario = retorno;
-                }
             }
         });
     }
@@ -124,7 +126,7 @@ public class Menu extends AppCompatActivity {
         buscadadosUser.buscarInfosUsuario(coluna, retorno -> {
             if (retorno != null) {
                 funcaoUsuario = retorno;
-                if ("Administrador" .equals(retorno)) {
+                if ("Administrador".equals(retorno)) {
                     btnCadJogo.setVisibility(View.VISIBLE);
                     btnCadJogador.setVisibility(View.VISIBLE);
                     verificaConfigTime("GTTIME", "USAMENSALIDADE", btnMensalidade);
@@ -135,5 +137,4 @@ public class Menu extends AppCompatActivity {
             overlay.setVisibility(View.GONE);
         });
     }
-
 }

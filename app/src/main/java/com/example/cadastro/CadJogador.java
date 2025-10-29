@@ -1,8 +1,15 @@
 package com.example.cadastro;
 
+import static com.example.Objetos.Time.getModalidade;
+import static com.example.Objetos.Time.getNomeTime;
+import static com.example.Objetos.Time.getSexo;
+import static com.example.Objetos.Time.getValorMensalidadeMembro;
+import static com.example.Objetos.Time.isFinanceiro;
+import static com.example.Objetos.Time.isMensalidade;
 import static com.example.Service.BuscaDadosTime.proximoCodigo;
+import static com.example.Service.FormataString.formatarNome;
+import static com.example.gerenciadordetime.Menu.funcaoUsuario;
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
-import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,16 +25,15 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.Objetos.Jogador;
-import com.example.Objetos.Time;
 import com.example.Objetos.Usuario;
-import com.example.Service.BuscaDadosTime;
-import com.example.Service.CodigoUnicoCallback;
 import com.example.Service.ImagemHelper;
 
+import com.example.gerenciadordetime.Login;
 import com.example.gerenciadordetime.Menu;
 import com.example.gerenciadordetime.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -54,6 +60,8 @@ public class CadJogador extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cad_jogador);
 
+        db = FirebaseFirestore.getInstance();
+
         nomeEditText = findViewById(R.id.nomeEditText);
         campoData = findViewById(R.id.campoData);
         posicaoSpinner = findViewById(R.id.posicaoSpinner);
@@ -73,8 +81,6 @@ public class CadJogador extends AppCompatActivity {
         primeiroAcesso = getIntent().getStringExtra("PRIMEIROACESSO");
         if ("NAO".equals(primeiroAcesso)) {
             nomeEditText.setVisibility(View.VISIBLE);
-            btnSalvar.setOnClickListener(v -> {
-            });
         }
 
         btnSalvar.setOnClickListener(v -> {
@@ -85,7 +91,7 @@ public class CadJogador extends AppCompatActivity {
     private void validaCampos() {
         Date hoje = new Date();
         if ("NAO".equals(primeiroAcesso)) {
-            if (nomeEditText.getText().toString().trim().equals("")) {
+            if (nomeEditText.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
             }
         }
@@ -101,7 +107,6 @@ public class CadJogador extends AppCompatActivity {
             } else {
                 salvardados();
             }
-
         }
     }
 
@@ -145,14 +150,14 @@ public class CadJogador extends AppCompatActivity {
         Map<String, Object> infoJogador = new HashMap<>();
 
         if ("SIM".equals(primeiroAcesso)) {
-            salvaDadosTime();
-            salvaDadosUsuario();
 
-            Time time = new Time();
             Usuario usuario = new Usuario();
 
+            salvaDadosTime();
+            criarUsuarioAuth(usuario.getEmail(),usuario.getSenha());
+
             infoJogador.put("IDTIME", proximoCodigo);
-            infoJogador.put("TIME", time.getNomeTime());
+            infoJogador.put("TIME", getNomeTime());
             infoJogador.put("NOME", usuario.getNome());
             infoJogador.put("POSICAO", escolhaPosicao);
             infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
@@ -164,11 +169,17 @@ public class CadJogador extends AppCompatActivity {
 
             Log.d("SALVAR_DADOS", "Todos os dados salvos com sucesso!");
 
-            Intent intent = new Intent(this, Menu.class);
-            startActivity(intent);
+            salvaSaldoFinanceiro();
+
+            loginUser(usuario.getEmail(),usuario.getSenha());
+
         } else {
+            String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
+
+            criarUsuarioAuth(email,"123456");
+//            buscaUsuarioAut(email,"123456");
+
             infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
-            infoJogador.put("TIME", timeUsuario);
             infoJogador.put("IDTIME", idTimeUsuario);
             infoJogador.put("POSICAO", escolhaPosicao);
             infoJogador.put("PERNADOMINANTE", escolhaPernaDominante);
@@ -178,31 +189,38 @@ public class CadJogador extends AppCompatActivity {
 
             db.collection("GTJOGADOR").add(infoJogador);
 
+            finish();
         }
-        finish();
     }
 
     private void salvaDadosTime() {
         Map<String, Object> infoTime = new HashMap<>();
 
-        Time time = new Time();
-
-        String teste = time.getNomeTime();
-
         infoTime.put("IDTIME", proximoCodigo);
-        infoTime.put("DSTIME", time.getNomeTime());
-        infoTime.put("USAFINANCEIRO", time.isFinanceiro());
-        infoTime.put("USAMENSALIDADE", time.isMensalidade());
-        infoTime.put("VALORMENSALIDADE", time.getValorMensalidadeMembro());
+        infoTime.put("DSTIME", getNomeTime());
+        infoTime.put("TIPOCAMPO", getModalidade());
+        infoTime.put("SEXO", getSexo());
+        infoTime.put("USAFINANCEIRO", isFinanceiro());
+        infoTime.put("USAMENSALIDADE", isMensalidade());
+        infoTime.put("VALORMENSALIDADE", getValorMensalidadeMembro());
         infoTime.put("VALORMENSALIDADETIME", 20);
         infoTime.put("DATACRIACAO", new Date());
 
+        idTimeUsuario =  proximoCodigo;
 
         db.collection("GTTIME").document(String.valueOf(proximoCodigo)).set(infoTime);
     }
 
-    private void salvaDadosUsuario() {
-        Time time = new Time();
+    private void salvaSaldoFinanceiro(){
+        Map<String, Object> saldoFinanceiro = new HashMap<>();
+
+        saldoFinanceiro.put("IDTIME", proximoCodigo);
+        saldoFinanceiro.put("SALDOFINANCEIRO", 0);
+
+        db.collection("GTSALDOFINANCEIRO").add(saldoFinanceiro);
+    }
+
+    private void salvaDadosUsuarioPrimeiroAcesso(String uid) {
         Usuario usuario = new Usuario();
 
         Map<String, Object> infoUsuario = new HashMap<>();
@@ -210,27 +228,31 @@ public class CadJogador extends AppCompatActivity {
         infoUsuario.put("NOME", usuario.getNome());
         infoUsuario.put("EMAIL", usuario.getEmail());
         infoUsuario.put("SENHA", usuario.getSenha());
-        infoUsuario.put("TIME", time.getNomeTime());
+        infoUsuario.put("TIME", getNomeTime());
         infoUsuario.put("IDTIME", proximoCodigo);
         infoUsuario.put("FUNCAO", "Administrador");
+
+        funcaoUsuario = "Administrador";
+
+        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+    }
+
+    private void salvaDadosUsuarioCadJogador(String uid) {
+        Map<String, Object> infoUsuario = new HashMap<>();
+
+        String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
+
+        infoUsuario.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
+        infoUsuario.put("EMAIL", email);
+        infoUsuario.put("SENHA", "123456");
+        infoUsuario.put("IDTIME", idTimeUsuario);
+        infoUsuario.put("FUNCAO", "Jogador");
 
         db.collection("GTUSUARIOS").add(infoUsuario);
     }
 
-    private String formatarNome(String texto) {
-        if (texto == null || texto.isEmpty()) {
-            return texto;
-        }
-        texto = texto.toLowerCase(); // tudo minúsculo
-        return texto.substring(0, 1).toUpperCase() + texto.substring(1);
-    }
-
     private void comboPosicao() {
-
-        db = FirebaseFirestore.getInstance();
-
         String[] listaPosicoes = new String[8];
-
         listaPosicoes[0] = "-- Escolha um opção --";
 
         db.collection("GTPOSICAO").get()
@@ -296,7 +318,7 @@ public class CadJogador extends AppCompatActivity {
 
     private void verificaJogadorDuplicado() {
         db.collection("GTJOGADOR")
-                .whereEqualTo("TIME", timeUsuario)
+                .whereEqualTo("IDTIME", idTimeUsuario)
                 .whereEqualTo("NOME", formatarNome(nomeEditText.getText().toString().trim()))
                 .get()
                 .addOnCompleteListener(task -> {
@@ -308,6 +330,43 @@ public class CadJogador extends AppCompatActivity {
                         }
                     } else {
                         Log.w("FIREBASE", "Erro na busca", task.getException());
+                    }
+                });
+    }
+
+    private void criarUsuarioAuth(String email, String senha){
+        FirebaseAuth auth  = FirebaseAuth.getInstance();
+
+        auth.createUserWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // usuário criado e automaticamente logado
+                        FirebaseUser user = auth.getCurrentUser(); // ou task.getResult().getUser();
+                        if (user != null) {
+                            String uid = user.getUid();
+
+                            if ("SIM".equals(primeiroAcesso)){
+                                salvaDadosUsuarioPrimeiroAcesso(uid);
+                            }else {
+                                salvaDadosUsuarioCadJogador(uid);
+                            }
+                        }
+                    } else {
+                        Log.e("APP", "Erro ao criar usuário: " + task.getException().getMessage());
+                    }
+                });
+    }
+
+    private void loginUser(String email, String senha) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signInWithEmailAndPassword(email, senha)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(this, Menu.class);
+                        intent.putExtra("PRIMEIROACESSO", primeiroAcesso);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                     }
                 });
     }

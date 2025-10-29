@@ -1,7 +1,6 @@
 package com.example.lista;
 
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
-import static com.example.gerenciadordetime.Menu.timeUsuario;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -48,7 +47,6 @@ public class ListJogador extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         db.collection("GTJOGADOR")
-                .whereEqualTo("TIME", timeUsuario)
                 .whereEqualTo("IDTIME", idTimeUsuario)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -62,7 +60,7 @@ public class ListJogador extends AppCompatActivity {
                             long assistencias = document.getLong("ASSISTENCIAS");
                             String idJogador = document.getId();
 
-                            Jogador jogador = new Jogador(idJogador, nome, dataNascimento, posicao, pernaDominante, gols, assistencias, timeUsuario);
+                            Jogador jogador = new Jogador(idJogador, nome, dataNascimento, posicao, pernaDominante, gols, assistencias);
                             listaJogadores.add(jogador);
                         }
 
@@ -71,7 +69,6 @@ public class ListJogador extends AppCompatActivity {
                         // Aqui você seta a lista no Adapter do RecyclerView
                         adapter = new JogadorAdapter(listaJogadores, jogador -> {
                             Intent intent = new Intent(this, InfoJogador.class);
-                            intent.putExtra("TIMEUSER", jogador.getTime());
                             intent.putExtra("NOME_JOGADOR", jogador.getNome());
                             intent.putExtra("POSICAO_JOGADOR", jogador.getPosicao());
                             intent.putExtra("PRENA_DOMINANTE_JOGADOR", jogador.getPernaDominante());

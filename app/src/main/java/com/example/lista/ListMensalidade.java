@@ -186,7 +186,6 @@ public class ListMensalidade extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         listaMensalidade.clear();
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            String time = document.getString("TIME");
                             String nomeJogador = document.getString("NOMEJOGADOR");
                             Date dataMensalidade = document.getDate("DATAMES");
                             boolean mensalidadePaga = document.getBoolean("PAGO");
@@ -195,7 +194,7 @@ public class ListMensalidade extends AppCompatActivity {
                             String idDoc = document.getId();
                             Date dataPagamento = new Date();
 
-                            Mensalidade mensalidade = new Mensalidade(time, idJogador, nomeJogador, mensalidadePaga, dataMensalidade, valorMensalidade, idDoc, dataPagamento);
+                            Mensalidade mensalidade = new Mensalidade(idJogador, nomeJogador, mensalidadePaga, dataMensalidade, valorMensalidade, idDoc, dataPagamento);
                             listaMensalidade.add(mensalidade);
                         }
 

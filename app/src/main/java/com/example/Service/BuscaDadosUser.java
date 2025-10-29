@@ -34,4 +34,20 @@ public class BuscaDadosUser {
                     callback.onCallback(null); // erro na busca
                 });
     }
+
+    public void buscarIdTimeUsuario(String coluna, IdTimeCallback callback) {
+        db.collection("GTUSUARIOS").document(loginUser()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        long idTimeLong = documentSnapshot.getLong(coluna);
+                        int idTime = (int) idTimeLong;
+                        callback.onCallback(idTime); // devolve pelo callback
+                    } else {
+                        callback.onCallback(0); // documento não existe
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    callback.onCallback(0); // erro na busca
+                });
+    }
 }

@@ -1,5 +1,10 @@
 package com.example.cadastro;
 
+import static com.example.Service.BuscaDadosTime.proximoCodigo;
+import static com.example.Service.FormataString.formatarNome;
+import static com.example.gerenciadordetime.Menu.funcaoUsuario;
+import static com.example.gerenciadordetime.Menu.idTimeUsuario;
+
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -13,20 +18,26 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.Objetos.Time;
 import com.example.Objetos.Usuario;
 import com.example.Service.ImagemHelper;
 import com.example.Service.MaskTextWatcher;
 import com.example.gerenciadordetime.R;
 import com.example.info.InfoTermosUso;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CadUsuario extends AppCompatActivity {
 
     private TextInputEditText telefoneEditText;
     private CheckBox checkTermos;
     private Button btnProximo, btnTermos, btnVoltar;
-
     private EditText emailEditText, nomeEditText, senhaEditText;
+    Usuario usuario = new Usuario();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +102,6 @@ public class CadUsuario extends AppCompatActivity {
     }
 
     private void salvaDadosUsuario() {
-        Usuario usuario = new Usuario();
         usuario.setEmail(emailEditText.getText().toString());
         usuario.setNome(nomeEditText.getText().toString());
         usuario.setSenha(senhaEditText.getText().toString());
@@ -139,4 +149,33 @@ public class CadUsuario extends AppCompatActivity {
             return false;
         }
     }
+
+//    public void salvaDadosUsuarioPrimeiroAcesso(String uid) {
+//
+//        Map<String, Object> infoUsuario = new HashMap<>();
+//
+//        infoUsuario.put("NOME", usuario.getNome());
+//        infoUsuario.put("EMAIL", usuario.getEmail());
+//        infoUsuario.put("SENHA", usuario.getSenha());
+//        infoUsuario.put("IDTIME", proximoCodigo);
+//        infoUsuario.put("FUNCAO", "Administrador");
+//
+//        funcaoUsuario = "Administrador";
+//
+//        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+//    }
+//
+//    public void salvaDadosUsuarioCadJogador(String uid, String nome) {
+//        Map<String, Object> infoUsuario = new HashMap<>();
+//
+//        String email = nome + timeUsuario + "@gmail.com";
+//
+//        infoUsuario.put("NOME", nome);
+//        infoUsuario.put("EMAIL", email);
+//        infoUsuario.put("SENHA", "123456");
+//        infoUsuario.put("IDTIME", idTimeUsuario);
+//        infoUsuario.put("FUNCAO", "Jogador");
+//
+//        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+//    }
 }

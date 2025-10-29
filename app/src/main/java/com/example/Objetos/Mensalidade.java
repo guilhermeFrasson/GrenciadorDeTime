@@ -5,15 +5,14 @@ import com.google.firebase.firestore.DocumentReference;
 import java.util.Date;
 
 public class Mensalidade {
-    private String time, idJogador, nomeJogador;
+    private String idJogador, nomeJogador;
     boolean mensalidadePaga;
     Date dataMensalidade;
     long valorMensalidade;
     String idDoc;
     Date dataPagamento;
 
-    public Mensalidade(String time, String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc, Date dataPagamento) {
-        this.time = time;
+    public Mensalidade(String idJogador, String nomeJogador, boolean mensalidadePaga, Date dataMensalidade, long valorMensalidade, String idDoc, Date dataPagamento) {
         this.idJogador = idJogador;
         this.nomeJogador = nomeJogador;
         this.mensalidadePaga = mensalidadePaga;
@@ -24,11 +23,6 @@ public class Mensalidade {
     }
 
     public Mensalidade() {
-    }
-
-
-    public String getTime() {
-        return time;
     }
 
     public String getIdJogador() {

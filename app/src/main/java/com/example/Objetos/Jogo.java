@@ -9,16 +9,15 @@ public class Jogo {
     private Date dataJogo;
     private long golsFeitos;
     private long golsSofridos;
-    private String time, idJogo;
+    private String  idJogo;
 
 
-    public Jogo(String timeAdversario, String resultado, Date dataJogo, long golsFeitos, long golsSofridos, String time, String idJogo) {
+    public Jogo(String timeAdversario, String resultado, Date dataJogo, long golsFeitos, long golsSofridos, String idJogo) {
         this.timeAdversario = timeAdversario;
         this.resultado = resultado;
         this.dataJogo = dataJogo;
         this.golsFeitos = golsFeitos;
         this.golsSofridos = golsSofridos;
-        this.time = time;
         this.idJogo = idJogo;
     }
 
@@ -52,8 +51,5 @@ public class Jogo {
         return idJogo;
     }
 
-    public String getTime() {
-        return time;
-    }
 
 }

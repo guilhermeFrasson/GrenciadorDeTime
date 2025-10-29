@@ -9,13 +9,12 @@ public class Jogador {
     private Date dataNascimento;
     private String posicao;
     private String pernaDominante;
-    private String time;
     private String numCamiseta;
     private long gols;
     private long assistencias;
 
 
-    public Jogador(String idJogador, String nome, Date dataNascimento, String posicao, String pernaDominante, long gols, long assistencias, String time) {
+    public Jogador(String idJogador, String nome, Date dataNascimento, String posicao, String pernaDominante, long gols, long assistencias) {
         this.idJogador = idJogador;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
@@ -23,7 +22,6 @@ public class Jogador {
         this.pernaDominante = pernaDominante;
         this.gols = gols;
         this.assistencias = assistencias;
-        this.time = time;
     }
 
     public Jogador(String nome, long gols, long assistencias) {
@@ -46,7 +44,6 @@ public class Jogador {
     public Jogador(String idJogador, String nome, String time) {
         this.idJogador = idJogador;
         this.nome = nome;
-        this.time = time;
     }
 
     public String getNome() {
@@ -81,14 +78,6 @@ public class Jogador {
         this.pernaDominante = pernaDominante;
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
     public String getNumCamiseta() {
         return numCamiseta;
     }
@@ -112,7 +101,6 @@ public class Jogador {
     public void setAssistencias(long assistencias) {
         this.assistencias = assistencias;
     }
-
 
     @Override
     public String toString() {

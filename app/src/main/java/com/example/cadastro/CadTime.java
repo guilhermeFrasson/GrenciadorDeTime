@@ -68,11 +68,14 @@ public class CadTime extends AppCompatActivity {
 
         btnProximo.setOnClickListener(v -> {
             if (verificaCampos()) {
+                Time time = new Time();
+                time.setSexo(escolhaSexo);
+                time.setModalidade(escolhaModalidade);
                 salvaDadosTime();
-                String testes = "SIM";
+                String primeiroAcesso = "SIM";
                 buscaDadosTime.buscaProximoCodigo();
                 Intent intent = new Intent(this, CadJogador.class);
-                intent.putExtra("PRIMEIROACESSO", testes);
+                intent.putExtra("PRIMEIROACESSO", primeiroAcesso);
                 startActivity(intent);
             }else{
                 Toast.makeText(this, "Preencha os campos obrigatorios", Toast.LENGTH_SHORT).show();
@@ -119,12 +122,14 @@ public class CadTime extends AppCompatActivity {
         time.setValorMensalidadeTime(20);
     }
 
-
-
     public boolean verificaCampos() {
         if (nomeTimeEditText.getText().toString().isEmpty()) {
             return false;
-        }else {
+        } else if (escolhaModalidade.equals("-- Escolha um opção --")) {
+            return false;
+        } else if (escolhaSexo.equals("-- Escolha um opção --")) {
+            return false;
+        } else {
             return true;
         }
     }
