@@ -1,14 +1,9 @@
 package com.example.cadastro;
 
-import static com.example.Objetos.Time.getModalidade;
 import static com.example.Objetos.Time.getNomeTime;
-import static com.example.Objetos.Time.getSexo;
-import static com.example.Objetos.Time.getValorMensalidadeMembro;
-import static com.example.Objetos.Time.isFinanceiro;
-import static com.example.Objetos.Time.isMensalidade;
+
 import static com.example.Service.BuscaDadosTime.proximoCodigo;
 import static com.example.Service.FormataString.formatarNome;
-import static com.example.gerenciadordetime.Menu.funcaoUsuario;
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 
 import android.content.Intent;
@@ -28,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.Objetos.Usuario;
 import com.example.Service.ImagemHelper;
 
-import com.example.gerenciadordetime.Login;
 import com.example.gerenciadordetime.Menu;
 import com.example.gerenciadordetime.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -53,6 +47,7 @@ public class CadJogador extends AppCompatActivity {
     private String escolhaPernaDominante, escolhaPosicao;
     private Date data;
     private String primeiroAcesso;
+    Usuario usuario = new Usuario();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,10 +146,10 @@ public class CadJogador extends AppCompatActivity {
 
         if ("SIM".equals(primeiroAcesso)) {
 
-            Usuario usuario = new Usuario();
+            CadTime cadTime = new CadTime();
+            cadTime.salvaDadosTimeBanco();
 
-            salvaDadosTime();
-            criarUsuarioAuth(usuario.getEmail(),usuario.getSenha());
+            criarUsuarioAuth(usuario.getEmail(), usuario.getSenha());
 
             infoJogador.put("IDTIME", proximoCodigo);
             infoJogador.put("TIME", getNomeTime());
@@ -170,7 +165,6 @@ public class CadJogador extends AppCompatActivity {
             Log.d("SALVAR_DADOS", "Todos os dados salvos com sucesso!");
 
             salvaSaldoFinanceiro();
-
         } else {
             String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
 
@@ -185,27 +179,7 @@ public class CadJogador extends AppCompatActivity {
             infoJogador.put("ASSISTENCIAS", 0);
 
             db.collection("GTJOGADOR").add(infoJogador);
-
-            finish();
         }
-    }
-
-    private void salvaDadosTime() {
-        Map<String, Object> infoTime = new HashMap<>();
-
-        infoTime.put("IDTIME", proximoCodigo);
-        infoTime.put("DSTIME", getNomeTime());
-        infoTime.put("TIPOCAMPO", getModalidade());
-        infoTime.put("SEXO", getSexo());
-        infoTime.put("USAFINANCEIRO", isFinanceiro());
-        infoTime.put("USAMENSALIDADE", isMensalidade());
-        infoTime.put("VALORMENSALIDADE", getValorMensalidadeMembro());
-        infoTime.put("VALORMENSALIDADETIME", 20);
-        infoTime.put("DATACRIACAO", new Date());
-
-        idTimeUsuario =  proximoCodigo;
-
-        db.collection("GTTIME").document(String.valueOf(proximoCodigo)).set(infoTime);
     }
 
     private void salvaSaldoFinanceiro(){
@@ -215,40 +189,6 @@ public class CadJogador extends AppCompatActivity {
         saldoFinanceiro.put("SALDOFINANCEIRO", 0);
 
         db.collection("GTSALDOFINANCEIRO").add(saldoFinanceiro);
-    }
-
-    private void salvaDadosUsuarioPrimeiroAcesso(String uid) {
-        Usuario usuario = new Usuario();
-
-        Map<String, Object> infoUsuario = new HashMap<>();
-
-        infoUsuario.put("NOME", usuario.getNome());
-        infoUsuario.put("EMAIL", usuario.getEmail());
-        infoUsuario.put("SENHA", usuario.getSenha());
-        infoUsuario.put("TIME", getNomeTime());
-        infoUsuario.put("IDTIME", proximoCodigo);
-        infoUsuario.put("FUNCAO", "Administrador");
-
-        funcaoUsuario = "Administrador";
-
-        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
-
-        loginUser(usuario.getEmail(),usuario.getSenha());
-
-    }
-
-    private void salvaDadosUsuarioCadJogador(String uid) {
-        Map<String, Object> infoUsuario = new HashMap<>();
-
-        String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
-
-        infoUsuario.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
-        infoUsuario.put("EMAIL", email);
-        infoUsuario.put("SENHA", "123456");
-        infoUsuario.put("IDTIME", idTimeUsuario);
-        infoUsuario.put("FUNCAO", "Jogador");
-
-        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
     }
 
     private void comboPosicao() {
@@ -303,7 +243,6 @@ public class CadJogador extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         pernaDominanteSpinner.setAdapter(adapter);
 
-        // pegar valor selecionado
         pernaDominanteSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -337,6 +276,8 @@ public class CadJogador extends AppCompatActivity {
     private void criarUsuarioAuth(String email, String senha){
         FirebaseAuth auth  = FirebaseAuth.getInstance();
 
+        CadUsuario cadUsuario = new CadUsuario();
+
         auth.createUserWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -346,9 +287,11 @@ public class CadJogador extends AppCompatActivity {
                             String uid = user.getUid();
 
                             if ("SIM".equals(primeiroAcesso)){
-                                salvaDadosUsuarioPrimeiroAcesso(uid);
+                                cadUsuario.salvaDadosUsuarioPrimeiroAcesso(uid);
+                                loginUser(usuario.getEmail(),usuario.getSenha());
                             }else {
-                                salvaDadosUsuarioCadJogador(uid);
+                                cadUsuario.salvaDadosUsuarioCadJogador(uid);
+                                finish();
                             }
                         }
                     } else {
@@ -357,7 +300,7 @@ public class CadJogador extends AppCompatActivity {
                 });
     }
 
-    private void loginUser(String email, String senha) {
+    public void loginUser(String email, String senha) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, senha)

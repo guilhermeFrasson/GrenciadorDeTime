@@ -1,8 +1,8 @@
 package com.example.cadastro;
 
+import static com.example.Objetos.Time.getNomeTime;
 import static com.example.Service.BuscaDadosTime.proximoCodigo;
 import static com.example.Service.FormataString.formatarNome;
-import static com.example.gerenciadordetime.Menu.funcaoUsuario;
 import static com.example.gerenciadordetime.Menu.idTimeUsuario;
 
 import android.content.Intent;
@@ -12,19 +12,20 @@ import android.os.Bundle;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Patterns;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.Objetos.Time;
 import com.example.Objetos.Usuario;
 import com.example.Service.ImagemHelper;
 import com.example.Service.MaskTextWatcher;
 import com.example.gerenciadordetime.R;
 import com.example.info.InfoTermosUso;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -150,32 +151,67 @@ public class CadUsuario extends AppCompatActivity {
         }
     }
 
-//    public void salvaDadosUsuarioPrimeiroAcesso(String uid) {
+//    public void criarUsuarioAuth(String email, String senha, String primeiroAcesso) {
+//        FirebaseAuth auth = FirebaseAuth.getInstance();
 //
-//        Map<String, Object> infoUsuario = new HashMap<>();
+//        auth.createUserWithEmailAndPassword(email, senha)
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        FirebaseUser user = auth.getCurrentUser();
+//                        if (user != null) {
+//                            String uid = user.getUid();
 //
-//        infoUsuario.put("NOME", usuario.getNome());
-//        infoUsuario.put("EMAIL", usuario.getEmail());
-//        infoUsuario.put("SENHA", usuario.getSenha());
-//        infoUsuario.put("IDTIME", proximoCodigo);
-//        infoUsuario.put("FUNCAO", "Administrador");
-//
-//        funcaoUsuario = "Administrador";
-//
-//        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+//                            if ("SIM".equals(primeiroAcesso)) {
+//                                salvaDadosUsuarioPrimeiroAcesso(uid);
+//                            } else {
+//                                salvaDadosUsuarioCadJogador(uid);
+//                            }
+//                        }
+//                    } else {
+//                        Log.e("APP", "Erro ao criar usuário: " + task.getException().getMessage());
+//                    }
+//                });
 //    }
+
+    public void salvaDadosUsuarioPrimeiroAcesso(String uid) {
+
+        Map<String, Object> infoUsuario = new HashMap<>();
+
+        infoUsuario.put("NOME", usuario.getNome());
+        infoUsuario.put("EMAIL", usuario.getEmail());
+        infoUsuario.put("SENHA", usuario.getSenha());
+        infoUsuario.put("TIME", getNomeTime());
+        infoUsuario.put("IDTIME", proximoCodigo);
+        infoUsuario.put("FUNCAO", "Administrador");
+
+        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+    }
+
+    public void salvaDadosUsuarioCadJogador(String uid) {
+        Map<String, Object> infoUsuario = new HashMap<>();
+
+        String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
+
+        infoUsuario.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
+        infoUsuario.put("EMAIL", email);
+        infoUsuario.put("SENHA", "123456");
+        infoUsuario.put("IDTIME", idTimeUsuario);
+        infoUsuario.put("FUNCAO", "Jogador");
+
+        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+    }
+
+//    private void loginUser(String email, String senha) {
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
 //
-//    public void salvaDadosUsuarioCadJogador(String uid, String nome) {
-//        Map<String, Object> infoUsuario = new HashMap<>();
-//
-//        String email = nome + timeUsuario + "@gmail.com";
-//
-//        infoUsuario.put("NOME", nome);
-//        infoUsuario.put("EMAIL", email);
-//        infoUsuario.put("SENHA", "123456");
-//        infoUsuario.put("IDTIME", idTimeUsuario);
-//        infoUsuario.put("FUNCAO", "Jogador");
-//
-//        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+//        mAuth.signInWithEmailAndPassword(email, senha)
+//                .addOnCompleteListener(task -> {
+//                    if (task.isSuccessful()) {
+//                        Intent intent = new Intent(CadUsuario.this, Menu.class);
+//                        intent.putExtra("PRIMEIROACESSO", "SIM");
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(intent);
+//                    }
+//                });
 //    }
 }

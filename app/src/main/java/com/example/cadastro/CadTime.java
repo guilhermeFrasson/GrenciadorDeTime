@@ -1,5 +1,13 @@
 package com.example.cadastro;
 
+import static com.example.Objetos.Time.getModalidade;
+import static com.example.Objetos.Time.getNomeTime;
+import static com.example.Objetos.Time.getSexo;
+import static com.example.Objetos.Time.getValorMensalidadeMembro;
+import static com.example.Objetos.Time.isFinanceiro;
+import static com.example.Objetos.Time.isMensalidade;
+import static com.example.Service.BuscaDadosTime.proximoCodigo;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,10 +25,14 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Objetos.Time;
-import com.example.Objetos.Usuario;
 import com.example.Service.BuscaDadosTime;
 import com.example.Service.ImagemHelper;
 import com.example.gerenciadordetime.R;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CadTime extends AppCompatActivity {
 
@@ -180,5 +192,23 @@ public class CadTime extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    public void salvaDadosTimeBanco() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        Map<String, Object> infoTime = new HashMap<>();
+
+        infoTime.put("IDTIME", proximoCodigo);
+        infoTime.put("DSTIME", getNomeTime());
+        infoTime.put("TIPOCAMPO", getModalidade());
+        infoTime.put("SEXO", getSexo());
+        infoTime.put("USAFINANCEIRO", isFinanceiro());
+        infoTime.put("USAMENSALIDADE", isMensalidade());
+        infoTime.put("VALORMENSALIDADE", getValorMensalidadeMembro());
+        infoTime.put("VALORMENSALIDADETIME", 20);
+        infoTime.put("DATACRIACAO", new Date());
+
+        db.collection("GTTIME").document(String.valueOf(proximoCodigo)).set(infoTime);
     }
 }
