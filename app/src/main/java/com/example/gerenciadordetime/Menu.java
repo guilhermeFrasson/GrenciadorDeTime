@@ -120,7 +120,6 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
-
     private void verificaFuncaoUsuario(String coluna) {
         BuscaDadosUser buscadadosUser = new BuscaDadosUser();
         buscadadosUser.buscarInfosUsuario(coluna, retorno -> {

@@ -49,6 +49,7 @@ public class CadTime extends AppCompatActivity {
         setupListeners();
         camboModalidade();
         camboSexo();
+        buscaDadosTime.buscaProximoCodigo();
     }
 
     private void bindViews() {
@@ -73,7 +74,6 @@ public class CadTime extends AppCompatActivity {
                 time.setModalidade(escolhaModalidade);
                 salvaDadosTime();
                 String primeiroAcesso = "SIM";
-                buscaDadosTime.buscaProximoCodigo();
                 Intent intent = new Intent(this, CadJogador.class);
                 intent.putExtra("PRIMEIROACESSO", primeiroAcesso);
                 startActivity(intent);

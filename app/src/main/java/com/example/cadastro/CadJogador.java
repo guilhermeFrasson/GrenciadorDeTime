@@ -171,13 +171,10 @@ public class CadJogador extends AppCompatActivity {
 
             salvaSaldoFinanceiro();
 
-            loginUser(usuario.getEmail(),usuario.getSenha());
-
         } else {
             String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
 
             criarUsuarioAuth(email,"123456");
-//            buscaUsuarioAut(email,"123456");
 
             infoJogador.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
             infoJogador.put("IDTIME", idTimeUsuario);
@@ -235,6 +232,9 @@ public class CadJogador extends AppCompatActivity {
         funcaoUsuario = "Administrador";
 
         db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
+
+        loginUser(usuario.getEmail(),usuario.getSenha());
+
     }
 
     private void salvaDadosUsuarioCadJogador(String uid) {
@@ -248,7 +248,7 @@ public class CadJogador extends AppCompatActivity {
         infoUsuario.put("IDTIME", idTimeUsuario);
         infoUsuario.put("FUNCAO", "Jogador");
 
-        db.collection("GTUSUARIOS").add(infoUsuario);
+        db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
     }
 
     private void comboPosicao() {
