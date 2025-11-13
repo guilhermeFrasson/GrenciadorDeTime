@@ -40,7 +40,7 @@ import java.util.*;
 public class CadJogador extends AppCompatActivity {
 
     private EditText nomeEditText;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private TextInputEditText campoData;
     private Spinner posicaoSpinner;
     private Spinner pernaDominanteSpinner;
@@ -55,12 +55,7 @@ public class CadJogador extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_cad_jogador);
 
-        db = FirebaseFirestore.getInstance();
-
-        nomeEditText = findViewById(R.id.nomeEditText);
-        campoData = findViewById(R.id.campoData);
-        posicaoSpinner = findViewById(R.id.posicaoSpinner);
-        pernaDominanteSpinner = findViewById(R.id.pernaDominanteSpinner);
+        bindViews();
 
         Button btnSalvar = findViewById(R.id.btnSalvar);
 
@@ -79,17 +74,31 @@ public class CadJogador extends AppCompatActivity {
         }
 
         btnSalvar.setOnClickListener(v -> {
-            validaCampos();
+            validaCampoNome();
         });
     }
 
-    private void validaCampos() {
-        Date hoje = new Date();
+    private void bindViews() {
+        nomeEditText = findViewById(R.id.nomeEditText);
+        campoData = findViewById(R.id.campoData);
+        posicaoSpinner = findViewById(R.id.posicaoSpinner);
+        pernaDominanteSpinner = findViewById(R.id.pernaDominanteSpinner);
+    }
+
+    private void validaCampoNome() {
         if ("NAO".equals(primeiroAcesso)) {
             if (nomeEditText.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
+            }else {
+                validaOutrosCampos();
             }
+        } else {
+            validaOutrosCampos();
         }
+    }
+
+    private void validaOutrosCampos() {
+        Date hoje = new Date();
         if (escolhaPosicao.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Ecolha uma posicao", Toast.LENGTH_SHORT).show();
         } else if (escolhaPernaDominante.equals("-- Escolha um opção --")) {

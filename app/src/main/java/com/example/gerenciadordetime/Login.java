@@ -68,7 +68,6 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnNovoCadastro = findViewById(R.id.btnNovoCadastro);
         overlay = findViewById(R.id.progressOverlay);
-
     }
 
     private void setupListeners() {
