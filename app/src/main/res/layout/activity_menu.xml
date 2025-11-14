@@ -59,6 +59,21 @@
             android:layout_marginTop="100dp">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnListAgendaJogos"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/botao_selector"
+                android:drawableLeft="@drawable/list_jogo"
+                android:drawablePadding="8dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:gravity="left|center_vertical"
+                android:padding="16dp"
+                android:text="Agenda de jogos"
+                android:textColor="@color/corTexto"
+                android:textSize="20sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnListJogos"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -69,7 +84,7 @@
                 android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:gravity="left|center_vertical"
                 android:padding="16dp"
-                android:text="Jogos"
+                android:text="resultado dos jogos"
                 android:textColor="@color/corTexto"
                 android:textSize="20sp" />
 

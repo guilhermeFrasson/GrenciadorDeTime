@@ -48,6 +48,8 @@ public class CadJogador extends AppCompatActivity {
     private Date data;
     private String primeiroAcesso;
     Usuario usuario = new Usuario();
+    View overlay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +76,7 @@ public class CadJogador extends AppCompatActivity {
         }
 
         btnSalvar.setOnClickListener(v -> {
+            overlay.setVisibility(View.VISIBLE);
             validaCampoNome();
         });
     }
@@ -83,12 +86,14 @@ public class CadJogador extends AppCompatActivity {
         campoData = findViewById(R.id.campoData);
         posicaoSpinner = findViewById(R.id.posicaoSpinner);
         pernaDominanteSpinner = findViewById(R.id.pernaDominanteSpinner);
+        overlay = findViewById(R.id.progressOverlay);
     }
 
     private void validaCampoNome() {
         if ("NAO".equals(primeiroAcesso)) {
             if (nomeEditText.getText().toString().trim().isEmpty()) {
                 Toast.makeText(this, "Nome do jogador não pode estar em branco", Toast.LENGTH_SHORT).show();
+                overlay.setVisibility(View.GONE);
             }else {
                 validaOutrosCampos();
             }
@@ -101,10 +106,13 @@ public class CadJogador extends AppCompatActivity {
         Date hoje = new Date();
         if (escolhaPosicao.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Ecolha uma posicao", Toast.LENGTH_SHORT).show();
+            overlay.setVisibility(View.GONE);
         } else if (escolhaPernaDominante.equals("-- Escolha um opção --")) {
             Toast.makeText(this, "Escolha a perna dominante", Toast.LENGTH_SHORT).show();
+            overlay.setVisibility(View.GONE);
         } else if (data == null || !data.before(hoje)) {
             Toast.makeText(this, "Data de nascimento invalida", Toast.LENGTH_SHORT).show();
+            overlay.setVisibility(View.GONE);
         } else {
             if ("NAO".equals(primeiroAcesso)){
                 verificaJogadorDuplicado();
@@ -275,9 +283,11 @@ public class CadJogador extends AppCompatActivity {
                             salvardados();
                         } else {
                             Toast.makeText(this, "Este nome já pertence a um jogador, tente adicionar um sobrenome", Toast.LENGTH_SHORT).show();
+                            overlay.setVisibility(View.GONE);
                         }
                     } else {
                         Log.w("FIREBASE", "Erro na busca", task.getException());
+                        overlay.setVisibility(View.GONE);
                     }
                 });
     }
@@ -299,12 +309,14 @@ public class CadJogador extends AppCompatActivity {
                                 cadUsuario.salvaDadosUsuarioPrimeiroAcesso(uid);
                                 loginUser(usuario.getEmail(),usuario.getSenha());
                             }else {
-                                cadUsuario.salvaDadosUsuarioCadJogador(uid);
+                                cadUsuario.salvaDadosUsuarioCadJogador(uid,nomeEditText.getText().toString().trim());
+                                overlay.setVisibility(View.GONE);
                                 finish();
                             }
                         }
                     } else {
                         Log.e("APP", "Erro ao criar usuário: " + task.getException().getMessage());
+                        overlay.setVisibility(View.GONE);
                     }
                 });
     }

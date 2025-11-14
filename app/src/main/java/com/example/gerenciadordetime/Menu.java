@@ -15,6 +15,7 @@ import com.example.Service.infoTimeCallback;
 import com.example.cadastro.CadJogador;
 import com.example.cadastro.CadJogo;
 import com.example.info.InfoEstatisticas;
+import com.example.lista.ListAgendaJogos;
 import com.example.lista.ListJogos;
 import com.example.lista.ListJogador;
 import com.example.lista.ListMensalidade;
@@ -35,6 +36,7 @@ public class Menu extends AppCompatActivity {
 
         setContentView(R.layout.activity_menu);
 
+        Button btnListAgendaJogos = findViewById(R.id.btnListAgendaJogos);
         Button btnListJogos = findViewById(R.id.btnListJogos);
         btnCadJogo = findViewById(R.id.btnCadJogo);
         Button btnListJogador = findViewById(R.id.btnListJogador);
@@ -50,6 +52,11 @@ public class Menu extends AppCompatActivity {
         verificaInfoTimeUsuario("IDTIME");
         verificaFuncaoUsuario("FUNCAO");
 
+        ImagemHelper.aplicarImagemNoBotao(this, btnListAgendaJogos, R.drawable.agendajogos, 125, 125);
+        btnListAgendaJogos.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ListAgendaJogos.class);
+            startActivity(intent);
+        });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogos, R.drawable.list_jogo, 125, 125);
         btnListJogos.setOnClickListener(v -> {

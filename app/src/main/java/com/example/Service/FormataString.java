@@ -6,6 +6,7 @@ public class FormataString {
             return texto;
         }
         texto = texto.toLowerCase(); // tudo minúsculo
-        return texto.substring(0, 1).toUpperCase() + texto.substring(1);
+        String semEspacos = texto.replace(" ", "");
+        return semEspacos.substring(0, 1).toUpperCase() + semEspacos.substring(1);
     }
 }

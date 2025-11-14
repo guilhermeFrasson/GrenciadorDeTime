@@ -44,21 +44,24 @@ public class ListJogos extends AppCompatActivity {
     private void listarJogoDoBanco() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        Date hoje = new Date();
         db.collection("GTJOGO")
                 .whereEqualTo("IDTIME", idTimeUsuario)
+                .whereLessThan("DATADOJOGO", hoje)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             String timeadversario = document.getString("TIMEADVERSARIO");
                             String resultado = document.getString("RESULTADO");
+                            String localJogo = document.getString("LOCALJOGO");
                             Date dataJogo = document.getDate("DATADOJOGO");
                             long golsFeitos = document.getLong("GOLSFEITOS");
                             long golsSofridos = document.getLong("GOLSSOFRIDOS");
                             String idJogo = document.getId();
 
 
-                            Jogo jogo = new Jogo(timeadversario, resultado, dataJogo, golsFeitos, golsSofridos, idJogo);
+                            Jogo jogo = new Jogo(timeadversario, resultado, dataJogo, golsFeitos, golsSofridos, idJogo, localJogo);
                             listaJogos.add(jogo);
                         }
 
@@ -69,6 +72,7 @@ public class ListJogos extends AppCompatActivity {
                             Intent intent = new Intent(this, InfoJogo.class);
                             intent.putExtra("TIME_ADIVERSARIO", jogo.getTimeAdversario());
                             intent.putExtra("RESULTADO", jogo.getResultado());
+                            intent.putExtra("LOCALJOGO", jogo.getLocalJogo());
                             intent.putExtra("DATA_JOGO", jogo.getDataJogo());
                             intent.putExtra("GOLS_FEITOS", jogo.getGolsFeitos());
                             intent.putExtra("GOLS_SOFRIDOS", jogo.getGolsSofridos());

@@ -50,6 +50,7 @@ public class InfoJogo extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         TextView textTimeAdversario = findViewById(R.id.textTimeAdversario);
+        TextView textLocalJogo = findViewById(R.id.textLocalJogo);
         TextView textResultado = findViewById(R.id.textResultado);
         TextView textDataJogo = findViewById(R.id.textDataJogo);
         TextView textGolsFeitos = findViewById(R.id.textGolsFeitos);
@@ -61,6 +62,7 @@ public class InfoJogo extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         textTimeAdversario.setText("" + getIntent().getStringExtra("TIME_ADIVERSARIO"));
+        textLocalJogo.setText("" + getIntent().getStringExtra("LOCALJOGO"));
         textResultado.setText("" + getIntent().getStringExtra("RESULTADO"));
 
         dataJogo = (Date) getIntent().getSerializableExtra("DATA_JOGO");

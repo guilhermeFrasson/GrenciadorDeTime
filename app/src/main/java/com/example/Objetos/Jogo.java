@@ -10,15 +10,17 @@ public class Jogo {
     private long golsFeitos;
     private long golsSofridos;
     private String  idJogo;
+    private String  localJogo;
 
 
-    public Jogo(String timeAdversario, String resultado, Date dataJogo, long golsFeitos, long golsSofridos, String idJogo) {
+    public Jogo(String timeAdversario, String resultado, Date dataJogo, long golsFeitos, long golsSofridos, String idJogo, String localJogo) {
         this.timeAdversario = timeAdversario;
         this.resultado = resultado;
         this.dataJogo = dataJogo;
         this.golsFeitos = golsFeitos;
         this.golsSofridos = golsSofridos;
         this.idJogo = idJogo;
+        this.localJogo = localJogo;
     }
 
     public Jogo(String resultado, long golsFeitos, long golsSofridos) {
@@ -51,5 +53,12 @@ public class Jogo {
         return idJogo;
     }
 
+    public String getLocalJogo() {
+        return localJogo;
+    }
+
+    public void setLocalJogo(String localJogo) {
+        this.localJogo = localJogo;
+    }
 
 }

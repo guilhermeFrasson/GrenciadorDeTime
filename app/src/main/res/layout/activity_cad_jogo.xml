@@ -57,27 +57,37 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <EditText
-                android:id="@+id/timeAdversarioEditText"
+            <LinearLayout
+                android:id="@+id/timeAdversario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Time adiversario" />
+                android:gravity="left"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/timeAdversarioEditText"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Time adiversario" />
+
+                <Button
+                    android:id="@+id/btnBuscarTime"
+                    android:layout_width="50dp"
+                    android:layout_height="60dp"
+                    android:paddingLeft="-0dp"
+                    android:background="@drawable/botao_em_tela"
+                    android:drawableLeft="@drawable/btnbuscar"
+                    android:tooltipText="Buscar time" />
+
+            </LinearLayout>
 
             <EditText
-                android:id="@+id/golsFeitosEditText"
+                android:id="@+id/localJogoEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Informe o número de gols feitos"
-                android:inputType="number" />
-
-            <EditText
-                android:id="@+id/golsSofridosEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Informe o número de gols sofridos"
-                android:inputType="number" />
+                android:hint="Local do jogo" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -92,6 +102,24 @@
                     android:focusable="false"
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <EditText
+                android:id="@+id/golsFeitosEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Gols feitos"
+                android:inputType="number"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/golsSofridosEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Gols sofridos"
+                android:inputType="number"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -112,7 +140,8 @@
                 android:layout_height="60dp"
                 android:background="@drawable/botao_em_tela"
                 android:drawableLeft="@drawable/btnlistar"
-                android:tooltipText="Listar jogadores que marcaram" />
+                android:tooltipText="Listar jogadores que marcaram"
+                android:visibility="gone" />
 
         </LinearLayout>
 

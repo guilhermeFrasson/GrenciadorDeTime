@@ -13,13 +13,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.Objetos.Estatisticas;
-import com.example.Service.BuscaDadosUser;
 import com.example.Service.ImagemHelper;
 import com.example.gerenciadordetime.R;
 import com.example.lista.ListMarcadorGols;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -37,13 +37,16 @@ import java.util.TimeZone;
 
 public class CadJogo extends AppCompatActivity {
 
-    private EditText timeAdversarioEditText, golsFeitosEditText, golsSofridosEditText;
+    private EditText timeAdversarioEditText, golsFeitosEditText, golsSofridosEditText,localJogoEditText;
     private FirebaseFirestore db;
     private TextInputEditText campoData;
     private String resultado;
     int golsFeitos, golsSofridos, totalGols;
     private Date data;
     private List<Estatisticas> lista;
+    private Button btnListJogadorMarcador;
+    Date hoje = new Date();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +57,23 @@ public class CadJogo extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         timeAdversarioEditText = findViewById(R.id.timeAdversarioEditText);
+        localJogoEditText = findViewById(R.id.localJogoEditText);
         golsFeitosEditText = findViewById(R.id.golsFeitosEditText);
         golsSofridosEditText = findViewById(R.id.golsSofridosEditText);
 
         campoData = findViewById(R.id.campoData);
 
         Button btnSalvar = findViewById(R.id.btnSalvar);
-        Button btnListJogadorMarcador = findViewById(R.id.btnlistJogadormarcador);
+        btnListJogadorMarcador = findViewById(R.id.btnlistJogadormarcador);
+        Button btnBuscarTime = findViewById(R.id.btnBuscarTime);
 
         ImagemHelper.aplicarImagemNoBotao(this, btnSalvar, R.drawable.btnsalvar, 70, 70);
+
+        ImagemHelper.aplicarImagemNoBotao(this, btnBuscarTime, R.drawable.btnbuscar, 50, 50);
+        btnBuscarTime.setOnClickListener(v -> {
+//            Intent intent = new Intent(this, ListMarcadorGols.class);
+//            startActivity(intent);
+        });
 
         ImagemHelper.aplicarImagemNoBotao(this, btnListJogadorMarcador, R.drawable.btnlistar, 100, 100);
         btnListJogadorMarcador.setOnClickListener(v -> {
@@ -81,8 +92,6 @@ public class CadJogo extends AppCompatActivity {
     }
 
     private void validaCampos() {
-        Date hoje = new Date();
-
         String golsFeitosStr = golsFeitosEditText.getText().toString().trim();
         String golsSofridosStr = golsSofridosEditText.getText().toString().trim();
 
@@ -94,12 +103,18 @@ public class CadJogo extends AppCompatActivity {
         } else if (golsFeitos != totalGols) {
             totalGols = 0;
             Toast.makeText(this, "Numero de gols marcados esta diferente da quantidade que os jogadores marcaram", Toast.LENGTH_SHORT).show();
-        } else if (data == null || !data.before(hoje)) {
+        } else if (data == null) {
             Toast.makeText(this, "Data do jogo invalida", Toast.LENGTH_SHORT).show();
         } else {
-            defineResultado();
-            salvarJogoComIdUnico();
+            if(data.after(hoje)){
+                resultado = "";
+                salvarJogoComIdUnico();
+            }else {
+                defineResultado();
+                salvarJogoComIdUnico();
+            }
         }
+
     }
 
     private void defineResultado() {
@@ -115,6 +130,7 @@ public class CadJogo extends AppCompatActivity {
     private void salvaJogo(int idJogo) {
         Map<String, Object> jogo = new HashMap<>();
         jogo.put("TIMEADVERSARIO", formatarNomeTime(timeAdversarioEditText.getText().toString().trim()));
+        jogo.put("LOCALJOGO", formatarNomeTime(localJogoEditText.getText().toString().trim()));
         jogo.put("IDTIME", idTimeUsuario);
         jogo.put("DATADOJOGO", data);
         jogo.put("RESULTADO", resultado);
@@ -132,7 +148,9 @@ public class CadJogo extends AppCompatActivity {
                     Log.w("Firestore", "Erro ao salvar jogo", e);
                 });
 
-        salvaEstatisticasJogo(idJogo);
+        if (data == null || !data.before(hoje)) {
+            salvaEstatisticasJogo(idJogo);
+        }
         finish();
     }
 
@@ -169,14 +187,30 @@ public class CadJogo extends AppCompatActivity {
                     0, 0, 0); // hora, minuto, segundo zerados
 
             // Pega o Date final
-            Date dataNascimento = calLocal.getTime();
+            Date dataJogo = calLocal.getTime();
+            this.data = dataJogo;
 
             // Mostrar no campo
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            campoData.setText(sdf.format(dataNascimento));
+            campoData.setText(sdf.format(dataJogo));
 
             // Salvar a data
-            this.data = dataNascimento;
+            this.data = dataJogo;
+
+            if (dataJogo.before(hoje)) {
+                // Se a data selecionada é ANTERIOR a hoje, mostra os campos de gols
+                golsFeitosEditText.setVisibility(TextInputLayout.VISIBLE);
+                golsSofridosEditText.setVisibility(TextInputLayout.VISIBLE);
+                btnListJogadorMarcador.setVisibility(Button.VISIBLE);
+            } else {
+                // Se a data for hoje ou no futuro, esconde os campos de gols
+                golsFeitosEditText.setVisibility(TextInputLayout.GONE);
+                golsSofridosEditText.setVisibility(TextInputLayout.GONE);
+                btnListJogadorMarcador.setVisibility(Button.GONE);
+                // Limpa os campos para não salvar dados indesejados
+                golsFeitosEditText.setText("");
+                golsSofridosEditText.setText("");
+            }
         });
     }
 

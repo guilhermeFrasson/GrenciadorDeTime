@@ -151,28 +151,6 @@ public class CadUsuario extends AppCompatActivity {
         }
     }
 
-//    public void criarUsuarioAuth(String email, String senha, String primeiroAcesso) {
-//        FirebaseAuth auth = FirebaseAuth.getInstance();
-//
-//        auth.createUserWithEmailAndPassword(email, senha)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        FirebaseUser user = auth.getCurrentUser();
-//                        if (user != null) {
-//                            String uid = user.getUid();
-//
-//                            if ("SIM".equals(primeiroAcesso)) {
-//                                salvaDadosUsuarioPrimeiroAcesso(uid);
-//                            } else {
-//                                salvaDadosUsuarioCadJogador(uid);
-//                            }
-//                        }
-//                    } else {
-//                        Log.e("APP", "Erro ao criar usuário: " + task.getException().getMessage());
-//                    }
-//                });
-//    }
-
     public void salvaDadosUsuarioPrimeiroAcesso(String uid) {
 
         Map<String, Object> infoUsuario = new HashMap<>();
@@ -187,12 +165,12 @@ public class CadUsuario extends AppCompatActivity {
         db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
     }
 
-    public void salvaDadosUsuarioCadJogador(String uid) {
+    public void salvaDadosUsuarioCadJogador(String uid, String nome) {
         Map<String, Object> infoUsuario = new HashMap<>();
 
-        String email = formatarNome(nomeEditText.getText().toString().trim()) + idTimeUsuario + "@gmail.com";
+        String email = formatarNome(nome) + idTimeUsuario + "@gmail.com";
 
-        infoUsuario.put("NOME", formatarNome(nomeEditText.getText().toString().trim()));
+        infoUsuario.put("NOME", nome);
         infoUsuario.put("EMAIL", email);
         infoUsuario.put("SENHA", "123456");
         infoUsuario.put("IDTIME", idTimeUsuario);
@@ -200,18 +178,4 @@ public class CadUsuario extends AppCompatActivity {
 
         db.collection("GTUSUARIOS").document(uid).set(infoUsuario);
     }
-
-//    private void loginUser(String email, String senha) {
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//
-//        mAuth.signInWithEmailAndPassword(email, senha)
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        Intent intent = new Intent(CadUsuario.this, Menu.class);
-//                        intent.putExtra("PRIMEIROACESSO", "SIM");
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                    }
-//                });
-//    }
 }

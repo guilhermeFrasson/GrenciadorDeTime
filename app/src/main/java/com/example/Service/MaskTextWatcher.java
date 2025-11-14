@@ -5,11 +5,12 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 public class MaskTextWatcher implements TextWatcher {
+
     private final EditText editText;
     private boolean isUpdating = false;
-    private String oldText = "";
+    // A máscara que queremos: (99) 99999-9999
+    private final String mask = "(##) #####-####";
 
-    // Construtor que recebe o campo de texto que vamos mascarar
     public MaskTextWatcher(EditText editText) {
         this.editText = editText;
     }
@@ -26,35 +27,36 @@ public class MaskTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable s) {
-        String str = s.toString();
-        // Remove tudo que não for dígito para trabalhar com o número "limpo"
-        String unmaskedStr = str.replaceAll("[^\\d]", "");
-
-        // Evita chamadas recursivas infinitas
-        if (isUpdating || unmaskedStr.equals(oldText)) {
+        if (isUpdating) {
             return;
         }
 
         isUpdating = true;
+
+        // 1. Remove todos os caracteres que não são dígitos
+        String digitsOnly = s.toString().replaceAll("[^\\d]", "");
+
         String formatted = "";
-        int len = unmaskedStr.length();
+        int digitIndex = 0;
 
-        if (len >= 1) {
-            formatted = "(" + unmaskedStr.substring(0, Math.min(2, len));
-        }
-        if (len > 2) {
-            formatted += ") " + unmaskedStr.substring(2, Math.min(7, len));
-        }
-        if (len > 7) {
-            formatted += "-" + unmaskedStr.substring(7, Math.min(11, len));
+        // 2. Constrói a string formatada baseada na máscara
+        for (char maskChar : mask.toCharArray()) {
+            if (digitIndex >= digitsOnly.length()) {
+                break; // Se não houver mais dígitos, para de formatar
+            }
+
+            if (maskChar == '#') {
+                formatted += digitsOnly.charAt(digitIndex);
+                digitIndex++;
+            } else {
+                formatted += maskChar;
+            }
         }
 
-        oldText = unmaskedStr;
+        // 3. Atualiza o texto no EditText e posiciona o cursor no final
         editText.setText(formatted);
-        // Coloca o cursor no final do texto formatado
         editText.setSelection(formatted.length());
 
         isUpdating = false;
     }
-
 }

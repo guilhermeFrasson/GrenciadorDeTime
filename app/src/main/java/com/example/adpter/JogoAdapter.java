@@ -1,5 +1,6 @@
 package com.example.adpter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.example.Objetos.Jogo;
 import com.example.gerenciadordetime.R;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder>{
@@ -42,8 +44,17 @@ public class JogoAdapter extends RecyclerView.Adapter<JogoAdapter.JogoViewHolder
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String dataFormatada = sdf.format(jogo.getDataJogo());
         holder.textDataJogo.setText(dataFormatada);
-        holder.textPlacar.setText(jogo.getGolsFeitos() + " X " + jogo.getGolsSofridos());
-
+        if (jogo.getResultado().equals("")) {
+            holder.textPlacar.setText("");
+            Date hoje = new Date();
+            if (jogo.getDataJogo().before(hoje) || jogo.getDataJogo().equals(hoje)) {
+                holder.itemView.setBackgroundColor(Color.parseColor("#FFCCCC")); // vermelho claro
+            } else {
+                holder.itemView.setBackgroundColor(Color.TRANSPARENT); // reset!
+            }
+        } else {
+            holder.textPlacar.setText(jogo.getGolsFeitos() + " X " + jogo.getGolsSofridos());
+        }
         holder.itemView.setOnClickListener(v -> listener.onItemClick(jogo));
     }
 
